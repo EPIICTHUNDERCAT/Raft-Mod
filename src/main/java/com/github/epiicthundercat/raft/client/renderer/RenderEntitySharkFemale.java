@@ -1,0 +1,38 @@
+package com.github.epiicthundercat.raft.client.renderer;
+
+import com.github.epiicthundercat.raft.Reference;
+import com.github.epiicthundercat.raft.client.model.EntitySharkFemaleModel;
+import com.github.epiicthundercat.raft.entity.monster.EntitySharkFemale;
+
+import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+@SideOnly(Side.CLIENT)
+public class RenderEntitySharkFemale extends RenderLiving<EntitySharkFemale>{
+
+	private static final ResourceLocation CHICKEN_TEXTURE = new ResourceLocation(Reference.ID, "textures/entity/entitysharkfemale.png");
+	
+	
+	private final EntitySharkFemaleModel femaleSharkModel;
+	
+
+	public RenderEntitySharkFemale(RenderManager renderManagerIn) {
+		super(renderManagerIn, new EntitySharkFemaleModel(), 0.2F);
+		femaleSharkModel = (EntitySharkFemaleModel) super.mainModel;
+	}
+	@Override
+	public void doRender(EntitySharkFemale entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		
+
+		
+		super.doRender(entity, x, y, z, entityYaw, partialTicks);
+	}
+	@Override
+	protected ResourceLocation getEntityTexture(EntitySharkFemale entity) {
+		return CHICKEN_TEXTURE;
+	}
+	
+}
