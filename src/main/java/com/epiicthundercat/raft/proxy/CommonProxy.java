@@ -1,6 +1,7 @@
-package com.github.epiicthundercat.raft.proxy;
+package com.epiicthundercat.raft.proxy;
 
-import com.github.epiicthundercat.raft.init.RItems;
+import com.epiicthundercat.raft.entity.ModEntities;
+import com.epiicthundercat.raft.init.RItems;
 
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -14,7 +15,7 @@ public class CommonProxy {
 
 	public void init(FMLInitializationEvent event) {
 		registerRenders(event);
-		//ModEntities.init();
+		ModEntities.init();
 	
 	}
 

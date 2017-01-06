@@ -1,9 +1,9 @@
-package com.github.epiicthundercat.raft.init;
+package com.epiicthundercat.raft.init;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.epiicthundercat.raft.item.RItem;
+import com.epiicthundercat.raft.item.RItem;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderItem;

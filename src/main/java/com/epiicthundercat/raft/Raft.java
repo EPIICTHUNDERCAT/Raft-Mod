@@ -1,6 +1,6 @@
-package com.github.epiicthundercat.raft;
+package com.epiicthundercat.raft;
 
-import com.github.epiicthundercat.raft.proxy.CommonProxy;
+import com.epiicthundercat.raft.proxy.CommonProxy;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;

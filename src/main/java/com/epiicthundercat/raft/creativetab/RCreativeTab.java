@@ -1,6 +1,6 @@
-package com.github.epiicthundercat.raft.creativetab;
+package com.epiicthundercat.raft.creativetab;
 
-import com.github.epiicthundercat.raft.init.RItems;
+import com.epiicthundercat.raft.init.RItems;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;

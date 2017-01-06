@@ -1,4 +1,4 @@
-package com.github.epiicthundercat.raft;
+package com.epiicthundercat.raft;
 
 public class Reference {
 	public static final String ID = "raft";

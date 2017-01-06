@@ -1,12 +1,16 @@
-package com.github.epiicthundercat.raft.client.model;
+package com.epiicthundercat.raft.client.model;
 
-import javax.swing.text.html.parser.Entity;
 
-import org.lwjgl.opengl.GL11;
 
+
+import com.epiicthundercat.raft.entity.monster.EntitySharkFemale;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -136,5 +140,58 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 	        modelRenderer.rotateAngleX = x;
 	        modelRenderer.rotateAngleY = y;
 	        modelRenderer.rotateAngleZ = z;
+
+	    }
+	    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
+	    {
+	        EntitySharkFemale entitySharkFemale = (EntitySharkFemale)entityIn;
+	        float f = ageInTicks - (float)entitySharkFemale.ticksExisted;
+	        this.Body.rotateAngleY = netHeadYaw * 0.017453292F;
+	        this.Body.rotateAngleX = headPitch * 0.017453292F;
+	        float[] afloat = new float[] {1.75F, 0.25F, 0.0F, 0.0F, 0.5F, 0.5F, 0.5F, 0.5F, 1.25F, 0.75F, 0.0F, 0.0F};
+	        float[] afloat1 = new float[] {0.0F, 0.0F, 0.0F, 0.0F, 0.25F, 1.75F, 1.25F, 0.75F, 0.0F, 0.0F, 0.0F, 0.0F};
+	        float[] afloat2 = new float[] {0.0F, 0.0F, 0.25F, 1.75F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.75F, 1.25F};
+	        float[] afloat3 = new float[] {0.0F, 0.0F, 8.0F, -8.0F, -8.0F, 8.0F, 8.0F, -8.0F, 0.0F, 0.0F, 8.0F, -8.0F};
+	        float[] afloat4 = new float[] { -8.0F, -8.0F, -8.0F, -8.0F, 0.0F, 0.0F, 0.0F, 0.0F, 8.0F, 8.0F, 8.0F, 8.0F};
+	        float[] afloat5 = new float[] {8.0F, -8.0F, 0.0F, 0.0F, -8.0F, -8.0F, 8.0F, 8.0F, 8.0F, -8.0F, 0.0F, 0.0F};
+	        //float f1 = (1.0F - entitySharkFemale.getSpikesAnimation(f)) * 0.55F;
+
+	        
+
+	        //this.Eye.rotationPointZ = -8.25F;
+	        Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+
+	        if (entitySharkFemale.hasTargetedEntity())
+	        {
+	            entity = entitySharkFemale.getTargetedEntity();
+	        }
+
+	        if (entity != null)
+	        {
+	            Vec3d vec3d = entity.getPositionEyes(0.0F);
+	            Vec3d vec3d1 = entityIn.getPositionEyes(0.0F);
+	            double d0 = vec3d.yCoord - vec3d1.yCoord;
+
+	            
+
+	            Vec3d vec3d2 = entityIn.getLook(0.0F);
+	            vec3d2 = new Vec3d(vec3d2.xCoord, 0.0D, vec3d2.zCoord);
+	            Vec3d vec3d3 = (new Vec3d(vec3d1.xCoord - vec3d.xCoord, 0.0D, vec3d1.zCoord - vec3d.zCoord)).normalize().rotateYaw(((float)Math.PI / 2F));
+	            double d1 = vec3d2.dotProduct(vec3d3);
+	           // this.Eye.rotationPointX = MathHelper.sqrt_float((float)Math.abs(d1)) * 2.0F * (float)Math.signum(d1);
+	        }
+
+	       
+	        float f2 = EntitySharkFemale.getTailAnimation(f);
+	        this.Tail1.rotateAngleY = MathHelper.sin(f2) * (float)Math.PI * 0.05F;
+	        this.Tail2.rotateAngleY = MathHelper.sin(f2) * (float)Math.PI * 0.1F;
+	        this.Tail2.rotationPointX = -1.5F;
+	        this.Tail2.rotationPointY = 0.5F;
+	        this.Tail2.rotationPointZ = 14.0F;
+	        this.Tail3.rotateAngleY = MathHelper.sin(f2) * (float)Math.PI * 0.15F;
+	        this.Tail3.rotationPointX = 0.5F;
+	        this.Tail3.rotationPointY = 0.5F;
+	        this.Tail3.rotationPointZ = 6.0F;
 	    }
 }
+

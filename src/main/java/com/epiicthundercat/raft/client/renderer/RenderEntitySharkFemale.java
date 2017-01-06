@@ -1,8 +1,8 @@
-package com.github.epiicthundercat.raft.client.renderer;
+package com.epiicthundercat.raft.client.renderer;
 
-import com.github.epiicthundercat.raft.Reference;
-import com.github.epiicthundercat.raft.client.model.EntitySharkFemaleModel;
-import com.github.epiicthundercat.raft.entity.monster.EntitySharkFemale;
+import com.epiicthundercat.raft.Reference;
+import com.epiicthundercat.raft.client.model.EntitySharkFemaleModel;
+import com.epiicthundercat.raft.entity.monster.EntitySharkFemale;
 
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;

@@ -1,12 +1,12 @@
-package com.github.epiicthundercat.raft.entity;
+package com.epiicthundercat.raft.entity;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.github.epiicthundercat.raft.Raft;
-import com.github.epiicthundercat.raft.entity.monster.EntitySharkFemale;
+import com.epiicthundercat.raft.Raft;
+import com.epiicthundercat.raft.entity.monster.EntitySharkFemale;
 
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;

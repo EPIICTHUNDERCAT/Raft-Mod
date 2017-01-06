@@ -1,8 +1,8 @@
-package com.github.epiicthundercat.raft.proxy;
+package com.epiicthundercat.raft.proxy;
 
-import com.github.epiicthundercat.raft.client.renderer.RenderEntitySharkFemale;
-import com.github.epiicthundercat.raft.entity.monster.EntitySharkFemale;
-import com.github.epiicthundercat.raft.init.RItems;
+import com.epiicthundercat.raft.client.renderer.RenderEntitySharkFemale;
+import com.epiicthundercat.raft.entity.monster.EntitySharkFemale;
+import com.epiicthundercat.raft.init.RItems;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
