@@ -53,8 +53,7 @@ public class EntitySharkFemale extends EntityMob{
     private static float clientSideTailAnimation;
     private static float clientSideTailAnimationO;
     private static float clientSideTailAnimationSpeed;
-    //private float clientSideSpikesAnimation;
-    //private float clientSideSpikesAnimationO;
+ 
     private EntityLivingBase targetedEntity;
     private int clientSideAttackTime;
     private boolean clientSideTouchedGround;

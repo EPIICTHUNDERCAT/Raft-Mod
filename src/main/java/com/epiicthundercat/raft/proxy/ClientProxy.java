@@ -1,6 +1,8 @@
 package com.epiicthundercat.raft.proxy;
 
 import com.epiicthundercat.raft.client.renderer.RenderEntitySharkFemale;
+import com.epiicthundercat.raft.client.renderer.RenderFloatingBarrel;
+import com.epiicthundercat.raft.entity.FloatBarrel;
 import com.epiicthundercat.raft.entity.monster.EntitySharkFemale;
 import com.epiicthundercat.raft.init.RItems;
 
@@ -22,7 +24,7 @@ public class ClientProxy extends CommonProxy {
 		
 		RenderManager rm = Minecraft.getMinecraft().getRenderManager();
 		rm.entityRenderMap.put(EntitySharkFemale.class, new RenderEntitySharkFemale(rm));
-		
+		rm.entityRenderMap.put(FloatBarrel.class, new RenderFloatingBarrel(rm));
 		
 		  
 

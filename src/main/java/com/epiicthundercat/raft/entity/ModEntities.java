@@ -25,6 +25,9 @@ public class ModEntities {
 		// FemaleShark
 		EntityRegistry.registerModEntity(EntitySharkFemale.class, "Female Shark", 1, Raft.instance, 80, 3, false, 0,
 				femalesharkegg);
+		// barrel
+		EntityRegistry.registerModEntity(FloatBarrel.class, "Barrel", 2, Raft.instance, 80, 3, false, 0,
+				femalesharkegg);
 
 		/*
 		 * We want our mob to spawn in Plains and ice plains biomes. If you
