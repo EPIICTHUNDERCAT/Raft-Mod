@@ -4,6 +4,7 @@ import com.epiicthundercat.raft.client.renderer.RenderEntitySharkFemale;
 import com.epiicthundercat.raft.client.renderer.RenderFloatingBarrel;
 import com.epiicthundercat.raft.entity.FloatBarrel;
 import com.epiicthundercat.raft.entity.monster.EntitySharkFemale;
+import com.epiicthundercat.raft.init.RBlocks;
 import com.epiicthundercat.raft.init.RItems;
 
 import net.minecraft.client.Minecraft;
@@ -34,7 +35,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerRenders(FMLInitializationEvent event) {
 		RItems.registerRender(event);
-		//NGBlocks.registerRender(event);
+		RBlocks.registerRender(event);
 	}
 	/*
 	@Override
