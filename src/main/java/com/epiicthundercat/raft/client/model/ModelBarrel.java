@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelBarrel extends ModelBase implements IMultipassModel {
-	public ModelRenderer noWater;
+	//public ModelRenderer noWater;
 	public ModelRenderer BarrelCenter;
 	public ModelRenderer BarrelOutside;
 	public ModelRenderer BarrelOutside3;
@@ -46,10 +46,7 @@ public class ModelBarrel extends ModelBase implements IMultipassModel {
 		this.BarrelTop = new ModelRenderer(this, 0, 0);
 		this.BarrelTop.setRotationPoint(0.5F, -0.4F, 0.5F);
 		this.BarrelTop.addBox(0.0F, 0.0F, 0.0F, 10, 1, 10);
-		this.noWater = (new ModelRenderer(this, 0, 0)).setTextureSize(128, 64);
-		this.noWater.addBox(-14.0F, -9.0F, -3.0F, 28, 16, 3, 0.0F);
-		this.noWater.setRotationPoint(0.0F, -3.0F, 1.0F);
-		this.noWater.rotateAngleX = ((float) Math.PI / 2F);
+		
 	}
 
 	@Override
@@ -70,9 +67,6 @@ public class ModelBarrel extends ModelBase implements IMultipassModel {
 
 	public void renderMultipass(Entity p_187054_1_, float p_187054_2_, float p_187054_3_, float p_187054_4_,
 			float p_187054_5_, float p_187054_6_, float scale) {
-	/*	GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
-		GlStateManager.colorMask(false, false, false, false);
-		this.noWater.render(scale);
-		GlStateManager.colorMask(true, true, true, true);*/
+	
 	}
 }
