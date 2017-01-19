@@ -3,14 +3,12 @@ package com.epiicthundercat.raft.item;
 import java.util.List;
 
 import com.epiicthundercat.raft.creativetab.RCreativeTab;
-import com.epiicthundercat.raft.entity.FloatBarrel;
-import com.epiicthundercat.raft.init.RItems;
+import com.epiicthundercat.raft.entity.ScrapEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
@@ -22,23 +20,18 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class ItemBarrel extends RItem{
-	private final FloatBarrel.Type type;
+public class ItemScrap extends RItem{
 
-    public ItemBarrel(String name, FloatBarrel.Type typeIn)
+
+    public ItemScrap(String name)
     {
     	super(name);
-        this.type = typeIn;
-        this.maxStackSize = 1;
+        
+        this.maxStackSize = 64;
         this.setCreativeTab(RCreativeTab.RTabs);
-        this.setUnlocalizedName("barrel." + typeIn.getName());
-       // addToItems(this);
+      
     }
-    //private void addToItems(Item item) {
-
-	//	RItems.items.add(item);
-
-	//}
+   
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
         float f = 1.0F;
@@ -95,11 +88,11 @@ public class ItemBarrel extends RItem{
             {
                 Block block = worldIn.getBlockState(raytraceresult.getBlockPos()).getBlock();
                 boolean flag1 = block == Blocks.WATER || block == Blocks.FLOWING_WATER;
-                FloatBarrel floatBarrel = new FloatBarrel(worldIn, raytraceresult.hitVec.xCoord, flag1 ? raytraceresult.hitVec.yCoord - 0.12D : raytraceresult.hitVec.yCoord, raytraceresult.hitVec.zCoord);
-                floatBarrel.setBarrelType(this.type);
-                floatBarrel.rotationYaw = playerIn.rotationYaw;
+                ScrapEntity ScrapEntity = new ScrapEntity(worldIn, raytraceresult.hitVec.xCoord, flag1 ? raytraceresult.hitVec.yCoord - 0.12D : raytraceresult.hitVec.yCoord, raytraceresult.hitVec.zCoord);
+                
+                ScrapEntity.rotationYaw = playerIn.rotationYaw;
 
-                if (!worldIn.getCollisionBoxes(floatBarrel, floatBarrel.getEntityBoundingBox().expandXyz(-0.1D)).isEmpty())
+                if (!worldIn.getCollisionBoxes(ScrapEntity, ScrapEntity.getEntityBoundingBox().expandXyz(-0.1D)).isEmpty())
                 {
                     return new ActionResult(EnumActionResult.FAIL, itemStackIn);
                 }
@@ -107,7 +100,7 @@ public class ItemBarrel extends RItem{
                 {
                     if (!worldIn.isRemote)
                     {
-                        worldIn.spawnEntityInWorld(floatBarrel);
+                        worldIn.spawnEntityInWorld(ScrapEntity);
                     }
 
                     if (!playerIn.capabilities.isCreativeMode)
@@ -122,3 +115,4 @@ public class ItemBarrel extends RItem{
         }
     }
 }
+

@@ -2,7 +2,7 @@ package com.epiicthundercat.raft.init;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.epiicthundercat.raft.block.BlockSeperator;
+import com.epiicthundercat.raft.block.BlockSeparator;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -18,7 +18,7 @@ public class RBlocks {
 
 	public static List<Block> blocks = new ArrayList();
 	
-	public static Block seperator = new BlockSeperator(Material.AIR);
+	public static Block separator = new BlockSeparator("separator", Material.ANVIL);
 	
 	
 	public static List<Block> blockList() {

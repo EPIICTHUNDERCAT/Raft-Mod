@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.epiicthundercat.raft.entity.FloatBarrel;
 import com.epiicthundercat.raft.item.ItemBarrel;
+import com.epiicthundercat.raft.item.ItemPlank;
+import com.epiicthundercat.raft.item.ItemScrap;
+import com.epiicthundercat.raft.item.ItemThatch;
 import com.epiicthundercat.raft.item.RItem;
 
 import net.minecraft.client.Minecraft;
@@ -19,9 +22,9 @@ public class RItems {
 	public static List<Item> items = new ArrayList();
 	
 	public static Item hook = new RItem("hook");
-	public static Item thatch = new RItem("thatch");
+	public static Item thatch = new ItemThatch("thatch");
 	public static Item rope = new RItem("rope");
-	public static Item plank = new RItem("plank");
+	public static Item plank = new ItemPlank("plank");
 	public static Item barrel = new ItemBarrel("barrel", FloatBarrel.Type.OAK);
 	public static Item spruce_barrel = new ItemBarrel("spruce_barrel", FloatBarrel.Type.SPRUCE);
 	public static Item birch_barrel = new ItemBarrel("birch_barrel", FloatBarrel.Type.BIRCH);
@@ -30,7 +33,7 @@ public class RItems {
 	public static Item jungle_barrel = new ItemBarrel("jungle_barrel", FloatBarrel.Type.JUNGLE);
 	public static Item spear = new RItem("spear");
 	public static Item tin_can = new RItem("tin_can");
-	public static Item scrap = new RItem("scrap");
+	public static Item scrap = new ItemScrap("scrap");
 	
 	
 	private static List<Item> getItems() {

@@ -7,7 +7,7 @@ import com.epiicthundercat.raft.init.REventHandler;
 import com.epiicthundercat.raft.init.RItems;
 import com.epiicthundercat.raft.init.barrel.BarrelLootAdd;
 import com.epiicthundercat.raft.rafttileentitity.TileEntityRegistry;
-import com.epiicthundercat.raft.rafttileentitity.TileEntitySeperator;
+import com.epiicthundercat.raft.rafttileentitity.TileEntitySeparator;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -18,6 +18,7 @@ public class CommonProxy {
 	public void preInit(FMLPreInitializationEvent preEvent) {
 		register(preEvent);
 		TileEntityRegistry.registerTile();
+		
 		//NGConfig.config(preEvent);
 
 	}
@@ -32,7 +33,7 @@ public class CommonProxy {
 	private void register(FMLPreInitializationEvent preEvent) {
 		RItems.register(preEvent);
 		RBlocks.register(preEvent);
-		  GameRegistry.registerTileEntity(TileEntitySeperator.class, "TileEntitySeperator");
+		  GameRegistry.registerTileEntity(TileEntitySeparator.class, "TileEntitySeperator");
 		MinecraftForge.EVENT_BUS.register(new REventHandler());
 		MinecraftForge.EVENT_BUS.register(new RGuiHandler());
 
