@@ -4,7 +4,7 @@ import java.util.Random;
 
 import com.epiicthundercat.raft.Raft;
 import com.epiicthundercat.raft.VariablesSeperator;
-import com.epiicthundercat.raft.client.gui.GuiSeperatorContainer;
+import com.epiicthundercat.raft.client.gui.RGuiHandler;
 import com.epiicthundercat.raft.rafttileentitity.TileEntitySeperator;
 
 import net.minecraft.block.ITileEntityProvider;
@@ -14,7 +14,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -29,11 +28,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
 
 public class BlockSeperator extends RBlock implements ITileEntityProvider {
 	public static Object instance;
 	//public static int GUIID = 2;
-	public static IInventory inherited;
+	public static IItemHandler inherited;
 	int a1 = 0;
 	int a2 = 0;
 	int a3 = 0;
@@ -184,7 +184,7 @@ public class BlockSeperator extends RBlock implements ITileEntityProvider {
 		int j = pos.getY();
 		int k = pos.getZ();
 		if ((entity instanceof EntityPlayer)) {
-			entity.openGui(Raft.instance, GuiSeperatorContainer.GUIID, world, i, j, k);
+			entity.openGui(Raft.instance, RGuiHandler.GUIID2, world, i, j, k);
 		}
 		return true;
 	}

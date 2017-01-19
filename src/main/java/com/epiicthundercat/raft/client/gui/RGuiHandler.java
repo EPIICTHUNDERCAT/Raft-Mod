@@ -7,19 +7,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 public class RGuiHandler implements IGuiHandler{
-	 public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z)
-	    {
-	      if (id == GuiSeperatorContainer.GUIID) {
-	        return new GuiSeperatorContainer(world, x, y, z, player);
-	      }
-	      return null;
-	    }
-	    
-	    public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z)
-	    {
-	      if (id == GuiSeperatorContainer.GUIID) {
-	        return new GuiSeperator(world, x, y, z, player);
-	      }
-	      return null;
-	    }
+	
+	public static int GUIID = 1;
+	public static int GUIID2 = 2;
+	@Override
+	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }
