@@ -5,6 +5,7 @@ import java.util.List;
 import com.epiicthundercat.raft.block.BlockSeperator;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -17,7 +18,7 @@ public class RBlocks {
 
 	public static List<Block> blocks = new ArrayList();
 	
-	public static Block seperator = new BlockSeperator();
+	public static Block seperator = new BlockSeperator(Material.AIR);
 	
 	
 	public static List<Block> blockList() {

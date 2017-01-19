@@ -17,6 +17,7 @@ public class ClientProxy extends CommonProxy {
 	public void preInit(FMLPreInitializationEvent preEvent) {
 		super.preInit(preEvent);
 		//ModEntities.initModels();
+		
 	}
 
 	public void init(FMLInitializationEvent event) {
