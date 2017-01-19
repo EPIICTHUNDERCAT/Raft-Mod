@@ -5,6 +5,8 @@ import com.epiicthundercat.raft.entity.ModEntities;
 import com.epiicthundercat.raft.init.RBlocks;
 import com.epiicthundercat.raft.init.REventHandler;
 import com.epiicthundercat.raft.init.RItems;
+import com.epiicthundercat.raft.init.RRecipes;
+import com.epiicthundercat.raft.init.RecipeHandler;
 import com.epiicthundercat.raft.init.barrel.BarrelLootAdd;
 import com.epiicthundercat.raft.rafttileentitity.TileEntityRegistry;
 import com.epiicthundercat.raft.rafttileentitity.TileEntitySeparator;
@@ -33,9 +35,11 @@ public class CommonProxy {
 	private void register(FMLPreInitializationEvent preEvent) {
 		RItems.register(preEvent);
 		RBlocks.register(preEvent);
+		RRecipes.register(preEvent);
 		  GameRegistry.registerTileEntity(TileEntitySeparator.class, "TileEntitySeperator");
 		MinecraftForge.EVENT_BUS.register(new REventHandler());
 		MinecraftForge.EVENT_BUS.register(new RGuiHandler());
+		MinecraftForge.EVENT_BUS.register(new RecipeHandler());
 
 	}
 

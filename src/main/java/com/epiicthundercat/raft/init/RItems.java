@@ -34,6 +34,22 @@ public class RItems {
 	public static Item spear = new RItem("spear");
 	public static Item tin_can = new RItem("tin_can");
 	public static Item scrap = new ItemScrap("scrap");
+	public static Item dirt_piece = new RItem("dirt_piece");
+	public static Item sand_piece = new RItem("sand_piece");
+	public static Item gravel_piece = new RItem("gravel_piece");
+	public static Item compressed_scraps = new RItem("compressed_scraps");
+	public static Item double_compressed_scraps = new RItem("double_compressed_scraps");
+	public static Item iron_compund = new RItem("iron_compund");
+	public static Item copper_compound = new RItem("copper_compound");
+	public static Item silver_compound = new RItem("silver_compound");
+	public static Item gold_compound = new RItem("gold_compound");
+	public static Item lead_compound = new RItem("lead_compound");
+	public static Item aluminium_compound = new RItem("aluminium_compound");
+	public static Item lead_ingot = new RItem("lead_ingot");
+	public static Item copper_ingot = new RItem("copper_ingot");
+	public static Item aluminium_ingot = new RItem("aluminium_ingot");
+	public static Item silver_ingot = new RItem("silver_ingot");
+
 	
 	
 	private static List<Item> getItems() {
