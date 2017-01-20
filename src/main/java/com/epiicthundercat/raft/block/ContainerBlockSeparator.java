@@ -35,7 +35,7 @@ public class ContainerBlockSeparator extends Container {
 		addSlotToContainer(new SlotFurnaceOutput(playerInv.player, SepInv, 4, 140, 9));
 		// BottomFirstof2
 		addSlotToContainer(new SlotFurnaceOutput(playerInv.player, SepInv, 5, 140, 30));
-		addSlotToContainer(new SlotFurnaceOutput(playerInv.player, SepInv, 6, 117, 50));
+		addSlotToContainer(new SlotFurnaceOutput(playerInv.player, SepInv, 6, 140, 50));
 		// bucketoutput
 		addSlotToContainer(new SlotFurnaceOutput(playerInv.player, SepInv, 7, 8, 56));
 		for (int y = 0; y < 3; ++y) {

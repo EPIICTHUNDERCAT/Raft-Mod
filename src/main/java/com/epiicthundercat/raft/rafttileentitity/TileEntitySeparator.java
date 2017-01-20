@@ -25,20 +25,20 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-		super.writeToNBT(nbt);
-		NBTTagList inventory = new NBTTagList();
-		for (byte slot = 0; slot < separatorItemStacks.length; slot++) {
-			if (!(separatorItemStacks == null)) {
-				NBTTagCompound itemTag = new NBTTagCompound();
-				separatorItemStacks[slot].writeToNBT(itemTag);
-				itemTag.setByte("Slot", slot);
-				inventory.appendTag(itemTag);
-			}
-		}
-		nbt.setTag("Items", inventory);
-		return super.writeToNBT(nbt);
-	}
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        NBTTagList inventory = new NBTTagList();
+        for (byte slot = 0; slot < separatorItemStacks.length; slot++) {
+            if (this.separatorItemStacks[slot] != null) {
+                NBTTagCompound itemTag = new NBTTagCompound();
+                separatorItemStacks[slot].writeToNBT(itemTag);
+                itemTag.setByte("Slot", slot);
+                inventory.appendTag(itemTag);
+            }
+        }
+        nbt.setTag("Items", inventory);
+        return super.writeToNBT(nbt);
+    }
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {

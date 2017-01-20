@@ -1,5 +1,7 @@
 package com.epiicthundercat.raft.block;
 
+import javax.annotation.Nullable;
+
 import com.epiicthundercat.raft.Raft;
 import com.epiicthundercat.raft.client.gui.RGuiHandler;
 import com.epiicthundercat.raft.creativetab.RCreativeTab;
@@ -54,14 +56,14 @@ public class BlockSeparator extends BlockContainer {
 		return EnumBlockRenderType.MODEL;
 	}
 
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
-			EnumFacing heldItem, float side, float hitX, float hitY) {
-
-		if (!world.isRemote) {
-			player.openGui(Raft.instance, RGuiHandler.GUI_SEPERATOR, world, pos.getX(), pos.getY(), pos.getZ());
-		}
-		return true;
-	}
+	@Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (!worldIn.isRemote) {
+        	
+            playerIn.openGui(Raft.instance, RGuiHandler.GUI_SEPERATOR, worldIn, pos.getX(), pos.getY(), pos.getZ());
+        }
+        return super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
+    }
 
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ,
 			int meta, EntityLivingBase placer) {
@@ -74,6 +76,7 @@ public class BlockSeparator extends BlockContainer {
 	 */
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
 			ItemStack stack) {
+		
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
 
 		if (stack.hasDisplayName()) {
