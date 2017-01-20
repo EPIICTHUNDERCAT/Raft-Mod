@@ -40,6 +40,7 @@ public class RItems {
 	public static Item compressed_scraps = new RItem("compressed_scraps");
 	public static Item double_compressed_scraps = new RItem("double_compressed_scraps");
 	public static Item iron_compund = new RItem("iron_compund");
+	public static Item tin_compound = new RItem("tin_compund");
 	public static Item copper_compound = new RItem("copper_compound");
 	public static Item silver_compound = new RItem("silver_compound");
 	public static Item gold_compound = new RItem("gold_compound");
@@ -49,6 +50,7 @@ public class RItems {
 	public static Item copper_ingot = new RItem("copper_ingot");
 	public static Item aluminium_ingot = new RItem("aluminium_ingot");
 	public static Item silver_ingot = new RItem("silver_ingot");
+	public static Item tin_ingot = new RItem("tin_ingot");
 
 	
 	

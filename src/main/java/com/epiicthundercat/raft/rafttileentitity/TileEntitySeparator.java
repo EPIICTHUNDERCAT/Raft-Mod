@@ -3,6 +3,7 @@ package com.epiicthundercat.raft.rafttileentitity;
 import javax.annotation.Nullable;
 
 import com.epiicthundercat.raft.init.RBlocks;
+import com.epiicthundercat.raft.init.RecipeHandler;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -21,7 +22,7 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 
 	@Override
 	public void update() {
-
+		 this.seperate();
 	}
 
 	@Override
@@ -173,4 +174,55 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	  private boolean canSeperate()
+	    {
+	        if (this.separatorItemStacks[0] == null)
+	        {
+	            return false;
+	        }
+	        else
+	        {
+	            ItemStack itemstack = RecipeHandler.instance().getSeparatorResult(this.separatorItemStacks[0]);
+	            if (itemstack == null) return false;
+	            if (this.separatorItemStacks[2] == null) return true;
+	            if (!this.separatorItemStacks[2].isItemEqual(itemstack)) return false;
+	            if (this.separatorItemStacks[3] == null) return true;
+	            if (!this.separatorItemStacks[3].isItemEqual(itemstack)) return false;
+	            if (this.separatorItemStacks[4] == null) return true;
+	            if (!this.separatorItemStacks[4].isItemEqual(itemstack)) return false;
+	            if (this.separatorItemStacks[5] == null) return true;
+	            if (!this.separatorItemStacks[5].isItemEqual(itemstack)) return false;
+	            if (this.separatorItemStacks[6] == null) return true;
+	            if (!this.separatorItemStacks[6].isItemEqual(itemstack)) return false;
+	            if (this.separatorItemStacks[7] == null) return true;
+	            if (!this.separatorItemStacks[7].isItemEqual(itemstack)) return false;
+	            int result = separatorItemStacks[2].stackSize + itemstack.stackSize;
+
+	            return result <= getInventoryStackLimit() && result <= this.separatorItemStacks[2].getMaxStackSize(); //Forge BugFix: Make it respect stack sizes properly.
+	        }
+	    }
+	  public void seperate()
+	    {
+	        if (this.canSeperate())
+	        {
+	            ItemStack itemstack = RecipeHandler.instance().getSeparatorResult(this.separatorItemStacks[0]);
+
+	            if (this.separatorItemStacks[2] == null)
+	            {
+	                this.separatorItemStacks[2] = itemstack.copy();
+	            }
+	            else if (this.separatorItemStacks[2].getItem() == itemstack.getItem())
+	            {
+	                this.separatorItemStacks[2].stackSize += itemstack.stackSize; // Forge BugFix: Results may have multiple items
+	            }
+
+	            --this.separatorItemStacks[0].stackSize;
+
+	            if (this.separatorItemStacks[0].stackSize <= 0)
+	            {
+	                this.separatorItemStacks[0] = null;
+	            }
+	        }
+	    }
 }

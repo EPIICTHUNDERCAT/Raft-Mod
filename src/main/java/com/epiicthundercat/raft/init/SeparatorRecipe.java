@@ -1,5 +1,6 @@
 package com.epiicthundercat.raft.init;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class SeparatorRecipe {
