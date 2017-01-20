@@ -18,6 +18,7 @@ import net.minecraft.util.ITickable;
 public class TileEntitySeparator extends TileEntity implements ITickable, ISidedInventory {
 	private int cookTime;
 	private int totalCookTime;
+	//slot amount-8
 	private ItemStack[] separatorItemStacks = new ItemStack[8];
 
 	@Override
@@ -182,7 +183,7 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 	            return false;
 	        }
 	        else
-	        {
+	        {/*
 	            ItemStack itemstack = RecipeHandler.instance().getSeparatorResult(this.separatorItemStacks[0]);
 	            if (itemstack == null) return false;
 	            if (this.separatorItemStacks[2] == null) return true;
@@ -200,7 +201,9 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 	            int result = separatorItemStacks[2].stackSize + itemstack.stackSize;
 
 	            return result <= getInventoryStackLimit() && result <= this.separatorItemStacks[2].getMaxStackSize(); //Forge BugFix: Make it respect stack sizes properly.
-	        }
+	        }*/
+	        	return true;
+	        	}
 	    }
 	  public void seperate()
 	    {

@@ -11,6 +11,7 @@ import com.google.common.collect.Maps;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeHandler {
 	private static final RecipeHandler INSTANCE = new RecipeHandler();
@@ -43,7 +44,7 @@ public class RecipeHandler {
 
 	private boolean compareItemStacks(ItemStack stack1, ItemStack stack2) {
 		return stack2.getItem() == stack1.getItem()
-				&& (stack2.getMetadata() == 32767 || stack2.getMetadata() == stack1.getMetadata());
+				&& (stack2.getMetadata() == OreDictionary.WILDCARD_VALUE || stack2.getMetadata() == stack1.getMetadata());
 	}
 
 	public static RecipeHandler instance() {
