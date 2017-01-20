@@ -3,7 +3,10 @@ package com.epiicthundercat.raft.block;
 import java.util.Random;
 
 import com.epiicthundercat.raft.creativetab.RCreativeTab;
+import com.epiicthundercat.raft.init.RBlocks;
+import com.epiicthundercat.raft.world.WorldGenPalmTree;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
@@ -25,10 +28,17 @@ public class BlockPalmSapling extends BlockBush implements IGrowable {
 			0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
 
 	public BlockPalmSapling(String name) {
-
-		this.setSoundType(SoundType.PLANT);
+		addToBlocks(this);
+		this.setRegistryName(name.toLowerCase());
+		this.setUnlocalizedName(name.toLowerCase());
 		this.setCreativeTab(RCreativeTab.RTabs);
+		this.setSoundType(SoundType.PLANT);
+
 		this.setDefaultState(blockState.getBaseState().withProperty(STAGE, Integer.valueOf(0)));
+	}
+
+	private void addToBlocks(Block block) {
+		RBlocks.blocks.add(block);
 	}
 
 	@Override
@@ -82,7 +92,7 @@ public class BlockPalmSapling extends BlockBush implements IGrowable {
 
 		world.setBlockState(pos, Blocks.AIR.getDefaultState(), 4);
 
-		if (!WorldGenSugiTree.TREE_GEN.generate(world, rand, pos)) {
+		if (!WorldGenPalmTree.TREE_GEN.generate(world, rand, pos)) {
 			world.setBlockState(pos, state, 4);
 		}
 	}

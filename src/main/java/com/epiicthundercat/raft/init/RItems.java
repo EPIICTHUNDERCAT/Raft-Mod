@@ -58,7 +58,7 @@ public class RItems {
 	public static Item steel_ingot = new RItem("steel_ingot");
 	public static Item nickel_ingot = new RItem("nickel_ingot");
 	public static Item ardite_ingot = new RItem("ardite_ingot");
-	public static Item cobalt_ingot = new RItem("ardite_ingot");
+	public static Item cobalt_ingot = new RItem("cobalt_ingot");
 	public static Item plastic = new RItem("plastic");
 	//public static Item ardite_ingot = new RItem("ardite_ingot");
 	//public static Item ardite_ingot = new RItem("ardite_ingot");

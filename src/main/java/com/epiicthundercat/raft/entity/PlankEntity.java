@@ -4,15 +4,27 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.lwjgl.util.vector.Quaternion;
+
+import com.epiicthundercat.raft.client.renderer.RenderPlank;
 import com.epiicthundercat.raft.init.REventHandler;
 import com.epiicthundercat.raft.init.RItems;
 import com.epiicthundercat.raft.init.barrel.BarrelLoot;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockFence;
+import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.BlockWall;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -24,9 +36,9 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
-import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ReportedException;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -36,14 +48,24 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class PlankEntity extends Entity{
+public class PlankEntity extends Entity {
 	private static final DataParameter<Integer> TIME_SINCE_HIT = EntityDataManager.<Integer>createKey(PlankEntity.class,
 			DataSerializers.VARINT);
 	private static final DataParameter<Integer> FORWARD_DIRECTION = EntityDataManager
 			.<Integer>createKey(PlankEntity.class, DataSerializers.VARINT);
 	private static final DataParameter<Float> DAMAGE_TAKEN = EntityDataManager.<Float>createKey(PlankEntity.class,
 			DataSerializers.FLOAT);
-	
+	private static final DataParameter<Boolean> CAN_DESPAWN = EntityDataManager.createKey(PlankEntity.class,
+			DataSerializers.BOOLEAN);
+	private static final DataParameter<Integer> SIZE = EntityDataManager.createKey(PlankEntity.class,
+			DataSerializers.VARINT);
+	private static final DataParameter<Boolean> CUSTOM_WIND_ENABLED = EntityDataManager.createKey(PlankEntity.class,
+			DataSerializers.BOOLEAN);
+	private static final DataParameter<Float> CUSTOM_WIND_X = EntityDataManager.createKey(PlankEntity.class,
+			DataSerializers.FLOAT);
+	private static final DataParameter<Float> CUSTOM_WIND_Z = EntityDataManager.createKey(PlankEntity.class,
+			DataSerializers.FLOAT);
+	private static final float BASE_SIZE = 0.75f;
 
 	/** How much of current speed to retain. Value zero to one. */
 	private float momentum;
@@ -52,16 +74,27 @@ public class PlankEntity extends Entity{
 	private int lerpSteps;
 	private double BarrelPitch;
 	private double lerpY;
-	
 	private double lerpZ;
 	private double BarrelYaw;
 	private double lerpXRot;
-	
 	private boolean leftInputDown;
 	private boolean rightInputDown;
 	private boolean forwardInputDown;
 	private boolean backInputDown;
 	private double waterLevel;
+
+	private int age;
+	public float rot1, rot2, rot3;
+	private int groundTicks;
+	private int currentSize;
+
+	@SideOnly(Side.CLIENT)
+	public Quaternion quat;
+	@SideOnly(Side.CLIENT)
+	public Quaternion prevQuat;
+	private float windModX, windModZ;
+	private int nextStepDistance;
+
 	/**
 	 * How much the Barrel should glide given the slippery blocks it's currently
 	 * gliding over. Halved every tick.
@@ -76,6 +109,17 @@ public class PlankEntity extends Entity{
 
 		this.preventEntitySpawning = true;
 		this.setSize(1F, 0.9F);
+		this.windModX = 1.2f - 0.4f * worldObj.rand.nextFloat();
+		this.windModZ = 1.2f - 0.4f * worldObj.rand.nextFloat();
+
+		if (this.worldObj.isRemote) {
+			this.rot1 = 360f * worldObj.rand.nextFloat();
+			this.rot2 = 360f * worldObj.rand.nextFloat();
+			this.rot3 = 360f * worldObj.rand.nextFloat();
+
+			this.quat = new Quaternion();
+			this.prevQuat = new Quaternion();
+		}
 	}
 
 	public PlankEntity(World worldIn, double x, double y, double z) {
@@ -93,17 +137,21 @@ public class PlankEntity extends Entity{
 	 * returns if this entity triggers Block.onEntityWalking on the blocks they
 	 * walk on. used for spiders and wolves to prevent them from trampling crops
 	 */
+	@Override
 	protected boolean canTriggerWalking() {
 		return false;
 	}
-
-	
 
 	protected void entityInit() {
 		this.dataManager.register(TIME_SINCE_HIT, Integer.valueOf(0));
 		this.dataManager.register(FORWARD_DIRECTION, Integer.valueOf(1));
 		this.dataManager.register(DAMAGE_TAKEN, Float.valueOf(0.0F));
-		
+		this.dataManager.register(CAN_DESPAWN, true);
+		this.dataManager.register(SIZE, -2 + worldObj.rand.nextInt(5));
+		this.dataManager.register(CUSTOM_WIND_ENABLED, false);
+		this.dataManager.register(CUSTOM_WIND_X, 0f);
+		this.dataManager.register(CUSTOM_WIND_Z, 0f);
+
 	}
 
 	/**
@@ -128,6 +176,7 @@ public class PlankEntity extends Entity{
 	 * Returns true if this entity should push and be pushed by other entities
 	 * when colliding.
 	 */
+	@Override
 	public boolean canBePushed() {
 		return true;
 	}
@@ -136,6 +185,7 @@ public class PlankEntity extends Entity{
 	 * Called when the entity is attacked.
 	 * 
 	 */
+	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 		if (this.isEntityInvulnerable(source)) {
 			return false;
@@ -175,6 +225,7 @@ public class PlankEntity extends Entity{
 	/**
 	 * Applies a velocity to the entities, to push them away from eachother.
 	 */
+	@Override
 	public void applyEntityCollision(Entity entityIn) {
 		if (entityIn instanceof PlankEntity) {
 			if (entityIn.getEntityBoundingBox().minY < this.getEntityBoundingBox().maxY) {
@@ -184,8 +235,6 @@ public class PlankEntity extends Entity{
 			super.applyEntityCollision(entityIn);
 		}
 	}
-
-	
 
 	/**
 	 * Setups the entity to do the hurt animation. Only used by packets in
@@ -202,8 +251,9 @@ public class PlankEntity extends Entity{
 	 * Returns true if other Entities should be prevented from moving through
 	 * this Entity.
 	 */
+	@Override
 	public boolean canBeCollidedWith() {
-		return !this.isDead;
+		return true;
 	}
 
 	/**
@@ -228,53 +278,88 @@ public class PlankEntity extends Entity{
 		return this.getHorizontalFacing().rotateY();
 	}
 
-	/**
-	 * Called to update the entity's position/logic.
-	 */
+	@Override
 	public void onUpdate() {
-		this.previousStatus = this.status;
-		this.status = this.getBarrelStatus();
-
-		if (this.status != PlankEntity.Status.UNDER_WATER && this.status != PlankEntity.Status.UNDER_FLOWING_WATER) {
-			this.outOfControlTicks = 0.0F;
-		} else {
-			++this.outOfControlTicks;
-		}
-
-		if (this.getTimeSinceHit() > 0) {
-			this.setTimeSinceHit(this.getTimeSinceHit() - 1);
-		}
-
-		if (this.getDamageTaken() > 0.0F) {
-			this.setDamageTaken(this.getDamageTaken() - 1.0F);
-		}
-
-		this.prevPosX = this.posX;
-		this.prevPosY = this.posY;
-		this.prevPosZ = this.posZ;
 		super.onUpdate();
-		this.tickLerp();
 
-		if (!canPassengerSteer()) {
-			this.updateMotion();
+		if (this.currentSize != this.getSize()) {
+			this.currentSize = this.getSize();
 
-			if (this.worldObj.isRemote) {
-				this.controlBoat();
-				// this.worldObj.sendPacketToServer(null);
+		}
+
+		if (this.getRidingEntity() != null) {
+			this.motionX = 0;
+			this.motionY = 0;
+			this.motionZ = 0;
+		} else {
+			if (!this.isInWater())
+				this.motionY -= 0.012;
+
+			double x = this.motionX;
+			double y = this.motionY;
+			double z = this.motionZ;
+
+			boolean ground = onGround;
+			this.moveEntity(this.motionX, this.motionY, this.motionZ);
+			float windX = 0.1F;
+			float windZ = 0.1F;
+			if (this.isInWater()) {
+				this.motionY += 0.009;
+				this.motionX *= 0.95;
+				this.motionZ *= 0.95;
+			} else if (windX != 0 || windZ != 0) {
+				this.motionX = windX;
+				this.motionZ = windZ;
 			}
 
-			this.moveEntity(this.motionX, this.motionY, this.motionZ);
-		} else {
-			this.motionX = 0.0D;
-			this.motionY = 0.0D;
-			this.motionZ = 0.0D;
+			// Rotate
+			if (this.worldObj.isRemote) {
+				groundTicks--;
+
+				if ((!ground && onGround) || isInWater())
+					groundTicks = 10;
+				else if (getCustomWindEnabled())
+					groundTicks = 5;
+
+				this.prevQuat = this.quat;
+
+				Quaternion.mul(this.quat, RenderPlank.CURRENT, this.quat);
+
+				Quaternion.mul(this.quat, RenderPlank.CURRENT, this.quat);
+			}
+
+			// Bounce on ground
+			if (this.onGround) {
+
+			}
+
+			// Bounce on walls
+			if (this.isCollidedHorizontally) {
+				this.motionX = -x * 0.4;
+				this.motionZ = -z * 0.4;
+			}
+
+			this.motionX *= 0.98;
+			this.motionY *= 0.98;
+			this.motionZ *= 0.98;
+
+			if (Math.abs(this.motionX) < 0.005)
+				this.motionX = 0.0;
+
+			if (Math.abs(this.motionY) < 0.005)
+				this.motionY = 0.0;
+
+			if (Math.abs(this.motionZ) < 0.005)
+				this.motionZ = 0.0;
+
+			collideWithNearbyEntities();
+
+			if (!this.worldObj.isRemote) {
+				this.age++;
+				despawnEntity();
+			}
+
 		}
-
-		this.doBlockCollisions();
-		List<Entity> list = this.worldObj.getEntitiesInAABBexcluding(this,
-				this.getEntityBoundingBox().expand(0.20000000298023224D, -0.009999999776482582D, 0.20000000298023224D),
-				EntitySelectors.<Entity>getTeamCollisionPredicate(this));
-
 	}
 
 	private void tickLerp() {
@@ -551,19 +636,6 @@ public class PlankEntity extends Entity{
 		}
 	}
 
-	
-
-	/*
-	 * public boolean pickup(World world, BlockPos pos, IBlockState state,
-	 * EntityPlayer player, EnumHand hand, EnumFacing par6, float par7, float
-	 * par8, float par9) { if(!world.isRemote){ world.playSound(null, pos,
-	 * SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.2F,
-	 * world.rand.nextFloat()*0.1F+0.9F); this.dropItems(world, pos);
-	 * 
-	 * 
-	 * 
-	 * } return true; }
-	 */
 	private void extractItems(World world, BlockPos pos, EntityPlayer player) {
 		for (int i = 0; i < MathHelper.getRandomIntegerInRange(world.rand, 3, 6); i++) {
 			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.plank_loot);
@@ -656,12 +728,6 @@ public class PlankEntity extends Entity{
 				f -= 0.005F;
 			}
 
-			// this.motionX += (double)(MathHelper.sin(-this.rotationYaw *
-			// 0.017453292F) * f);
-			// this.motionZ += (double)(MathHelper.cos(this.rotationYaw *
-			// 0.017453292F) * f);
-			// this.setPaddleState(this.rightInputDown || this.forwardInputDown,
-			// this.leftInputDown || this.forwardInputDown);
 		}
 	}
 
@@ -707,25 +773,273 @@ public class PlankEntity extends Entity{
 		return ((Integer) this.dataManager.get(FORWARD_DIRECTION)).intValue();
 	}
 
-	
-
 	public static enum Status {
 		IN_WATER, UNDER_WATER, UNDER_FLOWING_WATER, ON_LAND, IN_AIR;
 	}
 
-
-
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
-		
-		
+		if (compound.hasKey("Size"))
+			this.dataManager.set(SIZE, compound.getInteger("Size"));
+
+		if (compound.hasKey("CustomWindEnabled"))
+			this.dataManager.set(CUSTOM_WIND_ENABLED, compound.getBoolean("CustomWindEnabled"));
+
+		if (compound.hasKey("CustomWindX"))
+			this.dataManager.set(CUSTOM_WIND_X, compound.getFloat("CustomWindX"));
+
+		if (compound.hasKey("CustomWindZ"))
+			this.dataManager.set(CUSTOM_WIND_Z, compound.getFloat("CustomWindZ"));
+		if (compound.hasKey("CanDespawn"))
+			this.dataManager.set(CAN_DESPAWN, compound.getBoolean("CanDespawn"));
+
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
-		
-		
+		compound.setInteger("Size", getSize());
+		compound.setBoolean("CustomWindEnabled", getCustomWindEnabled());
+		compound.setFloat("CustomWindX", getCustomWindX());
+		compound.setFloat("CustomWindZ", getCustomWindZ());
+
+		compound.setBoolean("CanDespawn", getCanDespawn());
+
 	}
 
-	
+	public boolean getCanDespawn() {
+		return this.dataManager.get(CAN_DESPAWN);
+	}
+
+	@Override
+	public void moveEntity(double x, double y, double z) {
+		if (this.noClip) {
+			this.setEntityBoundingBox(this.getEntityBoundingBox().offset(x, y, z));
+			this.resetPositionToBB();
+		} else {
+			double d0 = this.posX;
+			double d1 = this.posY;
+			double d2 = this.posZ;
+
+			if (this.isInWeb) {
+				this.isInWeb = false;
+				x *= 0.25D;
+				y *= 0.05D;
+				z *= 0.25D;
+				this.motionX = 0.0D;
+				this.motionY = 0.0D;
+				this.motionZ = 0.0D;
+			}
+
+			double d3 = x;
+			double d4 = y;
+			double d5 = z;
+
+			List<AxisAlignedBB> list1 = this.worldObj.getCollisionBoxes(this,
+					this.getEntityBoundingBox().addCoord(x, y, z));
+
+			for (AxisAlignedBB axisalignedbb1 : list1)
+				y = axisalignedbb1.calculateYOffset(this.getEntityBoundingBox(), y);
+
+			this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0D, y, 0.0D));
+
+			for (AxisAlignedBB axisalignedbb2 : list1)
+				x = axisalignedbb2.calculateXOffset(this.getEntityBoundingBox(), x);
+
+			this.setEntityBoundingBox(this.getEntityBoundingBox().offset(x, 0.0D, 0.0D));
+
+			for (AxisAlignedBB axisalignedbb13 : list1)
+				z = axisalignedbb13.calculateZOffset(this.getEntityBoundingBox(), z);
+
+			this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0D, 0.0D, z));
+
+			this.resetPositionToBB();
+			this.isCollidedHorizontally = d3 != x || d5 != z;
+			this.isCollidedVertically = d4 != y;
+			this.onGround = this.isCollidedVertically && d4 < 0.0D;
+			this.isCollided = this.isCollidedHorizontally || this.isCollidedVertically;
+			int i = MathHelper.floor_double(this.posX);
+			int j = MathHelper.floor_double(this.posY - 0.2D);
+			int k = MathHelper.floor_double(this.posZ);
+			BlockPos blockpos = new BlockPos(i, j, k);
+			IBlockState state = this.worldObj.getBlockState(blockpos);
+			Block block = state.getBlock();
+
+			if (state.getBlock() == Blocks.AIR) {
+				IBlockState state1 = this.worldObj.getBlockState(blockpos.down());
+				Block block1 = state1.getBlock();
+
+				if (block1 instanceof BlockFence || block1 instanceof BlockWall || block1 instanceof BlockFenceGate) {
+					state = state1;
+					blockpos = blockpos.down();
+				}
+			}
+
+			this.updateFallState(y, this.onGround, state, blockpos);
+
+			if (d3 != x)
+				this.motionX = 0.0D;
+
+			if (d5 != z)
+				this.motionZ = 0.0D;
+
+			if (d4 != y) {
+				block.onLanded(this.worldObj, this);
+
+				if (block == Blocks.FARMLAND) {
+					if (!worldObj.isRemote && worldObj.rand.nextFloat() < 0.7F) {
+						if (!worldObj.getGameRules().getBoolean("mobGriefing"))
+							return;
+
+						worldObj.setBlockState(blockpos, Blocks.DIRT.getDefaultState());
+					}
+				}
+			}
+
+			double d15 = this.posX - d0;
+			double d16 = this.posY - d1;
+			double d17 = this.posZ - d2;
+
+			if (block != Blocks.LADDER)
+				d16 = 0.0D;
+
+			if (this.onGround)
+				block.onEntityWalk(this.worldObj, blockpos, this);
+
+			this.distanceWalkedModified = (float) ((double) this.distanceWalkedModified
+					+ (double) MathHelper.sqrt_double(d15 * d15 + d17 * d17) * 0.6D);
+			this.distanceWalkedOnStepModified = (float) ((double) this.distanceWalkedOnStepModified
+					+ (double) MathHelper.sqrt_double(d15 * d15 + d16 * d16 + d17 * d17) * 0.6D);
+
+			if (this.distanceWalkedOnStepModified > (float) this.nextStepDistance
+					&& state.getMaterial() != Material.AIR) {
+				this.nextStepDistance = (int) this.distanceWalkedOnStepModified + 1;
+
+				if (this.isInWater()) {
+					float f = MathHelper.sqrt_double(this.motionX * this.motionX * 0.2D + this.motionY * this.motionY
+							+ this.motionZ * this.motionZ * 0.2D) * 0.35F;
+
+					if (f > 1.0F)
+						f = 1.0F;
+
+					this.playSound(this.getSwimSound(), f,
+							1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
+				}
+
+				if (!state.getMaterial().isLiquid()) {
+					SoundType sound = SoundType.PLANT;
+					this.playSound(sound.getStepSound(), sound.getVolume() * 0.15F, sound.getPitch());
+				}
+			}
+
+			try {
+				this.doBlockCollisions();
+			} catch (Throwable throwable) {
+				CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Checking entity block collision");
+				CrashReportCategory crashreportcategory = crashreport
+						.makeCategory("Entity being checked for collision");
+				this.addEntityCrashInfo(crashreportcategory);
+				throw new ReportedException(crashreport);
+			}
+		}
+	}
+
+	private void collideWithNearbyEntities() {
+		List list = this.worldObj.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(0.2D, 0.0D, 0.2D),
+				new Predicate<Entity>() {
+					public boolean apply(Entity p_apply_1_) {
+						return p_apply_1_.canBePushed();
+					}
+				});
+
+		if (!list.isEmpty())
+			for (int i = 0; i < list.size(); ++i) {
+				Entity entity = (Entity) list.get(i);
+				collision(entity);
+			}
+	}
+
+	private void collision(Entity entity) {
+		if (!isPassenger(entity) && this.getRidingEntity() != entity) {
+			if (!this.noClip && !entity.noClip) {
+				if (!this.worldObj.isRemote && entity instanceof EntityMinecart
+						&& ((EntityMinecart) entity).getType() == EntityMinecart.Type.RIDEABLE
+						&& entity.motionX * entity.motionX + entity.motionZ * entity.motionZ > 0.01D
+						&& entity.getPassengers().isEmpty() && this.getRidingEntity() == null) {
+					this.startRiding(entity);
+					this.motionY += 0.25;
+					this.velocityChanged = true;
+				} else {
+					double dx = this.posX - entity.posX;
+					double dz = this.posZ - entity.posZ;
+					double dmax = MathHelper.abs_max(dx, dz);
+
+					if (dmax >= 0.01D) {
+						dmax = (double) MathHelper.sqrt_double(dmax);
+						dx /= dmax;
+						dz /= dmax;
+						double d3 = 1.0D / dmax;
+
+						if (d3 > 1.0D)
+							d3 = 1.0D;
+
+						dx *= d3;
+						dz *= d3;
+						dx *= 0.05D;
+						dz *= 0.05D;
+						dx *= (double) (1.0F - entity.entityCollisionReduction);
+						dz *= (double) (1.0F - entity.entityCollisionReduction);
+
+						if (entity.getPassengers().isEmpty()) {
+							entity.motionX += -dx;
+							entity.motionZ += -dz;
+						}
+
+						if (this.getPassengers().isEmpty()) {
+							this.motionX += dx;
+							this.motionZ += dz;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void despawnEntity() {
+		if (!getCanDespawn()) {
+			this.age = 0;
+		} else {
+			Entity entity = this.worldObj.getClosestPlayerToEntity(this, -1.0D);
+
+			if (entity != null) {
+				double d0 = entity.posX - this.posX;
+				double d1 = entity.posY - this.posY;
+				double d2 = entity.posZ - this.posZ;
+				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+
+				if (d3 > 110 * 110)
+					this.setDead();
+			}
+
+		}
+	}
+
+	public int getSize() {
+		return this.dataManager.get(SIZE);
+	}
+
+	public float getCustomWindX() {
+		return this.dataManager.get(CUSTOM_WIND_X);
+	}
+
+	public float getCustomWindZ() {
+		return this.dataManager.get(CUSTOM_WIND_Z);
+	}
+
+	public boolean getCustomWindEnabled() {
+		return this.dataManager.get(CUSTOM_WIND_ENABLED);
+	}
+	public boolean isNotColliding()
+	{
+		return this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.containsAnyLiquid(this.getEntityBoundingBox());
+	}
 }

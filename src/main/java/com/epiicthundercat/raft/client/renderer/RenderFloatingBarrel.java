@@ -1,11 +1,18 @@
 package com.epiicthundercat.raft.client.renderer;
 
+import java.nio.FloatBuffer;
+
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Quaternion;
+import org.lwjgl.util.vector.ReadableVector;
+
 import com.epiicthundercat.raft.Reference;
 import com.epiicthundercat.raft.client.model.ModelBarrel;
 import com.epiicthundercat.raft.entity.FloatBarrel;
 
-import net.minecraft.client.model.IMultipassModel;
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -15,85 +22,76 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderFloatingBarrel extends Render<FloatBarrel>
-{
-    private static final ResourceLocation[] BARREL_TEXTURES = new ResourceLocation[] {new ResourceLocation(Reference.ID, "textures/entity/barrel/barrel_oak.png"), new ResourceLocation(Reference.ID, "textures/entity/barrel/barrel_spruce.png"), new ResourceLocation(Reference.ID, "textures/entity/barrel/barrel_birch.png"), new ResourceLocation(Reference.ID, "textures/entity/barrel/barrel_jungle.png"), new ResourceLocation(Reference.ID, "textures/entity/barrel/barrel_acacia.png"), new ResourceLocation(Reference.ID, "textures/entity/barrel/barrel_darkoak.png")};
-    /** instance of ModelBarrel for rendering */
-    protected ModelBase ModelBarrel = new ModelBarrel();
+public class RenderFloatingBarrel extends Render<FloatBarrel> {
+	private static final ResourceLocation[] BARREL_TEXTURES = new ResourceLocation[] {
+			new ResourceLocation(Reference.ID, "textures/entity/barrel/barrel_oak.png"),
+			new ResourceLocation(Reference.ID, "textures/entity/barrel/barrel_spruce.png"),
+			new ResourceLocation(Reference.ID, "textures/entity/barrel/barrel_birch.png"),
+			new ResourceLocation(Reference.ID, "textures/entity/barrel/barrel_jungle.png"),
+			new ResourceLocation(Reference.ID, "textures/entity/barrel/barrel_acacia.png"),
+			new ResourceLocation(Reference.ID, "textures/entity/barrel/barrel_darkoak.png") };
+	private static final FloatBuffer BUF_FLOAT_16 = BufferUtils.createFloatBuffer(16);
+	private static final Matrix4f MATRIX = new Matrix4f();
+	public static final Quaternion CURRENT = new Quaternion();
 
-    public RenderFloatingBarrel(RenderManager renderManagerIn)
-    {
-        super(renderManagerIn);
-        this.shadowSize = 0.5F;
-    }
+	private int lastV = 0;
+	private ModelBarrel barrel;
 
-    /**
-     * Renders the desired {@code T} type Entity.
-     */
-    public void doRender(FloatBarrel entity, double x, double y, double z, float entityYaw, float partialTicks)
-    {
-        GlStateManager.pushMatrix();
-        this.setupTranslation(x, y, z);
-        this.setupRotation(entity, entityYaw, partialTicks);
-        this.bindEntityTexture(entity);
+	public RenderFloatingBarrel(RenderManager renderManagerIn) {
+		super(renderManagerIn);
+		this.shadowSize = 0.5F;
+		this.barrel = new ModelBarrel();
+		this.lastV = this.barrel.getV();
+	}
 
-       
+	@Override
+	public void doRender(FloatBarrel entity, double x, double y, double z, float p_76986_8_, float partialTicks) {
+		if (lastV != barrel.getV()) {
+			this.barrel = new ModelBarrel();
+			this.lastV = barrel.getV();
+		}
+Minecraft.getMinecraft().getTextureManager().bindTexture(BARREL_TEXTURES[entity.getBarrelType().ordinal()]);
+		GlStateManager.pushMatrix();
 
-        this.ModelBarrel.render(entity, partialTicks, -0.1F, 0.0F, 0.0F, 0.0F, 0.0625F);
+		
+		GlStateManager.translate((float) x, (float) y + 0.25F, (float) z);
 
+		
+		this.barrel.render(entity, 0, 0, 0, 0, 0, 0.0625F);
 
-        GlStateManager.popMatrix();
-        super.doRender(entity, x, y, z, entityYaw, partialTicks);
-    }
+		GlStateManager.popMatrix();
 
-    public void setupRotation(FloatBarrel p_188311_1_, float p_188311_2_, float p_188311_3_)
-    {
-    	GlStateManager.pushMatrix();
-        GlStateManager.rotate(180.0F - p_188311_2_, 0.0F, 1.0F, 0.0F);
-        float f = (float)p_188311_1_.getTimeSinceHit() - p_188311_3_;
-        float f1 = p_188311_1_.getDamageTaken() - p_188311_3_;
+		super.doRender(entity, x, y, z, p_76986_8_, partialTicks);
+	}
 
-        if (f1 < 0.0F)
-        {
-            f1 = 0.0F;
-        }
+	public void setupRotation(FloatBarrel p_188311_1_, float p_188311_2_, float p_188311_3_) {
+	
+	}
 
-        if (f > 0.0F)
-        {
-            GlStateManager.rotate(MathHelper.sin(f) * f * f1 / 10.0F * (float)p_188311_1_.getForwardDirection(), 1.0F, 0.0F, 0.0F);
-        }
+	public void setupTranslation(double p_188309_1_, double p_188309_3_, double p_188309_5_) {
 
-        GlStateManager.scale(-1.0F, -1.0F, 1.0F);
-        GlStateManager.popMatrix();
-    }
+		GlStateManager.translate(p_188309_1_ + -0.4f, p_188309_3_ + 0.1f, p_188309_5_ + -0.4f);
 
-    public void setupTranslation(double p_188309_1_, double p_188309_3_, double p_188309_5_)
-    { 
-    	
-        GlStateManager.translate( p_188309_1_ + -0.4f, p_188309_3_ + 0.1f, p_188309_5_ + -0.4f);
-      
-    }
+	}
 
-    /**
-     * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
-     */
-    protected ResourceLocation getEntityTexture(FloatBarrel entity)
-    {
-        return BARREL_TEXTURES[entity.getBarrelType().ordinal()];
-    }
+	/**
+	 * Returns the location of an entity's texture. Doesn't seem to be called
+	 * unless you call Render.bindEntityTexture.
+	 */
+	protected ResourceLocation getEntityTexture(FloatBarrel entity) {
+		return BARREL_TEXTURES[entity.getBarrelType().ordinal()];
+	}
 
-    public boolean isMultipass()
-    {
-        return true;
-    }
+	
 
-    public void renderMultipass(FloatBarrel p_188300_1_, double p_188300_2_, double p_188300_4_, double p_188300_6_, float p_188300_8_, float p_188300_9_)
-    {
-        GlStateManager.pushMatrix();
-        this.setupTranslation(p_188300_2_, p_188300_4_, p_188300_6_);
-        this.setupRotation(p_188300_1_, p_188300_8_, p_188300_9_);
-        this.bindEntityTexture(p_188300_1_);
-        ((IMultipassModel)this.ModelBarrel).renderMultipass(p_188300_1_, p_188300_9_, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-        GlStateManager.popMatrix();
-    }
+	private static Matrix4f toMatrix(Quaternion quat) {
+	
+return null;
+		
+	}
+
+	private static Quaternion lerp(Quaternion start, Quaternion end, float alpha) {
+		return null;
+	
+	}
 }

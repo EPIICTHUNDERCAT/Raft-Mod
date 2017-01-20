@@ -34,4 +34,8 @@ public class ModelThatch extends ModelBase {
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
     }
+    public int getV()
+	{
+		return 45;
+	}
 }

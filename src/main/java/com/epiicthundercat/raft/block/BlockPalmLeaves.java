@@ -1,4 +1,5 @@
 package com.epiicthundercat.raft.block;
+
 import java.util.List;
 import java.util.Random;
 
@@ -6,6 +7,7 @@ import com.epiicthundercat.raft.creativetab.RCreativeTab;
 import com.epiicthundercat.raft.init.RBlocks;
 import com.google.common.collect.Lists;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.block.properties.IProperty;
@@ -22,43 +24,45 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import sugiforest.core.SugiForest;
 
-public class BlockPalmLeaves extends BlockLeaves{
-	public BlockPalmLeaves(String name)
-	{
+public class BlockPalmLeaves extends BlockLeaves {
+	public BlockPalmLeaves(String name) {
 		super();
-		
-		this.setHarvestLevel("axe", 0);
+		addToBlocks(this);
+		this.setRegistryName(name.toLowerCase());
+		this.setUnlocalizedName(name.toLowerCase());
 		this.setCreativeTab(RCreativeTab.RTabs);
-		this.setDefaultState(blockState.getBaseState().withProperty(DECAYABLE, Boolean.valueOf(true)).withProperty(CHECK_DECAY, Boolean.valueOf(true)));
+		this.setHarvestLevel("axe", 0);
+
+		this.setDefaultState(blockState.getBaseState().withProperty(DECAYABLE, Boolean.valueOf(true))
+				.withProperty(CHECK_DECAY, Boolean.valueOf(true)));
 		this.leavesFancy = true;
 	}
 
-	@Override
-	protected BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, new IProperty[] {DECAYABLE, CHECK_DECAY});
+	private void addToBlocks(Block block) {
+		RBlocks.blocks.add(block);
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
-		return getDefaultState().withProperty(DECAYABLE, Boolean.valueOf((meta & 4) == 0)).withProperty(CHECK_DECAY, Boolean.valueOf((meta & 8) > 0));
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { DECAYABLE, CHECK_DECAY });
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(DECAYABLE, Boolean.valueOf((meta & 4) == 0)).withProperty(CHECK_DECAY,
+				Boolean.valueOf((meta & 8) > 0));
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
 		int meta = 0;
 
-		if (!state.getValue(DECAYABLE).booleanValue())
-		{
+		if (!state.getValue(DECAYABLE).booleanValue()) {
 			meta |= 4;
 		}
 
-		if (state.getValue(CHECK_DECAY).booleanValue())
-		{
+		if (state.getValue(CHECK_DECAY).booleanValue()) {
 			meta |= 8;
 		}
 
@@ -66,37 +70,32 @@ public class BlockPalmLeaves extends BlockLeaves{
 	}
 
 	@Override
-	public EnumType getWoodType(int meta)
-	{
+	public EnumType getWoodType(int meta) {
 		return null;
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void setGraphicsLevel(boolean fancy)
-	{
+	public void setGraphicsLevel(boolean fancy) {
 		super.setGraphicsLevel(true);
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune)
-	{
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Item.getItemFromBlock(RBlocks.palm_sapling);
 	}
 
 	@Override
-	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity tile, ItemStack stack)
-	{
-		if (!world.isRemote && !stack.isEmpty() && stack.getItem() == Items.SHEARS)
-		{
+	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity tile,
+			ItemStack stack) {
+		if (!world.isRemote && stack != null && stack.getItem() == Items.SHEARS) {
 			player.addStat(StatList.getBlockStats(this));
-		}
-		else super.harvestBlock(world, player, pos, state, tile, stack);
+		} else
+			super.harvestBlock(world, player, pos, state, tile, stack);
 	}
 
 	@Override
-	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
-	{
+	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
 		return Lists.newArrayList(new ItemStack(this));
 	}
 }
