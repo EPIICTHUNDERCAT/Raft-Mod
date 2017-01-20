@@ -10,7 +10,6 @@ import com.epiicthundercat.raft.init.barrel.BarrelLoot;
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -567,7 +566,7 @@ public class PlankEntity extends Entity{
 	 */
 	private void extractItems(World world, BlockPos pos, EntityPlayer player) {
 		for (int i = 0; i < MathHelper.getRandomIntegerInRange(world.rand, 3, 6); i++) {
-			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.barrel_loot);
+			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.plank_loot);
 			ItemStack itemStack = returns.returnItem.copy();
 
 			player.inventory.addItemStackToInventory(itemStack);

@@ -2,6 +2,8 @@ package com.epiicthundercat.raft.init;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.epiicthundercat.raft.block.BlockPalmLeaves;
+import com.epiicthundercat.raft.block.BlockPalmSapling;
 import com.epiicthundercat.raft.block.BlockSeparator;
 
 import net.minecraft.block.Block;
@@ -19,7 +21,8 @@ public class RBlocks {
 	public static List<Block> blocks = new ArrayList();
 	
 	public static Block separator = new BlockSeparator("separator", Material.ANVIL);
-	
+	public static Block palm_sapling = new BlockPalmSapling("palm_sapling");
+	public static Block palm_leaves = new BlockPalmLeaves("palm_leaves");
 	
 	public static List<Block> blockList() {
 		return blocks;		

@@ -213,7 +213,7 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 
 	            if (this.separatorItemStacks[2] == null)
 	            {
-	                this.separatorItemStacks[2] = itemstack.copy();
+	                //this.separatorItemStacks[2] = itemstack.copy();
 	            }
 	            else if (this.separatorItemStacks[2].getItem() == itemstack.getItem())
 	            {

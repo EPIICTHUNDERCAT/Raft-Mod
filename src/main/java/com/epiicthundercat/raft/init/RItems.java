@@ -39,20 +39,30 @@ public class RItems {
 	public static Item gravel_piece = new RItem("gravel_piece");
 	public static Item compressed_scraps = new RItem("compressed_scraps");
 	public static Item double_compressed_scraps = new RItem("double_compressed_scraps");
-	public static Item iron_compund = new RItem("iron_compund");
-	public static Item tin_compound = new RItem("tin_compund");
+	public static Item iron_compound = new RItem("iron_compound");
+	public static Item tin_compound = new RItem("tin_compound");
 	public static Item copper_compound = new RItem("copper_compound");
 	public static Item silver_compound = new RItem("silver_compound");
 	public static Item gold_compound = new RItem("gold_compound");
 	public static Item lead_compound = new RItem("lead_compound");
 	public static Item aluminium_compound = new RItem("aluminium_compound");
+	public static Item ardite_compound = new RItem("ardite_compound");
+	public static Item cobalt_compound = new RItem("steel_compound");
+	public static Item steel_compound = new RItem("cobalt_compound");
+	public static Item nickel_compound = new RItem("nickel_compound");
 	public static Item lead_ingot = new RItem("lead_ingot");
 	public static Item copper_ingot = new RItem("copper_ingot");
 	public static Item aluminium_ingot = new RItem("aluminium_ingot");
 	public static Item silver_ingot = new RItem("silver_ingot");
 	public static Item tin_ingot = new RItem("tin_ingot");
-
-	
+	public static Item steel_ingot = new RItem("steel_ingot");
+	public static Item nickel_ingot = new RItem("nickel_ingot");
+	public static Item ardite_ingot = new RItem("ardite_ingot");
+	public static Item cobalt_ingot = new RItem("ardite_ingot");
+	public static Item plastic = new RItem("plastic");
+	//public static Item ardite_ingot = new RItem("ardite_ingot");
+	//public static Item ardite_ingot = new RItem("ardite_ingot");
+	//public static Item ardite_ingot = new RItem("ardite_ingot");
 	
 	private static List<Item> getItems() {
 		return items;
