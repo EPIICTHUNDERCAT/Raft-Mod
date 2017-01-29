@@ -82,12 +82,9 @@ public class WorldGenPalmTree extends WorldGenAbstractTree {
 				{
 					blockstate = blockstate.withProperty(BlockPalmLog.VARIANT, BlockPalmLog.EnumType.COCO);
 				}
-				setBlockAndNotifyAdequately(world, blockpos, blockstate);
+				world.setBlockState(blockpos, blockstate);
 
-				if (!doBlockNotify) {
-					if (woodHeight > 0) {
-					}
-				}
+			
 
 				if (random.nextInt(10) == 0) {
 

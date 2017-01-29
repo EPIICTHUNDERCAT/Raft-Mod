@@ -79,7 +79,7 @@ public class BlockPalmSapling extends BlockBush implements IGrowable {
 	@Override
 	public void grow(World world, Random rand, BlockPos pos, IBlockState state) {
 		if (state.getValue(STAGE).intValue() == 0) {
-			world.setBlockState(pos, state.cycleProperty(STAGE), 4);
+			world.setBlockState(pos, state.cycleProperty(STAGE), 3);
 		} else {
 			generateTree(world, pos, state, rand);
 		}
@@ -90,10 +90,10 @@ public class BlockPalmSapling extends BlockBush implements IGrowable {
 			return;
 		}
 
-		world.setBlockState(pos, Blocks.AIR.getDefaultState(), 4);
+		world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
 
 		if (!WorldGenPalmTree.TREE_GEN.generate(world, rand, pos)) {
-			world.setBlockState(pos, state, 4);
+			world.setBlockState(pos, state, 3);
 		}
 	}
 
@@ -104,6 +104,6 @@ public class BlockPalmSapling extends BlockBush implements IGrowable {
 
 	@Override
 	public boolean canUseBonemeal(World world, Random rand, BlockPos pos, IBlockState state) {
-		return world.rand.nextFloat() < 0.6D;
+		return world.rand.nextFloat() < 0.2D;
 	}
 }
