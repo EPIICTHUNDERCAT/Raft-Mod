@@ -50,14 +50,13 @@ public class RBlocks {
 
 	@SideOnly(Side.CLIENT)
 	public static void registerModels() {
-/*
+
 		ModelLoader.setCustomStateMapper(palm_leaves,
 				new StateMap.Builder().ignore(BlockLeaves.DECAYABLE, BlockLeaves.CHECK_DECAY).build());
-		ModelLoader.setCustomStateMapper(palm_sapling,
-				new StateMap.Builder().ignore(BlockSapling.TYPE, BlockSapling.STAGE).build());
+	
 		ModelLoader.setCustomStateMapper(palm_planks, new StateMap.Builder().ignore(BlockPalmWood.DOUBLE).build());
 		ModelLoader.setCustomStateMapper(palm_log, new StateMap.Builder().ignore(BlockPalmLog.VARIANT).build());
-	*/}
+	}
 
 
 	@SideOnly(Side.CLIENT)
