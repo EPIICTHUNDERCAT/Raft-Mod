@@ -71,40 +71,36 @@ public class FloatBarrel extends Entity {
 	private static final float BASE_SIZE = 0.75f;
 	/** How much of current speed to retain. Value zero to one. */
 	private float momentum;
-	
+
 	private float outOfControlTicks;
 	private float deltaRotation;
 	private int lerpSteps;
-	
+
 	private double BarrelPitch;
 	private double lerpY;
-	
+
 	private double lerpZ;
 	private double BarrelYaw;
 	private double lerpXRot;
-	
+
 	private boolean leftInputDown;
 	private boolean rightInputDown;
 	private boolean forwardInputDown;
 	private boolean backInputDown;
 	private double waterLevel;
-	
+
 	private int age;
 	public float rot1, rot2, rot3;
 	private int groundTicks;
 	private int currentSize;
 	private double lastYd;
-private float windModX, windModZ;
+	private float windModX, windModZ;
 	@SideOnly(Side.CLIENT)
 	public Quaternion quat;
 	@SideOnly(Side.CLIENT)
 	public Quaternion prevQuat;
 	private int nextStepDistance;
-	
-	
-	
-	
-	
+
 	/**
 	 * How much the Barrel should glide given the slippery blocks it's currently
 	 * gliding over. Halved every tick.
@@ -112,7 +108,6 @@ private float windModX, windModZ;
 	private float BarrelGlide;
 	private FloatBarrel.Status status;
 	private FloatBarrel.Status previousStatus;
-	
 
 	public FloatBarrel(World worldIn) {
 		super(worldIn);
@@ -310,7 +305,7 @@ private float windModX, windModZ;
 
 		if (this.currentSize != this.getSize()) {
 			this.currentSize = this.getSize();
-		
+
 		}
 
 		if (this.getRidingEntity() != null) {
@@ -706,8 +701,8 @@ private float windModX, windModZ;
 			ItemStack itemStack = returns.returnItem.copy();
 
 			player.inventory.addItemStackToInventory(itemStack);
-		}
 
+		}
 	}
 
 	public boolean processInitialInteract(EntityPlayer player, @Nullable ItemStack stack, EnumHand hand) {
@@ -793,7 +788,6 @@ private float windModX, windModZ;
 				f -= 0.005F;
 			}
 
-			
 		}
 	}
 
@@ -1132,8 +1126,10 @@ private float windModX, windModZ;
 	public boolean getCustomWindEnabled() {
 		return this.dataManager.get(CUSTOM_WIND_ENABLED);
 	}
-	public boolean isNotColliding()
-	{
-		return this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.containsAnyLiquid(this.getEntityBoundingBox());
+
+	public boolean isNotColliding() {
+		return this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this)
+				&& this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty()
+				&& !this.worldObj.containsAnyLiquid(this.getEntityBoundingBox());
 	}
 }

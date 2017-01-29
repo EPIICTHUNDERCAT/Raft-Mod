@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "end": "raft:blocks/palm_log_top",
+        "side": "raft:blocks/palm_log"
+    }
+}

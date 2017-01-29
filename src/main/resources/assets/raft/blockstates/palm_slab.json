@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "half=bottom": { "model": "raft:half_slab_palm" },
+        "half=top": { "model": "raft:upper_slab_palm" }
+    }
+}

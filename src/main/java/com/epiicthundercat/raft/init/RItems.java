@@ -8,6 +8,8 @@ import com.epiicthundercat.raft.item.ItemBarrel;
 import com.epiicthundercat.raft.item.ItemPlank;
 import com.epiicthundercat.raft.item.ItemScrap;
 import com.epiicthundercat.raft.item.ItemThatch;
+import com.epiicthundercat.raft.item.ItemTinCan;
+import com.epiicthundercat.raft.item.ItemTinPotion;
 import com.epiicthundercat.raft.item.RItem;
 
 import net.minecraft.client.Minecraft;
@@ -32,38 +34,57 @@ public class RItems {
 	public static Item acacia_barrel = new ItemBarrel("acacia_barrel", FloatBarrel.Type.ACACIA);
 	public static Item jungle_barrel = new ItemBarrel("jungle_barrel", FloatBarrel.Type.JUNGLE);
 	public static Item spear = new RItem("spear");
-	public static Item tin_can = new RItem("tin_can");
+	public static Item tin_can = new ItemTinCan("tin_can");
 	public static Item scrap = new ItemScrap("scrap");
 	public static Item dirt_piece = new RItem("dirt_piece");
 	public static Item sand_piece = new RItem("sand_piece");
 	public static Item gravel_piece = new RItem("gravel_piece");
 	public static Item compressed_scraps = new RItem("compressed_scraps");
 	public static Item double_compressed_scraps = new RItem("double_compressed_scraps");
+	//needs
 	public static Item iron_compound = new RItem("iron_compound");
+	
 	public static Item tin_compound = new RItem("tin_compound");
 	public static Item copper_compound = new RItem("copper_compound");
 	public static Item silver_compound = new RItem("silver_compound");
+	//needs
 	public static Item gold_compound = new RItem("gold_compound");
+	
 	public static Item lead_compound = new RItem("lead_compound");
-	public static Item aluminium_compound = new RItem("aluminium_compound");
+	//needs
+	public static Item aluminum_compound = new RItem("aluminum_compound");
+	
 	public static Item ardite_compound = new RItem("ardite_compound");
-	public static Item cobalt_compound = new RItem("steel_compound");
-	public static Item steel_compound = new RItem("cobalt_compound");
+	public static Item cobalt_compound = new RItem("cobalt_compound");
+	//needs
+	public static Item steel_compound = new RItem("steel_compound");
+	
 	public static Item nickel_compound = new RItem("nickel_compound");
 	public static Item lead_ingot = new RItem("lead_ingot");
 	public static Item copper_ingot = new RItem("copper_ingot");
-	public static Item aluminium_ingot = new RItem("aluminium_ingot");
+	//needs
+	public static Item aluminum_ingot = new RItem("aluminum_ingot");
+	
 	public static Item silver_ingot = new RItem("silver_ingot");
 	public static Item tin_ingot = new RItem("tin_ingot");
+	//needs
 	public static Item steel_ingot = new RItem("steel_ingot");
+	
 	public static Item nickel_ingot = new RItem("nickel_ingot");
 	public static Item ardite_ingot = new RItem("ardite_ingot");
 	public static Item cobalt_ingot = new RItem("cobalt_ingot");
+	public static Item tungsten_ingot = new RItem("tungsten_ingot");
+	public static Item tungsten_compound = new RItem("tungsten_compound");
 	public static Item plastic = new RItem("plastic");
-	//public static Item ardite_ingot = new RItem("ardite_ingot");
-	//public static Item ardite_ingot = new RItem("ardite_ingot");
-	//public static Item ardite_ingot = new RItem("ardite_ingot");
-	
+	public static Item coconut = new RItem("coconut");
+	public static Item cooked_beet = new RItem("cooked_beet");
+	public static Item nail = new RItem("nail");
+	public static Item sulfur = new RItem("sulfur");
+	public static Item uranium_ingot = new RItem("uranium_ingot");
+	public static Item uranium_compound = new RItem("uranium_compound");
+	public static Item tin_can_potion = new ItemTinPotion("filled_tin_can");
+	public static Item tin_can_dirty = new RItem("tin_can_dirty");
+	public static Item shark_meat = new RItem("shark_meat");
 	private static List<Item> getItems() {
 		return items;
 	}

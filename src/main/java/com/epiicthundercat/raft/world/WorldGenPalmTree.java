@@ -2,6 +2,7 @@ package com.epiicthundercat.raft.world;
 
 import java.util.Random;
 
+import com.epiicthundercat.raft.block.BlockPalmLog;
 import com.epiicthundercat.raft.init.RBlocks;
 
 import net.minecraft.block.Block;
@@ -27,7 +28,7 @@ public class WorldGenPalmTree extends WorldGenAbstractTree {
 	private int maxTreeHeight;
 
 	public WorldGenPalmTree(boolean doBlockNotify) {
-		this(doBlockNotify, 17, 20);
+		this(doBlockNotify, 7, 10);
 	}
 
 	public WorldGenPalmTree(boolean doBlockNotify, int minTreeHeight, int maxTreeHeight) {
@@ -62,6 +63,7 @@ public class WorldGenPalmTree extends WorldGenAbstractTree {
 	}
 
 	private void setTree(World world, Random random, BlockPos pos, Biome biome, int treeHeight) {
+
 		MutableBlockPos blockpos = new MutableBlockPos(pos);
 
 		blockpos.move(EnumFacing.DOWN);
@@ -73,9 +75,22 @@ public class WorldGenPalmTree extends WorldGenAbstractTree {
 			Block block = state.getBlock();
 
 			if (block.isAir(state, world, blockpos) || block.isLeaves(state, world, blockpos)
-					|| state.getMaterial() == Material.VINE) {
+					|| state.getMaterial() == Material.LEAVES) {
+
+				IBlockState blockstate = RBlocks.palm_log.getDefaultState();
+				if (random.nextInt(40) == 0)
+				{
+					blockstate = blockstate.withProperty(BlockPalmLog.VARIANT, BlockPalmLog.EnumType.COCO);
+				}
+				setBlockAndNotifyAdequately(world, blockpos, blockstate);
+
+				if (!doBlockNotify) {
+					if (woodHeight > 0) {
+					}
+				}
 
 				if (random.nextInt(10) == 0) {
+
 					byte count = 0;
 					MutableBlockPos pos1 = new MutableBlockPos();
 
@@ -102,7 +117,7 @@ public class WorldGenPalmTree extends WorldGenAbstractTree {
 	}
 
 	private void setLeaves(World world, Random random, BlockPos pos, Biome biome, int treeHeight) {
-		int leavesHeight = 12;
+		int leavesHeight = 2;
 
 		if (treeHeight - leavesHeight >= leavesHeight - 3) {
 			leavesHeight += 2;
@@ -124,8 +139,8 @@ public class WorldGenPalmTree extends WorldGenAbstractTree {
 						Block block = state.getBlock();
 
 						if ((block.isAir(state, world, blockpos) || block.isLeaves(state, world, blockpos)
-								|| state.getMaterial() == Material.VINE) && random.nextInt(12) != 0) {
-							setBlockAndNotifyAdequately(world, blockpos, RBlocks.palm_leaves.getDefaultState());
+								|| state.getMaterial() == Material.LEAVES) && random.nextInt(12) != 0) {
+							setBlockAndNotifyAdequately(world, blockpos, RBlocks.palm_planks.getDefaultState());
 						}
 					}
 				}

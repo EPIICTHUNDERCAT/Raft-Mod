@@ -648,17 +648,7 @@ public class ScrapEntity extends Entity{
 
 	
 
-	/*
-	 * public boolean pickup(World world, BlockPos pos, IBlockState state,
-	 * EntityPlayer player, EnumHand hand, EnumFacing par6, float par7, float
-	 * par8, float par9) { if(!world.isRemote){ world.playSound(null, pos,
-	 * SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.2F,
-	 * world.rand.nextFloat()*0.1F+0.9F); this.dropItems(world, pos);
-	 * 
-	 * 
-	 * 
-	 * } return true; }
-	 */
+	
 	private void extractItems(World world, BlockPos pos, EntityPlayer player) {
 		for (int i = 0; i < MathHelper.getRandomIntegerInRange(world.rand, 3, 6); i++) {
 			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.scrap_loot);
@@ -751,12 +741,7 @@ public class ScrapEntity extends Entity{
 				f -= 0.005F;
 			}
 
-			// this.motionX += (double)(MathHelper.sin(-this.rotationYaw *
-			// 0.017453292F) * f);
-			// this.motionZ += (double)(MathHelper.cos(this.rotationYaw *
-			// 0.017453292F) * f);
-			// this.setPaddleState(this.rightInputDown || this.forwardInputDown,
-			// this.leftInputDown || this.forwardInputDown);
+		
 		}
 	}
 

@@ -26,7 +26,7 @@ public class RenderEntitySharkFemale extends RenderLiving<EntitySharkFemale>{
 	@Override
 	public void doRender(EntitySharkFemale entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		
-
+bindTexture(CHICKEN_TEXTURE);
 		
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 	}

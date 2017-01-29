@@ -8,17 +8,20 @@ import com.epiicthundercat.raft.init.REventHandler;
 import com.epiicthundercat.raft.init.RItems;
 import com.epiicthundercat.raft.init.RRecipes;
 import com.epiicthundercat.raft.init.RecipeHandler;
+import com.epiicthundercat.raft.init.SendMovePack;
 import com.epiicthundercat.raft.init.barrel.BarrelLootAdd;
 import com.epiicthundercat.raft.rafttileentitity.TileEntityRegistry;
-import com.epiicthundercat.raft.rafttileentitity.TileEntitySeparator;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class CommonProxy {
+	
+
 	public void preInit(FMLPreInitializationEvent preEvent) {
 		register(preEvent);
 		TileEntityRegistry.registerTile();
@@ -42,7 +45,7 @@ public class CommonProxy {
 		MinecraftForge.EVENT_BUS.register(new REventHandler());
 		//MinecraftForge.EVENT_BUS.register(new RGuiHandler());
 		NetworkRegistry.INSTANCE.registerGuiHandler(Raft.instance, new RGuiHandler());
-
+		
 		MinecraftForge.EVENT_BUS.register(new RecipeHandler());
 
 	}

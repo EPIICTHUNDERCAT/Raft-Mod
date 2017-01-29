@@ -17,9 +17,11 @@ public class BarrelLootAdd {
 
 		REventHandler.addBarrelLoot(new ItemStack(RItems.thatch), 2, 0, 5);
 		
-		REventHandler.addBarrelLoot(new ItemStack(Items.POTATO), 1, 0, 2);
+		REventHandler.addBarrelLoot(new ItemStack(Items.POTATO), 1, 0, 1);
 		
-		REventHandler.addBarrelLoot(new ItemStack(Items.WHEAT_SEEDS), 1, 0, 2);
+		REventHandler.addBarrelLoot(new ItemStack(Items.WHEAT_SEEDS), 1, 0, 1);
+		REventHandler.addBarrelLoot(new ItemStack(Items.BEETROOT), 1, 0, 1);
+		REventHandler.addBarrelLoot(new ItemStack(Items.BEETROOT_SEEDS), 1, 0, 1);
 		
 		
 		REventHandler.addPlankLoot(new ItemStack(RItems.plank), 100, 1, 1);

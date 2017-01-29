@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.epiicthundercat.raft.creativetab.RCreativeTab;
 import com.epiicthundercat.raft.init.RBlocks;
+import com.epiicthundercat.raft.init.RItems;
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.Block;
@@ -28,6 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockPalmLeaves extends BlockLeaves {
 	public BlockPalmLeaves(String name) {
 		super();
+		
 		addToBlocks(this);
 		this.setRegistryName(name.toLowerCase());
 		this.setUnlocalizedName(name.toLowerCase());
@@ -83,6 +85,16 @@ public class BlockPalmLeaves extends BlockLeaves {
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Item.getItemFromBlock(RBlocks.palm_sapling);
+
+	}
+
+	@Override
+	protected void dropApple(World worldIn, BlockPos pos, IBlockState state, int chance) {
+		// if (state.getValue(VARIANT) == BlockPlanks.EnumType.OAK &&
+		// worldIn.rand.nextInt(chance) == 0)
+		// {
+		spawnAsEntity(worldIn, pos, new ItemStack(RItems.thatch));
+		// }
 	}
 
 	@Override

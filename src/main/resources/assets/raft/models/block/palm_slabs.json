@@ -1,0 +1,8 @@
+{
+    "parent": "block/half_slab",
+    "textures": {
+        "bottom": "raft:blocks/palm_planks",
+        "top": "raft:blocks/palm_planks",
+        "side": "raft:blocks/palm_planks"
+    }
+}
