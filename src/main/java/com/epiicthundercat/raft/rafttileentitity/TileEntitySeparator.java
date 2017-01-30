@@ -4,6 +4,8 @@ import javax.annotation.Nullable;
 
 import com.epiicthundercat.raft.init.RBlocks;
 import com.epiicthundercat.raft.init.RecipeHandler;
+import com.epiicthundercat.raft.registry.SeparatorRecipeRegistry;
+import com.epiicthundercat.raft.registry.recipe.IRecipeSeparator;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -127,13 +129,16 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 		// TODO Auto-generated method stub
 
 	}
-
+/*
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 
 		return true;
+	}*/
+	private IRecipeSeparator getSeparatorRecipe(ItemStack item) {
+		if(item == null) return null;
+		return SeparatorRecipeRegistry.getInstance().getRecipeForInputItem(item);
 	}
-
 	@Override
 	public int getField(int id) {
 		// TODO Auto-generated method stub
@@ -228,4 +233,20 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 	            }
 	        }
 	    }
+	  @Override
+		public boolean isItemValidForSlot(final int slot, final ItemStack item) {
+		  return true;
+			/*switch(slot){
+			case 0:
+				return SeparatorRecipeRegistry.getInstance().getRecipeForInputItem(item) != null;
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+				return true;
+			default:
+				return false;
+			}*/
+		}
 }

@@ -1,5 +1,7 @@
 package com.epiicthundercat.raft.init;
 
+import com.epiicthundercat.raft.registry.SeparatorRecipeRegistry;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -10,11 +12,11 @@ import net.minecraftforge.oredict.OreDictionary;
 public class RRecipes {
 
 	public static void register(FMLPreInitializationEvent preEvent) {
-		RecipeHandler.addSeparatorSeperateRecipe(Items.WATER_BUCKET, new ItemStack(RItems.dirt_piece),
-				new ItemStack(RItems.sand_piece), 25, new ItemStack(RItems.gravel_piece), 10, null, 0, null, 0);
-		RecipeHandler.addSeparatorSeperateRecipe(RItems.scrap, new ItemStack(RItems.aluminum_compound),
-				new ItemStack(RItems.copper_compound), 10, null, 0, null, 0, null, 0);
-
+		SeparatorRecipeRegistry.addNewSeparatorRecipe(new ItemStack(RItems.scrap), new ItemStack(RItems.tin_compound), new ItemStack(RItems.aluminum_compound), 50, new ItemStack(RItems.copper_compound), 20, new ItemStack(RItems.iron_compound), 5, new ItemStack(RItems.nickel_compound), 1);
+		SeparatorRecipeRegistry.addNewSeparatorRecipe(RItems.scrap, new ItemStack(RItems.tin_compound), new ItemStack(RItems.aluminum_compound), 50, new ItemStack(RItems.copper_compound), 20, new ItemStack(RItems.iron_compound), 5, new ItemStack(RItems.nickel_compound), 1);
+		
+		
+		
 		// Rope
 		GameRegistry.addShapelessRecipe(new ItemStack(RItems.rope), new ItemStack(RItems.thatch),
 				new ItemStack(RItems.thatch), new ItemStack(RItems.thatch));

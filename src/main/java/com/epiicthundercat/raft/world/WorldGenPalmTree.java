@@ -82,7 +82,7 @@ public class WorldGenPalmTree extends WorldGenAbstractTree {
 				{
 					blockstate = blockstate.withProperty(BlockPalmLog.VARIANT, BlockPalmLog.EnumType.COCO);
 				}
-				world.setBlockState(blockpos, blockstate);
+			setBlockAndNotifyAdequately(world, blockpos, blockstate);
 
 			
 

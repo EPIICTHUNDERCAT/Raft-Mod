@@ -44,7 +44,7 @@ public class ClientProxy extends CommonProxy {
 		rm.entityRenderMap.put(PlankEntity.class, new RenderPlank(rm));
 		rm.entityRenderMap.put(ScrapEntity.class, new RenderScrap(rm));
 		rm.entityRenderMap.put(ThatchEntity.class, new RenderThatch(rm));
-	//	rm.entityRenderMap.put(EntityTinCanPotion.class, new TinCanPotionRender(rm, itemRenderer));
+	
 		if (event.getSide().isClient())
 		{
 			RBlocks.registerBlockColors();
@@ -56,21 +56,5 @@ public class ClientProxy extends CommonProxy {
 		RItems.registerRender(event);
 		RBlocks.registerRender(event);
 	}
-	/*
-	 * @Override public void registerEntities(FMLPreInitializationEvent
-	 * preEvent) { super.registerEntities(preEvent);
-	 * 
-	 * RenderingRegistry.registerEntityRenderingHandler(EntityWitchProjectile.
-	 * class, new IRenderFactory<EntityWitchProjectile>() {
-	 * 
-	 * @Override public RenderWitchProjectile createRenderFor(RenderManager
-	 * manager) { return new RenderWitchProjectile(manager,
-	 * TMItems.witch_projectile); } });
-	 * 
-	 * RenderingRegistry.registerEntityRenderingHandler(EntityBatPee.class, new
-	 * IRenderFactory<EntityBatPee>() {
-	 * 
-	 * @Override public RenderBatPee createRenderFor(RenderManager manager) {
-	 * return new RenderBatPee(manager, TMItems.bat_pee); } }); }
-	 */
+	
 }
