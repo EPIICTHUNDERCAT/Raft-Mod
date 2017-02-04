@@ -9,7 +9,6 @@ import com.epiicthundercat.raft.init.RItems;
 import com.epiicthundercat.raft.init.RRecipes;
 import com.epiicthundercat.raft.init.barrel.BarrelLootAdd;
 import com.epiicthundercat.raft.rafttileentitity.TileEntityRegistry;
-import com.epiicthundercat.raft.registry.SeparatorRecipeRegistry;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -40,10 +39,10 @@ public class CommonProxy {
 		RRecipes.register(preEvent);
 		
 		MinecraftForge.EVENT_BUS.register(new REventHandler());
-		//MinecraftForge.EVENT_BUS.register(new RGuiHandler());
+		
 		NetworkRegistry.INSTANCE.registerGuiHandler(Raft.instance, new RGuiHandler());
 		
-		MinecraftForge.EVENT_BUS.register(new SeparatorRecipeRegistry());
+	
 
 	}
 

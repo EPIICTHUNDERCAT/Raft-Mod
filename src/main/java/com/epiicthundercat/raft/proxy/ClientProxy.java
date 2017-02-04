@@ -6,8 +6,6 @@ import com.epiicthundercat.raft.client.renderer.RenderFloatingBarrel;
 import com.epiicthundercat.raft.client.renderer.RenderPlank;
 import com.epiicthundercat.raft.client.renderer.RenderScrap;
 import com.epiicthundercat.raft.client.renderer.RenderThatch;
-import com.epiicthundercat.raft.client.renderer.TinCanPotionRender;
-import com.epiicthundercat.raft.entity.EntityTinCanPotion;
 import com.epiicthundercat.raft.entity.FloatBarrel;
 import com.epiicthundercat.raft.entity.PlankEntity;
 import com.epiicthundercat.raft.entity.ScrapEntity;
@@ -15,13 +13,12 @@ import com.epiicthundercat.raft.entity.ThatchEntity;
 import com.epiicthundercat.raft.entity.monster.EntitySharkFemale;
 import com.epiicthundercat.raft.entity.passive.EntityFish;
 import com.epiicthundercat.raft.init.RBlocks;
+import com.epiicthundercat.raft.init.REventHandler;
 import com.epiicthundercat.raft.init.RItems;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.init.Items;
-import net.minecraft.potion.PotionHelper;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
@@ -31,6 +28,7 @@ public class ClientProxy extends CommonProxy {
 		super.preInit(preEvent);
 		// ModEntities.initModels();
 		RBlocks.registerModels();
+		REventHandler.registerItemRenderers();
 
 	}
 

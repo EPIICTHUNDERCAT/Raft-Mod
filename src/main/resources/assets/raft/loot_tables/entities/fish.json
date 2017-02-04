@@ -24,17 +24,6 @@
             }
           ],
           "weight": 1
-        },
-         {
-          "type": "item",
-          "name": "minecraft:fish",
-          "functions": [
-            {
-              "function": "set_data",
-              "data": 0
-            }
-          ],
-          "weight": 1
         }
       ]
     }

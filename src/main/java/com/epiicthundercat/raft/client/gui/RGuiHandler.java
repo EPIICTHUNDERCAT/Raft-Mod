@@ -4,6 +4,7 @@ import com.epiicthundercat.raft.block.ContainerBlockSeparator;
 import com.epiicthundercat.raft.rafttileentitity.TileEntitySeparator;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -18,7 +19,7 @@ public class RGuiHandler implements IGuiHandler {
 		TileEntity te = world.getTileEntity(pos);
 		if (ID == GUI_SEPERATOR) {
 			if (te instanceof TileEntitySeparator) {
-				return new ContainerBlockSeparator(player.inventory, (TileEntitySeparator) te);
+				return new ContainerBlockSeparator(player.inventory, (IInventory) te);
 			}
 		}
 		return null;
@@ -32,7 +33,7 @@ public class RGuiHandler implements IGuiHandler {
 			if (te instanceof TileEntitySeparator) {
 				TileEntitySeparator containerTileEntity = (TileEntitySeparator) te;
 				return new SeparatorGui(containerTileEntity,
-						new ContainerBlockSeparator(player.inventory, containerTileEntity), te);
+						new ContainerBlockSeparator(player.inventory, (IInventory) containerTileEntity), te);
 			}
 		}
 		return null;

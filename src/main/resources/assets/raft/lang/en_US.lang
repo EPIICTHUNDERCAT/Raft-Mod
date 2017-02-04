@@ -1,0 +1,124 @@
+
+
+item.hook.name=Hook
+item.thatch.name=Thatch
+item.rope.name=Rope
+item.plank.name=Plank
+item.barrel.oak.name=Oak Barrel
+item.barrel.spruce.name=Spruce Barrel
+item.barrel.birch.name=Birch Barrel
+item.barrel.dark_oak.name=Dark Oak Barrel
+item.barrel.jungle.name=Jungle Barrel
+item.barrel.acacia.name=Acacia Barrel
+item.spear.name=Spear
+item.tin_can.name=Tin Can
+item.scrap.name=Scrap
+item.dirt_piece.name=Dirt Piece
+item.sand_piece.name=Sand Piece
+item.gravel_piece.name=Gravel Piece
+item.compressed_scraps.name=Compressed Scraps
+item.double_compressed_scraps.name=Double Compressed Scraps
+
+item.plastic.name=Plastic
+item.coconut.name=Coconut
+item.coconut_shell.name=Coconut Shell
+item.cooked_beet.name=Cooked Beet
+item.nail.name=Cheap Nail
+item.sulfur.name=Sulfur
+item.filled_tin_can.name=Drinkable Water
+item.tin_can_dirty.name=Salt Water
+item.raw_shark_meat.name=Raw Shark Meat
+item.cooked_shark_meat.name=Cooked Shark Meat
+item.stones.name=Stones
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+item.iron_compound.name=Iron Compound
+item.iron_ore_material.name=Iron Ore Material
+
+item.gold_ore_material.name=Gold Ore Material
+item.gold_compound.name=Gold Compound
+
+item.tin_ingot.name=Tin Ingot
+item.tin_compound.name=Tin Compound
+item.tin_ore_material.name=Tin Ore Material
+
+item.copper_ingot.name=Copper Ingot
+item.copper_compound.name=Copper Compound
+item.copper_ore_material.name=Copper Ore Material
+
+item.silver_ingot.name=Silver Ingot
+item.silver_compound.name=Silver Compound
+item.silver_ore_material.name=Silver Ore Material
+
+item.lead_ingot.name=Lead Ingot
+item.lead_compound.name=Lead Compound
+item.lead_ore_material.name=Lead Ore Material
+
+item.tungsten_ingot.name=Tungsten Ingot
+item.tungsten_compound.name=Tungsten Compound
+item.tungsten_ore_material.name=Tungsten Ore Material
+
+item.aluminum_ingot.name=Aluminum Ingot
+item.aluminum_compound.name=Aluminum Compound
+item.aluminum_ore_material.name=Aluminum Ore Material
+
+item.ardite_ingot.name=Ardite Ingot
+item.ardite_compound.name=Ardite Compound
+item.ardite_ore_material.name=Ardite Ore Material
+
+item.cobalt_ingot.name=Cobalt Ingot
+item.cobalt_compound.name=Cobalt Compound
+item.cobalt_ore_material.name=Cobalt Ore Material
+
+item.steel_ingot.name=Steel Ingot
+item.steel_compound.name=Steel Compound
+item.steel_ore_material.name=Steel Ore Material
+
+item.nickel_ingot.name=Nickel Ingot
+item.nickel_compound.name=Nickel Compound
+item.nickel_ore_material.name=Nickel Ore Material
+
+item.uranium_ingot.name=Uranium Ingot
+item.uranium_compound.name=Uranium Compound
+item.uranium_ore_material.name=Uranium Ore Material
+
+
+
+tile.palm_planks.name=Palm Tree Planks
+tile.palm_log.name=Palm Tree Log
+tile.separator.name=Separator
+tile.palm_leaves.name=Palm Tree Leaves
+tile.palm_sapling.name=Palm Tree Sapling
+
+
+
+
+entity.raft.Plank.name=Plank
+entity.raft.Thatch.name=Thatch
+entity.raft.Scrap.name=Scrap
+
+entity.raft.barrel.name=Oak Barrel
+entity.raft.birch_barrel=Birch Barrel
+entity.raft.spruce_barrel.name=Spruce Barrel
+entity.raft.dark_oak_barrel=Dark Oak Barrel
+entity.raft.jungle_barrel.name=Jungle Barrel
+entity.raft.acacia_barrel=Acacia Barrel
+
+
+entity.raft.EntitySharkFemale.name=Shark
+entity.raft.EntityFish.name=Fish
+
+
+itemGroup.RTabs=Raft Mod
