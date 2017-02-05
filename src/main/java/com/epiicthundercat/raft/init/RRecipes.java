@@ -19,8 +19,9 @@ public class RRecipes {
 		/**
 		 * RECIPES
 		 */
-		RecipeSeparator compressor = RecipeSeparator.getInstance();
-		compressor.getInstance().addRecipe(new ItemStack(RItems.scrap), new ItemStack(RItems.aluminum_compound), new ItemStack(RItems.copper_compound), 40.0D, new ItemStack(RItems.tin_compound), 20.0D, new ItemStack(RItems.iron_compound), 10.0D, new ItemStack(RItems.gold_compound), 1.0D, 0);
+		RecipeSeparator compressor = RecipeSeparator.instance();
+		RecipeSeparator.instance().addSeparatingRecipeForItem(RItems.scrap, new ItemStack(RItems.aluminum_compound), new ItemStack(RItems.iron_compound), 900);
+	
 		// Plank > Planks
 
 		// Rope

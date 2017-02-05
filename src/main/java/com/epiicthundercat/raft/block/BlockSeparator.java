@@ -11,7 +11,6 @@ import com.epiicthundercat.raft.rafttileentitity.TileEntitySeparator;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -20,13 +19,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -40,10 +38,10 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockSeparator extends BlockContainer implements ITileEntityProvider{
+public class BlockSeparator extends BlockContainer {
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	TileEntitySeparator separator;
-
+	 private static boolean keepInventory;
 	public BlockSeparator(String name, Material materialIn) {
 		super(materialIn);
 		this.setRegistryName(name.toLowerCase());
@@ -93,7 +91,7 @@ public class BlockSeparator extends BlockContainer implements ITileEntityProvide
 		if (stack.hasDisplayName()) {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
 
-			if (tileentity instanceof TileEntitySeparator) {
+			if (tileentity instanceof TileEntityFurnace) {
 				((TileEntityFurnace) tileentity).setCustomInventoryName(stack.getDisplayName());
 			}
 		}
@@ -136,7 +134,7 @@ public class BlockSeparator extends BlockContainer implements ITileEntityProvide
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		TileEntity tileentity = worldIn.getTileEntity(pos);
 		if (tileentity instanceof TileEntitySeparator) {
-			InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
+			InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntitySeparator) tileentity);
 		}
 		super.breakBlock(worldIn, pos, state);
 	}
@@ -159,11 +157,31 @@ public class BlockSeparator extends BlockContainer implements ITileEntityProvide
 	public boolean isFullCube(IBlockState state){
 		return false;
 	}
-	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer){
-		if (layer == BlockRenderLayer.CUTOUT){
-			return true;
-		}
-		return false;
-	}
+	 public static void setState(boolean active, World worldIn, BlockPos pos)
+	    {
+	        IBlockState iblockstate = worldIn.getBlockState(pos);
+	        TileEntity tileentity = worldIn.getTileEntity(pos);
+	        keepInventory = true;
+
+	        if (active)
+	        {
+	            worldIn.setBlockState(pos, RBlocks.separator.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+	            worldIn.setBlockState(pos, RBlocks.separator.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+	        }
+	        else
+	        {
+	            worldIn.setBlockState(pos, RBlocks.separator.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+	            worldIn.setBlockState(pos, RBlocks.separator.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+	        }
+
+	        keepInventory = false;
+
+	        if (tileentity != null)
+	        {
+	            tileentity.validate();
+	            worldIn.setTileEntity(pos, tileentity);
+	        }
+	    }
+
+	
 }

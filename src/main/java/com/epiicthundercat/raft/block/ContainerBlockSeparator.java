@@ -2,6 +2,8 @@ package com.epiicthundercat.raft.block;
 
 import javax.annotation.Nullable;
 
+import com.epiicthundercat.raft.registry.recipe.RecipeSeparator;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -11,31 +13,33 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnaceFuel;
 import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerBlockSeparator extends Container {
-	IInventory tileSeperator;
+
+	private final IInventory tileSeparator;
 	private int cookTime;
 	private int totalCookTime;
+	private int furnaceBurnTime;
+	private int currentItemBurnTime;
 
 	public ContainerBlockSeparator(InventoryPlayer playerInv, IInventory SepInv) {
 		super();
 		// InputSlot
-		this.tileSeperator = SepInv;
+		this.tileSeparator = SepInv;
 		addSlotToContainer(new Slot(SepInv, 0, 8, 10));
 		// FuelSlot
-		addSlotToContainer(new SlotFurnaceFuel(SepInv, 1, 61, 42));
+		addSlotToContainer(new SlotFurnaceFuel(SepInv, 1, 61, 33));
 		// OutputSlots
-		addSlotToContainer(new SlotFurnaceOutput(playerInv.player, SepInv, 2, 117, 9));
-		addSlotToContainer(new SlotFurnaceOutput(playerInv.player, SepInv, 3, 117, 30));
+		addSlotToContainer(new SlotFurnaceOutput(playerInv.player, SepInv, 2, 124, 12));
+		addSlotToContainer(new SlotFurnaceOutput(playerInv.player, SepInv, 3, 124, 33));
 		// Topfirstof2
-		addSlotToContainer(new SlotFurnaceOutput(playerInv.player, SepInv, 4, 140, 9));
+		addSlotToContainer(new SlotFurnaceOutput(playerInv.player, SepInv, 4, 124, 54));
 		// BottomFirstof2
-		addSlotToContainer(new SlotFurnaceOutput(playerInv.player, SepInv, 5, 140, 30));
-		addSlotToContainer(new SlotFurnaceOutput(playerInv.player, SepInv, 6, 140, 50));
+		addSlotToContainer(new SlotFurnaceOutput(playerInv.player, SepInv, 5, 103, 33));
+		addSlotToContainer(new SlotFurnaceOutput(playerInv.player, SepInv, 6, 145, 33));
 		// bucketoutput
 		addSlotToContainer(new SlotFurnaceOutput(playerInv.player, SepInv, 7, 8, 56));
 		for (int y = 0; y < 3; ++y) {
@@ -54,36 +58,45 @@ public class ContainerBlockSeparator extends Container {
 
 		return true;
 	}
-	
-	 public void addListener(IContainerListener listener)
-	    {
-	        super.addListener(listener);
-	        listener.sendAllWindowProperties(this, this.tileSeperator);
-	    }
-	 
-	 
-	 public void detectAndSendChanges()
-	    {
-	        super.detectAndSendChanges();
 
-	        for (int i = 0; i < this.listeners.size(); ++i)
+	public void addListener(IContainerListener listener) {
+		super.addListener(listener);
+		listener.sendAllWindowProperties(this, this.tileSeparator);
+	}
+
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
+
+		 for (int i = 0; i < this.listeners.size(); ++i)
 	        {
 	            IContainerListener icontainerlistener = (IContainerListener)this.listeners.get(i);
 
-	            if (this.cookTime != this.tileSeperator.getField(0))
+	            if (this.cookTime != this.tileSeparator.getField(2))
 	            {
-	                icontainerlistener.sendProgressBarUpdate(this, 0, this.tileSeperator.getField(0));
+	                icontainerlistener.sendProgressBarUpdate(this, 2, this.tileSeparator.getField(2));
 	            }
 
-	            if (this.totalCookTime != this.tileSeperator.getField(1))
+	            if (this.furnaceBurnTime != this.tileSeparator.getField(0))
 	            {
-	                icontainerlistener.sendProgressBarUpdate(this, 1, this.tileSeperator.getField(1));
+	                icontainerlistener.sendProgressBarUpdate(this, 0, this.tileSeparator.getField(0));
+	            }
+
+	            if (this.currentItemBurnTime != this.tileSeparator.getField(1))
+	            {
+	                icontainerlistener.sendProgressBarUpdate(this, 1, this.tileSeparator.getField(1));
+	            }
+
+	            if (this.totalCookTime != this.tileSeparator.getField(3))
+	            {
+	                icontainerlistener.sendProgressBarUpdate(this, 3, this.tileSeparator.getField(3));
 	            }
 	        }
 
-	        this.cookTime = this.tileSeperator.getField(0);
-	        this.totalCookTime = this.tileSeperator.getField(1);
-	    }
+	        this.cookTime = this.tileSeparator.getField(2);
+	        this.furnaceBurnTime = this.tileSeparator.getField(0);
+	        this.currentItemBurnTime = this.tileSeparator.getField(1);
+	        this.totalCookTime = this.tileSeparator.getField(3);
+	}
 
 	@Nullable
 	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
@@ -101,7 +114,7 @@ public class ContainerBlockSeparator extends Container {
 
 				slot.onSlotChange(itemstack1, itemstack);
 			} else if (index != 1 && index != 0) {
-				if (FurnaceRecipes.instance().getSmeltingResult(itemstack1) != null) {
+				if (RecipeSeparator.instance().getSeparatingResult(itemstack1) != null) {
 					if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
 						return null;
 					}
@@ -138,7 +151,7 @@ public class ContainerBlockSeparator extends Container {
 
 	@SideOnly(Side.CLIENT)
 	public void updateProgressBar(int id, int data) {
-		this.tileSeperator.setField(id, data);
+		this.tileSeparator.setField(id, data);
 	}
 
 }
