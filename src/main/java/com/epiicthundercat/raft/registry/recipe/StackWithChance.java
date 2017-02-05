@@ -11,7 +11,7 @@ public class StackWithChance {
 	public StackWithChance(ItemStack stack_, int chance_){
 		stack = stack_;
 		chance = chance_;
-		System.out.println("Constructing StackWithChance with stack " + stack_.toString() + " and chance " + chance_);
+		
 	}
 	
 	public StackWithChance(Item stack_, int chance_){

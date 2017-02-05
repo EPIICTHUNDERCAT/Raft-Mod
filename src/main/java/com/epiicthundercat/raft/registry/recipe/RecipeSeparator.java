@@ -54,7 +54,7 @@ public class RecipeSeparator {
 			return;
 		}
 		multiList.put(input, output); 
-		System.out.println("Adding multirecipe for " + input.toString() + " with primary output " + output.get(0).getStack().toString());
+	
 	}
 
 	@Nullable
@@ -73,7 +73,7 @@ public class RecipeSeparator {
 		List<StackWithChance> result = multiList.get(stack);
 		if(result != null) return result;
 		else {
-			System.out.println("RESULT FOR RECIPE USING INPUT " + stack.getUnlocalizedName() + " IS NULL");
+		
 			return null;
 		}
 	}
