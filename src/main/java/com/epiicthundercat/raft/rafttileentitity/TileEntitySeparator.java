@@ -1,10 +1,15 @@
 package com.epiicthundercat.raft.rafttileentitity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import javax.annotation.Nullable;
 
 import com.epiicthundercat.raft.block.BlockSeparator;
 import com.epiicthundercat.raft.init.RBlocks;
 import com.epiicthundercat.raft.registry.recipe.RecipeSeparator;
+import com.epiicthundercat.raft.registry.recipe.StackWithChance;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -43,7 +48,7 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 
 	private String separatorCustomName;
 	// slot amount8
-	private ItemStack[] separatorItemStacks = new ItemStack[8];
+	private ItemStack[] slot = new ItemStack[8];
 
 	@Override
 	public void update() {
@@ -55,31 +60,31 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 		}
 
 		if (!this.worldObj.isRemote) {
-			if (this.isBurning() || this.separatorItemStacks[1] != null && this.separatorItemStacks[0] != null) {
-				if (!this.isBurning() && this.canSeparate()) {
-					this.separatorBurnTime = getItemBurnTime(this.separatorItemStacks[1]);
+			if (this.isBurning() || this.slot[1] != null && this.slot[0] != null) {
+				if (!this.isBurning() && (this.canSeparate() || this.canMultiSeparate())) {
+					this.separatorBurnTime = getItemBurnTime(this.slot[1]);
 					this.currentItemBurnTime = this.separatorBurnTime;
 
 					if (this.isBurning()) {
 						flag1 = true;
 
-						if (this.separatorItemStacks[1] != null) {
-							--this.separatorItemStacks[1].stackSize;
+						if (this.slot[1] != null) {
+							--this.slot[1].stackSize;
 
-							if (this.separatorItemStacks[1].stackSize == 0) {
-								this.separatorItemStacks[1] = separatorItemStacks[1].getItem()
-										.getContainerItem(separatorItemStacks[1]);
+							if (this.slot[1].stackSize == 0) {
+								this.slot[1] = slot[1].getItem()
+										.getContainerItem(slot[1]);
 							}
 						}
 					}
 				}
 
-				if (this.isBurning() && this.canSeparate()) {
+				if (this.isBurning()) {
 					++this.cookTime;
 
-					if (this.cookTime == this.totalCookTime) {
+					if (this.cookTime == this.totalCookTime && (this.canSeparate() || this.canMultiSeparate())) {
 						this.cookTime = 0;
-						this.totalCookTime = this.getCookTime(this.separatorItemStacks[0]);
+						this.totalCookTime = this.getCookTime(this.slot[0]);
 						this.separate();
 						flag1 = true;
 					}
@@ -156,11 +161,11 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 		compound.setInteger("CookTimeTotal", this.totalCookTime);
 		NBTTagList nbttaglist = new NBTTagList();
 
-		for (int i = 0; i < this.separatorItemStacks.length; ++i) {
-			if (this.separatorItemStacks[i] != null) {
+		for (int i = 0; i < this.slot.length; ++i) {
+			if (this.slot[i] != null) {
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setByte("Slot", (byte) i);
-				this.separatorItemStacks[i].writeToNBT(nbttagcompound);
+				this.slot[i].writeToNBT(nbttagcompound);
 				nbttaglist.appendTag(nbttagcompound);
 			}
 		}
@@ -178,21 +183,21 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		NBTTagList nbttaglist = compound.getTagList("Items", 10);
-		this.separatorItemStacks = new ItemStack[this.getSizeInventory()];
+		this.slot = new ItemStack[this.getSizeInventory()];
 
 		for (int i = 0; i < nbttaglist.tagCount(); ++i) {
 			NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
 			int j = nbttagcompound.getByte("Slot");
 
-			if (j >= 0 && j < this.separatorItemStacks.length) {
-				this.separatorItemStacks[j] = ItemStack.loadItemStackFromNBT(nbttagcompound);
+			if (j >= 0 && j < this.slot.length) {
+				this.slot[j] = ItemStack.loadItemStackFromNBT(nbttagcompound);
 			}
 		}
 
 		this.separatorBurnTime = compound.getInteger("BurnTime");
 		this.cookTime = compound.getInteger("CookTime");
 		this.totalCookTime = compound.getInteger("CookTimeTotal");
-		this.currentItemBurnTime = getItemBurnTime(this.separatorItemStacks[1]);
+		this.currentItemBurnTime = getItemBurnTime(this.slot[1]);
 
 		if (compound.hasKey("CustomName", 8)) {
 			this.separatorCustomName = compound.getString("CustomName");
@@ -229,33 +234,33 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 
 	@Override
 	public int getSizeInventory() {
-		return separatorItemStacks.length;
+		return slot.length;
 	}
 
 	@Nullable
 	@Override
 	public ItemStack getStackInSlot(int index) {
-		return separatorItemStacks[index];
+		return slot[index];
 	}
 
 	@Nullable
 	@Override
 	public ItemStack decrStackSize(int index, int count) {
-		return ItemStackHelper.getAndSplit(separatorItemStacks, index, count);
+		return ItemStackHelper.getAndSplit(slot, index, count);
 	}
 
 	@Nullable
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
-		return ItemStackHelper.getAndRemove(separatorItemStacks, index);
+		return ItemStackHelper.getAndRemove(slot, index);
 
 	}
 
 	@Override
 	public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
-		boolean flag = stack != null && stack.isItemEqual(separatorItemStacks[index])
-				&& ItemStack.areItemStackTagsEqual(stack, separatorItemStacks[index]);
-		separatorItemStacks[index] = stack;
+		boolean flag = stack != null && stack.isItemEqual(slot[index])
+				&& ItemStack.areItemStackTagsEqual(stack, slot[index]);
+		slot[index] = stack;
 
 		if (stack != null && stack.stackSize > this.getInventoryStackLimit()) {
 			stack.stackSize = this.getInventoryStackLimit();
@@ -344,8 +349,8 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 
 	@Override
 	public void clear() {
-		for (int i = 0; i < this.separatorItemStacks.length; ++i) {
-			this.separatorItemStacks[i] = null;
+		for (int i = 0; i < this.slot.length; ++i) {
+			this.slot[i] = null;
 
 		}
 
@@ -379,90 +384,128 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 	}
 
 	private boolean canSeparate() {
-		if (this.separatorItemStacks[0] == null) {
+		if (this.slot[0] == null) {
 			return false;
 		} else {
-			ItemStack itemstack = RecipeSeparator.instance().getSeparatingResult(this.separatorItemStacks[0]);
+			ItemStack itemstack = RecipeSeparator.instance().getSeparatingResult(this.slot[0]);
 			if (itemstack == null)
 				return false;
-			if (this.separatorItemStacks[2] == null)
+			if (this.slot[2] == null)
 				return true;
-			if (!this.separatorItemStacks[2].isItemEqual(itemstack))
+			if (!this.slot[2].isItemEqual(itemstack))
 				return false;
-			if (this.separatorItemStacks[3] == null)
+			if (this.slot[3] == null)
 				return true;
-			if (!this.separatorItemStacks[3].isItemEqual(itemstack))
+			if (!this.slot[3].isItemEqual(itemstack))
 				return false;
-			int result = separatorItemStacks[2].stackSize + itemstack.stackSize;
-			return result <= getInventoryStackLimit() && result <= this.separatorItemStacks[2].getMaxStackSize();
+			int result = slot[2].stackSize + itemstack.stackSize;
+			return result <= getInventoryStackLimit() && result <= this.slot[2].getMaxStackSize();
 		}
-		/**
-		 * if (this.separatorItemStacks[0] == null) { return false; } else {
-		 * ItemStack itemstack =
-		 * RecipeHandler.instance().getSeparatorResult(this.separatorItemStacks[0]);
-		 * if (itemstack == null) return false; if (this.separatorItemStacks[2]
-		 * == null) return true; if
-		 * (!this.separatorItemStacks[2].isItemEqual(itemstack)) return false;
-		 * if (this.separatorItemStacks[3] == null) return true; if
-		 * (!this.separatorItemStacks[3].isItemEqual(itemstack)) return false;
-		 * if (this.separatorItemStacks[4] == null) return true; if
-		 * (!this.separatorItemStacks[4].isItemEqual(itemstack)) return false;
-		 * if (this.separatorItemStacks[5] == null) return true; if
-		 * (!this.separatorItemStacks[5].isItemEqual(itemstack)) return false;
-		 * if (this.separatorItemStacks[6] == null) return true; if
-		 * (!this.separatorItemStacks[6].isItemEqual(itemstack)) return false;
-		 * if (this.separatorItemStacks[7] == null) return true; if
-		 * (!this.separatorItemStacks[7].isItemEqual(itemstack)) return false;
-		 * int result = separatorItemStacks[2].stackSize + itemstack.stackSize;
-		 * 
-		 * return result <= getInventoryStackLimit() && result <=
-		 * this.separatorItemStacks[2].getMaxStackSize(); }
-		 */
+
+	}
+	
+	private boolean canMultiSeparate() {
+		if (this.slot[0] == null) return false; 
+		else {//2-6 are outputs
+			if(this.allOutputSlotsEmpty()) return true;
+			System.out.println("CURRENT INPUT IS " + slot[0].toString());
+			if(!this.areOutputsFull(RecipeSeparator.instance().getMultiSeparatingResult(slot[0].getItem()))) return true;
+		}
+		return false;
+
+	}
+	
+	public boolean allOutputSlotsEmpty(){
+		 if(slot[2] == null && slot[3] == null && slot[4] == null && slot[5] == null && slot[6] == null){
+			 System.out.println("All output slots are empty");
+			 return true;
+		 }
+		 System.out.println("All stacks are NOT empty");
+		 return false;
+	}
+	
+	public boolean areOutputsFull(List<StackWithChance> list){
+		System.out.println("Checking if outputs are full");
+		List<Boolean> slots = new ArrayList<Boolean>();
+		boolean slot2 = false;
+		boolean slot3 = false;
+		boolean slot4 = false;
+		boolean slot5 = false;
+		boolean slot6 = false;
+		slots.add(slot2);
+		slots.add(slot3);
+		slots.add(slot4);
+		slots.add(slot5);
+		slots.add(slot6);
+		
+		for(int k = list.size() - 1; k >= 0; k--){
+			ItemStack stack = list.get(k).getStack();
+			if(stack.stackSize + slot[k + 2].stackSize > slot[k + 2].getMaxStackSize()){ slots.set(k, true);}
+			System.out.println("Slot " + (k+2) + " is Empty");
+		}
+		if(slots.get(0) == false && slots.get(1) == false && slots.get(2) == false && slots.get(3) == false && slots.get(4) == false) return false;
+		
+		
+		System.out.println("All slots are full");
+		return true;
 	}
 
 	public void separate() {
 		if (this.canSeparate()) {
-			ItemStack itemstack = RecipeSeparator.instance().getSeparatingResult(this.separatorItemStacks[0]);
+			ItemStack itemstack = RecipeSeparator.instance().getSeparatingResult(new ItemStack(this.slot[0].getItem(), 1, this.slot[0].getMetadata()));
 
-			if (this.separatorItemStacks[2] == null) {
-				this.separatorItemStacks[2] = itemstack.copy();
-			} else if (this.separatorItemStacks[2].getItem() == itemstack.getItem()) {
-				this.separatorItemStacks[2].stackSize += itemstack.stackSize;
+			if (this.slot[2] == null) {
+				this.slot[2] = itemstack.copy();
+			} else if (this.slot[2].getItem() == itemstack.getItem()) {
+				this.slot[2].stackSize += itemstack.stackSize;
 			}
-			if (this.separatorItemStacks[3] == null) {
-				this.separatorItemStacks[3] = itemstack.copy();
+			if (this.slot[3] == null) {
+				this.slot[3] = itemstack.copy();
 
-			} else if (this.separatorItemStacks[3].getItem() == itemstack.getItem()) {
-				this.separatorItemStacks[3].stackSize += itemstack.stackSize;
-			}
-
-			if (this.separatorItemStacks[0].getItem() == Item.getItemFromBlock(Blocks.SPONGE)
-					&& this.separatorItemStacks[0].getMetadata() == 1 && this.separatorItemStacks[1] != null
-					&& this.separatorItemStacks[1].getItem() == Items.BUCKET) {
-				this.separatorItemStacks[7] = new ItemStack(Items.WATER_BUCKET);
+			} else if (this.slot[3].getItem() == itemstack.getItem()) {
+				this.slot[3].stackSize += itemstack.stackSize;
 			}
 
-			--this.separatorItemStacks[0].stackSize;
-
-			if (this.separatorItemStacks[0].stackSize <= 0) {
-				this.separatorItemStacks[0] = null;
+			if (this.slot[0].getItem() == Item.getItemFromBlock(Blocks.SPONGE)
+					&& this.slot[0].getMetadata() == 1 && this.slot[1] != null
+					&& this.slot[1].getItem() == Items.BUCKET) {
+				this.slot[7] = new ItemStack(Items.WATER_BUCKET);
 			}
+
+			--this.slot[0].stackSize;
+
+			if (this.slot[0].stackSize <= 0) {
+				this.slot[0] = null;
+			}
+			return;
 		}
-		/**
-		 * if (this.canSeperate()) { ItemStack itemstack =
-		 * RecipeSeparator.instance().getSeparatingResult(this.separatorItemStacks[0]);
-		 * 
-		 * if (this.separatorItemStacks[2] == null) {
-		 * this.separatorItemStacks[2] = itemstack.copy(); } else if
-		 * (this.separatorItemStacks[2].getItem() == itemstack.getItem()) {
-		 * this.separatorItemStacks[2].stackSize += itemstack.stackSize; //
-		 * Forge BugFix: Results may have multiple items }
-		 * 
-		 * --this.separatorItemStacks[0].stackSize;
-		 * 
-		 * if (this.separatorItemStacks[0].stackSize <= 0) {
-		 * this.separatorItemStacks[0] = null; } }
-		 **/
+		if(this.canMultiSeparate()){
+			System.out.println("Being multi-separating");
+			List<StackWithChance> outputs = RecipeSeparator.instance().getMultiSeparatingResult(slot[0].getItem());
+			if(outputs != null){
+			int k = outputs.size(); System.out.println("ArrayList has size of " + k);
+			StackWithChance item1 = null;
+			StackWithChance item2 = null;
+			StackWithChance item3 = null;
+			StackWithChance item4 = null;
+			StackWithChance item5 = null;
+		
+			if(k > 0) item1 = outputs.get(0);
+			if(k > 1) item2 = outputs.get(1);
+			if(k > 2) item3 = outputs.get(2);
+			if(k > 3) item4 = outputs.get(3);
+			if(k > 4) item5 = outputs.get(5);
+			Random rand = this.worldObj.rand;
+			if(item1 != null && rand.nextInt(item1.getChance()) == 0)this.slot[2] = new ItemStack(item1.getStack().getItem(), item1.getStack().stackSize + slot[2].stackSize, item1.getStack().getMetadata());
+			if(item2 != null && rand.nextInt(item2.getChance()) == 0)this.slot[3] = new ItemStack(item2.getStack().getItem(), item2.getStack().stackSize + slot[3].stackSize, item2.getStack().getMetadata());
+			if(item3 != null && rand.nextInt(item3.getChance()) == 0)this.slot[4] = new ItemStack(item3.getStack().getItem(), item3.getStack().stackSize + slot[4].stackSize, item3.getStack().getMetadata());
+			if(item4 != null && rand.nextInt(item4.getChance()) == 0)this.slot[5] = new ItemStack(item4.getStack().getItem(), item4.getStack().stackSize + slot[5].stackSize, item4.getStack().getMetadata());
+			if(item5 != null && rand.nextInt(item5.getChance()) == 0)this.slot[6] = new ItemStack(item5.getStack().getItem(), item5.getStack().stackSize + slot[6].stackSize, item5.getStack().getMetadata());
+			--slot[0].stackSize;
+			return;
+		}
+			System.out.println("Multi-separating list was null");
+		}
 
 	}
 

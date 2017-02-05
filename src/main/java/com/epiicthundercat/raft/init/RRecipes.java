@@ -1,6 +1,10 @@
 package com.epiicthundercat.raft.init;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.epiicthundercat.raft.registry.recipe.RecipeSeparator;
+import com.epiicthundercat.raft.registry.recipe.StackWithChance;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -19,8 +23,15 @@ public class RRecipes {
 		/**
 		 * RECIPES
 		 */
+		List<StackWithChance> list = new ArrayList<StackWithChance>();
+			list.add(new StackWithChance(RItems.aluminum_compound));
+			list.add(new StackWithChance(RItems.iron_compound));
+			System.out.println("LIST ONE CONSTRUCTED FOR RECIPE CREATION");
+		
 		RecipeSeparator compressor = RecipeSeparator.instance();
-		RecipeSeparator.instance().addSeparatingRecipeForItem(RItems.scrap, new ItemStack(RItems.aluminum_compound), new ItemStack(RItems.iron_compound), 900);
+		compressor.addSeparatingRecipe(RItems.scrap, new ItemStack(RItems.aluminum_compound), 900);
+		compressor.addMultiSeparatingRecipe(Items.STICK, list);
+		compressor.getMultiSeparatingResult(Items.STICK).get(0);
 	
 		// Plank > Planks
 

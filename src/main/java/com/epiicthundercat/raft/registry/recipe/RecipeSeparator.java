@@ -1,23 +1,25 @@
 package com.epiicthundercat.raft.registry.recipe;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.Nullable;
 
-import com.epiicthundercat.raft.init.RItems;
 import com.google.common.collect.Maps;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeSeparator {
 	private static final RecipeSeparator SEPARATING_BASE = new RecipeSeparator();
-	private final Map<ItemStack, ItemStack> sepaList = Maps.<ItemStack, ItemStack>newHashMap();
-	private final Map<ItemStack, Float> experienceList = Maps.<ItemStack, Float>newHashMap();
+	private Map<ItemStack, ItemStack> sepaList = Maps.<ItemStack, ItemStack>newHashMap();
+	private Map<ItemStack, Float> experienceList = Maps.<ItemStack, Float>newHashMap();
+	private Map<Item, List<StackWithChance>> multiList = Maps.<Item, List<StackWithChance>>newHashMap();
 	
 	
 	
@@ -26,20 +28,17 @@ public class RecipeSeparator {
 	}
 	
 	public RecipeSeparator() {
-
-		addSeparatingRecipeForItem(RItems.scrap, new ItemStack(RItems.aluminum_compound), new ItemStack(RItems.iron_compound), 900);
-
 	}
 
-	public void addSeparatingRecipeForBlock(Block input, ItemStack stack, ItemStack output2, float experience) {
-		this.addSeparatingRecipeForItem(Item.getItemFromBlock(input), stack, output2, experience);
+	public void addSeparatingRecipe(Block input, ItemStack stack, float experience) {
+		this.addSeparatingRecipe(Item.getItemFromBlock(input), stack, experience);
 	}
 
-	public void addSeparatingRecipeForItem(Item input, ItemStack stack, ItemStack output2, float experience) {
-		this.addSeparatingRecipe(new ItemStack(input, 1, 32767), stack, output2, experience);
+	public void addSeparatingRecipe(Item input, ItemStack stack, float experience) {
+		this.addSeparatingRecipe(new ItemStack(input, 1, 0), stack, experience);
 	}
 
-	public void addSeparatingRecipe(ItemStack input, ItemStack stack, ItemStack output2, float experience) {
+	public void addSeparatingRecipe(ItemStack input, ItemStack stack, float experience) {
 		if (getSeparatingResult(input) !=null) {
 			net.minecraftforge.fml.common.FMLLog
 					.info("Ignored separating recipe with conflicting input: " + input + " = " + stack);
@@ -47,6 +46,15 @@ public class RecipeSeparator {
 		}
 		this.sepaList.put(input, stack);
 		this.experienceList.put(stack, Float.valueOf(experience));
+	}
+	
+	public void addMultiSeparatingRecipe(Item input, List<StackWithChance> output) {
+		if (multiList.get(input) != null) {
+			FMLLog.info("Ignored separating recipe with conflicting input: " + input + " = multiple outputs");
+			return;
+		}
+		multiList.put(input, output); 
+		System.out.println("Adding multirecipe for " + input.toString() + " with primary output " + output.get(0).getStack().toString());
 	}
 
 	@Nullable
@@ -59,6 +67,17 @@ public class RecipeSeparator {
 
 		return null;
 	}
+	
+	@Nullable
+	public List<StackWithChance> getMultiSeparatingResult(Item stack) {
+		List<StackWithChance> result = multiList.get(stack);
+		if(result != null) return result;
+		else {
+			System.out.println("RESULT FOR RECIPE USING INPUT " + stack.getUnlocalizedName() + " IS NULL");
+			return null;
+		}
+	}
+
 
 	private boolean compareItemStacks(ItemStack stack1, ItemStack stack2) {
 		return stack2.getItem() == stack1.getItem()
