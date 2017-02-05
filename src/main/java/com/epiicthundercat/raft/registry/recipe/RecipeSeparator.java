@@ -45,6 +45,7 @@ public class RecipeSeparator {
 			return;
 		}
 		this.sepaList.put(input, stack);
+		//multiList.put(input,stack);
 		this.experienceList.put(stack, Float.valueOf(experience));
 	}
 	

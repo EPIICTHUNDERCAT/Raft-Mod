@@ -38,7 +38,7 @@ public class RBlocks {
 
 	public static List<Block> blocks = new ArrayList();
 
-	public static Block separator = new BlockSeparator("separator", Material.ANVIL);
+	public static Block separator = new BlockSeparator("separator", Material.ANVIL, false);
 	public static Block palm_sapling = new BlockPalmSapling("palm_sapling");
 	public static Block palm_leaves = new BlockPalmLeaves("palm_leaves");
 	public static Block palm_log = new BlockPalmLog("palm_log");
