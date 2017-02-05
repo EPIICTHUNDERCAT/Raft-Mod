@@ -483,6 +483,7 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 			if (slot[0].stackSize <= 0) {
 				slot[0] = null;
 			}
+			markDirty();
 			return;
 		}
 		if (canMultiSeparate()) {
@@ -515,7 +516,7 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 
 				if (item2 != null && rand.nextInt(item2.getChance()) == 0 && slot[3] != null) {
 					this.slot[3] = new ItemStack(item2.getStack().getItem(),
-							item2.getStack().stackSize + slot[2].stackSize, item2.getStack().getMetadata());
+							item2.getStack().stackSize + slot[3].stackSize, item2.getStack().getMetadata());
 				} else if (item2 != null && rand.nextInt(item2.getChance()) == 0)
 					slot[3] = item2.getStack();
 
@@ -537,9 +538,13 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 				} else if (item5 != null && rand.nextInt(item5.getChance()) == 0)
 					slot[6] = item5.getStack();
 				
-				--slot[0].stackSize;
+				
+				if (slot[0].stackSize <= 0) {
+					slot[0] = null;
+				}
 				
 				
+				markDirty();
 				return;
 			}
 

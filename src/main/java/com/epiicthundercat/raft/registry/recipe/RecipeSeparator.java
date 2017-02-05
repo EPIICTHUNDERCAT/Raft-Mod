@@ -83,6 +83,7 @@ public class RecipeSeparator {
 	private boolean compareItemStacks(ItemStack stack1, ItemStack stack2) {
 		return stack2.getItem() == stack1.getItem()
 				&& (stack2.getMetadata() == OreDictionary.WILDCARD_VALUE || stack2.getMetadata() == stack1.getMetadata());
+		//stack1.areItemsEqual(stackA, stackB)
 	}
 
 	public Map<ItemStack, ItemStack> getSeparatingList() {
