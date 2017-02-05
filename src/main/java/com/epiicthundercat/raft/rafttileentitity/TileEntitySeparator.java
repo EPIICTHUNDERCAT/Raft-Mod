@@ -439,8 +439,10 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 		slots.add(slot6);
 		
 		for(int k = list.size() - 1; k >= 0; k--){
+			if(list.get(k).getStack() != null && slot[k+2] != null){
 			ItemStack stack = list.get(k).getStack();
 			if(stack.stackSize + slot[k + 2].stackSize > slot[k + 2].getMaxStackSize()){ slots.set(k, true);}
+		}
 			System.out.println("Slot " + (k+2) + " is Empty");
 		}
 		if(slots.get(0) == false && slots.get(1) == false && slots.get(2) == false && slots.get(3) == false && slots.get(4) == false) return false;
@@ -494,13 +496,32 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 			if(k > 1) item2 = outputs.get(1);
 			if(k > 2) item3 = outputs.get(2);
 			if(k > 3) item4 = outputs.get(3);
-			if(k > 4) item5 = outputs.get(5);
+			if(k > 4) item5 = outputs.get(4);
 			Random rand = this.worldObj.rand;
-			if(item1 != null && rand.nextInt(item1.getChance()) == 0)this.slot[2] = new ItemStack(item1.getStack().getItem(), item1.getStack().stackSize + slot[2].stackSize, item1.getStack().getMetadata());
-			if(item2 != null && rand.nextInt(item2.getChance()) == 0)this.slot[3] = new ItemStack(item2.getStack().getItem(), item2.getStack().stackSize + slot[3].stackSize, item2.getStack().getMetadata());
-			if(item3 != null && rand.nextInt(item3.getChance()) == 0)this.slot[4] = new ItemStack(item3.getStack().getItem(), item3.getStack().stackSize + slot[4].stackSize, item3.getStack().getMetadata());
-			if(item4 != null && rand.nextInt(item4.getChance()) == 0)this.slot[5] = new ItemStack(item4.getStack().getItem(), item4.getStack().stackSize + slot[5].stackSize, item4.getStack().getMetadata());
-			if(item5 != null && rand.nextInt(item5.getChance()) == 0)this.slot[6] = new ItemStack(item5.getStack().getItem(), item5.getStack().stackSize + slot[6].stackSize, item5.getStack().getMetadata());
+			if(item1 != null && rand.nextInt(item1.getChance()) == 0 && slot[2] != null){
+				this.slot[2] = new ItemStack(item1.getStack().getItem(), item1.getStack().stackSize + slot[2].stackSize, item1.getStack().getMetadata());
+			}
+			else if(item1 != null && rand.nextInt(item1.getChance()) == 0) slot[2] = item1.getStack();
+			
+			if(item2 != null && rand.nextInt(item2.getChance()) == 0 && slot[3] != null){
+				this.slot[3] = new ItemStack(item2.getStack().getItem(), item2.getStack().stackSize + slot[2].stackSize, item2.getStack().getMetadata());
+			}
+			else if(item2 != null && rand.nextInt(item2.getChance()) == 0) slot[3] = item2.getStack();
+			
+			if(item3 != null && rand.nextInt(item3.getChance()) == 0 && slot[4] != null){
+				this.slot[4] = new ItemStack(item3.getStack().getItem(), item3.getStack().stackSize + slot[4].stackSize, item3.getStack().getMetadata());
+			}
+			else if(item3 != null && rand.nextInt(item3.getChance()) == 0) slot[4] = item3.getStack();
+			
+			if(item4 != null && rand.nextInt(item4.getChance()) == 0 && slot[5] != null){
+				this.slot[5] = new ItemStack(item4.getStack().getItem(), item4.getStack().stackSize + slot[5].stackSize, item4.getStack().getMetadata());
+			}
+			else if(item4 != null && rand.nextInt(item4.getChance()) == 0) slot[5] = item4.getStack();
+			
+			if(item5 != null && rand.nextInt(item5.getChance()) == 0 && slot[6] != null){
+				this.slot[6] = new ItemStack(item5.getStack().getItem(), item5.getStack().stackSize + slot[6].stackSize, item5.getStack().getMetadata());
+			}
+			else if(item5 != null && rand.nextInt(item5.getChance()) == 0) slot[6] = item5.getStack();
 			--slot[0].stackSize;
 			return;
 		}

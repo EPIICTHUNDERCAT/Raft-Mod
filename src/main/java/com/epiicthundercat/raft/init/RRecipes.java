@@ -26,13 +26,18 @@ public class RRecipes {
 		List<StackWithChance> list = new ArrayList<StackWithChance>();
 			list.add(new StackWithChance(RItems.aluminum_compound));
 			list.add(new StackWithChance(RItems.iron_compound));
-			System.out.println("LIST ONE CONSTRUCTED FOR RECIPE CREATION");
+			
+			List<StackWithChance> list2 = new ArrayList<StackWithChance>();
+			list2.add(new StackWithChance(Items.IRON_INGOT, 4));
+			list2.add(new StackWithChance(Items.GOLD_INGOT, 2));
+			list2.add(new StackWithChance(Items.APPLE));
+			list2.add(new StackWithChance(Items.WHEAT));
+			list2.add(new StackWithChance(Items.ARROW));
 		
 		RecipeSeparator compressor = RecipeSeparator.instance();
 		compressor.addSeparatingRecipe(RItems.scrap, new ItemStack(RItems.aluminum_compound), 900);
 		compressor.addMultiSeparatingRecipe(Items.STICK, list);
-		compressor.getMultiSeparatingResult(Items.STICK).get(0);
-	
+		compressor.addMultiSeparatingRecipe(Items.NETHER_STAR, list2);
 		// Plank > Planks
 
 		// Rope
