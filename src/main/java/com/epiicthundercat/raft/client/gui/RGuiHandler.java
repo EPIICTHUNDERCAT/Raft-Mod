@@ -32,7 +32,7 @@ public class RGuiHandler implements IGuiHandler {
 			if (te instanceof TileEntitySeparator) {
 				TileEntitySeparator containerTileEntity = (TileEntitySeparator) te;
 				return new SeparatorGui(containerTileEntity,
-						new ContainerBlockSeparator(player.inventory, containerTileEntity), te);
+						new ContainerBlockSeparator(player.inventory, containerTileEntity), te, player.inventory, containerTileEntity);
 			}
 		}
 		return null;
