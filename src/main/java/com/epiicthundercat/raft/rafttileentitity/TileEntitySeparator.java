@@ -537,7 +537,8 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 							item5.getStack().stackSize + slot[6].stackSize, item5.getStack().getMetadata());
 				} else if (item5 != null && rand.nextInt(item5.getChance()) == 0)
 					slot[6] = item5.getStack();
-				
+				--slot[0].stackSize;
+
 				
 				if (slot[0].stackSize <= 0) {
 					slot[0] = null;
