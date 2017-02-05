@@ -12,13 +12,13 @@ import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeSeparator {
 	private static final RecipeSeparator SEPARATING_BASE = new RecipeSeparator();
 	private final Map<ItemStack, ItemStack> sepaList = Maps.<ItemStack, ItemStack>newHashMap();
 	private final Map<ItemStack, Float> experienceList = Maps.<ItemStack, Float>newHashMap();
+	
 	
 	
 	public static RecipeSeparator instance() {
