@@ -71,18 +71,22 @@ public class REventHandler {
 		World world = event.world;
 
 		if (event.phase == TickEvent.Phase.END && world.provider.getDimension() == 0) {
-			if (this.ticks % (10 * 20)== 0)
-				trySpawnBarrel(world);
-			if (this.ticks  == 60)
-				trySpawnThatch(world);
-
-			if (this.ticks == 60)
-				trySpawnPlank(world);
-
-			if (this.ticks  == 60)
-				trySpawnScrap(world);
-
-			
+			if (this.ticks==20){
+				  trySpawnBarrel(world);
+				  this.ticks=0;
+				}
+			if (this.ticks==20){
+				  trySpawnThatch(world);
+				  this.ticks=0;
+				}
+			if (this.ticks==20){
+				  trySpawnPlank(world);
+				  this.ticks=0;
+				}
+			if (this.ticks==20){
+				  trySpawnScrap(world);
+				  this.ticks=0;
+				}
 			
 			
 			
