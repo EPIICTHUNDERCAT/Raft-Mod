@@ -1,19 +1,16 @@
 package com.epiicthundercat.raft.item;
-import java.util.List;
-
 import javax.annotation.Nullable;
 
 import com.epiicthundercat.raft.creativetab.RCreativeTab;
 import com.epiicthundercat.raft.init.RItems;
 
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBucketMilk;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
@@ -21,15 +18,20 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-public class ItemTinPotion extends RItem {
+public class ItemTinPotion extends ItemBucketMilk {
 	public ItemTinPotion(String name) {
-		super(name);
+		super();
+		setUnlocalizedName(name);
+		setRegistryName(name);
 		this.setMaxStackSize(1);
+		addToItems(this);
 		this.setCreativeTab(RCreativeTab.RTabs);
 	}
+	private void addToItems(Item item) {
 
+		RItems.items.add(item);
+
+	}
 	/**
 	 * Called when the player finishes using this Item (E.g. finishes eating.).
 	 * Not called when the player stops using the Item before the action is
@@ -70,7 +72,7 @@ public class ItemTinPotion extends RItem {
 	 * How long it takes to use or consume an item
 	 */
 	public int getMaxItemUseDuration(ItemStack stack) {
-		return 32;
+		return 16;
 	}
 
 	/**
@@ -86,33 +88,6 @@ public class ItemTinPotion extends RItem {
 		playerIn.setActiveHand(hand);
 		return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
 	}
-/**
-	public String getItemStackDisplayName(ItemStack stack) {
-		return I18n.translateToLocal(PotionUtils.getPotionFromItem(stack).getNamePrefixed("potion.effect."));
-	}
+	
 
-	/**
-	 * allows items to add custom lines of information to the mouseover
-	 * description
-	 *
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-		PotionUtils.addPotionTooltip(stack, tooltip, 1.0F);
-	}
-
-	@SideOnly(Side.CLIENT)
-	public boolean hasEffect(ItemStack stack) {
-		return !PotionUtils.getEffectsFromStack(stack).isEmpty();
-	}
-
-	*
-	 * returns a list of items with the same ID, but different meta (eg: dye
-	 * returns 16 items)
-	 *
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-		for (PotionType potiontype : PotionType.REGISTRY) {
-			subItems.add(PotionUtils.addPotionToItemStack(new ItemStack(itemIn), potiontype));
-		}
-	}*/
 }

@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import org.lwjgl.util.vector.Quaternion;
 
+import com.epiicthundercat.raft.client.renderer.RenderPlank;
 import com.epiicthundercat.raft.client.renderer.RenderThatch;
 import com.epiicthundercat.raft.init.REventHandler;
 import com.epiicthundercat.raft.init.RItems;
@@ -295,6 +296,7 @@ public class ThatchEntity extends Entity {
 		} else {
 			if (!this.isInWater())
 				this.motionY -= 0.012;
+		
 
 			double x = this.motionX;
 			double y = this.motionY;
@@ -302,12 +304,12 @@ public class ThatchEntity extends Entity {
 
 			boolean ground = onGround;
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
-			float windX = 0.1F;
-			float windZ = 0.1F;
+			float windX = 0.068F;
+			float windZ = 0.068F;
 			if (this.isInWater()) {
-				this.motionY += 0.009;
-				this.motionX *= 0.95;
-				this.motionZ *= 0.95;
+				this.motionY += 0.0068;
+				this.motionX *= 0.88;
+				this.motionZ *= 0.88;
 			} else if (windX != 0 || windZ != 0) {
 				this.motionX = windX;
 				this.motionZ = windZ;
@@ -324,21 +326,23 @@ public class ThatchEntity extends Entity {
 
 				this.prevQuat = this.quat;
 
-				Quaternion.mul(this.quat, RenderThatch.CURRENT, this.quat);
+				Quaternion.mul(this.quat, RenderPlank.CURRENT, this.quat);
 
-				Quaternion.mul(this.quat, RenderThatch.CURRENT, this.quat);
+				Quaternion.mul(this.quat, RenderPlank.CURRENT, this.quat);
 			}
 
 			// Bounce on ground
 			if (this.onGround) {
-
+				this.motionX *= 0.098;
+				this.motionY *= 0.098;
+				this.motionZ *= 0.098;
 			}
 
 			// Bounce on walls
 			if (this.isCollidedHorizontally) {
-				this.motionX = -x * 0.4;
-				this.motionZ = -z * 0.4;
-			}
+				this.motionX = -x * 0.004;
+				this.motionZ = -z * 0.004;
+			
 
 			this.motionX *= 0.98;
 			this.motionY *= 0.98;
@@ -352,12 +356,13 @@ public class ThatchEntity extends Entity {
 
 			if (Math.abs(this.motionZ) < 0.005)
 				this.motionZ = 0.0;
-
+			
 			collideWithNearbyEntities();
-
+			}
 			if (!this.worldObj.isRemote) {
 				this.age++;
 				despawnEntity();
+				
 			}
 
 		}

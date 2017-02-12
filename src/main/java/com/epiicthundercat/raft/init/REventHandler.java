@@ -6,6 +6,9 @@ import java.util.Set;
 
 import com.epiicthundercat.raft.Raft;
 import com.epiicthundercat.raft.entity.FloatBarrel;
+import com.epiicthundercat.raft.entity.PlankEntity;
+import com.epiicthundercat.raft.entity.ScrapEntity;
+import com.epiicthundercat.raft.entity.ThatchEntity;
 import com.epiicthundercat.raft.init.barrel.BarrelLoot;
 import com.epiicthundercat.raft.rafttileentitity.RenderTileEntitySeparator;
 import com.epiicthundercat.raft.rafttileentitity.TileEntitySeparator;
@@ -15,6 +18,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -67,9 +71,21 @@ public class REventHandler {
 		World world = event.world;
 
 		if (event.phase == TickEvent.Phase.END && world.provider.getDimension() == 0) {
-			if (this.ticks % (10 * 20) == 0)
-				trySpawn(world);
+			if (this.ticks % (10 * 20)== 0)
+				trySpawnBarrel(world);
+			if (this.ticks  == 60)
+				trySpawnThatch(world);
 
+			if (this.ticks == 60)
+				trySpawnPlank(world);
+
+			if (this.ticks  == 60)
+				trySpawnScrap(world);
+
+			
+			
+			
+			
 			if (ticks % (2 * 60 * 20) == 0) {
 				if (world.rand.nextBoolean())
 					Raft.windX *= -1;
@@ -109,6 +125,7 @@ public class REventHandler {
 
 	/*
 	 * private void trySpawn(World world, Entity entity) { Set<ChunkPos>
+	 * 
 	 * eligibleChunksForSpawning = Sets.newHashSet(); int chunks = 0;
 	 * 
 	 * for (EntityPlayer entityplayer : world.playerEntities) if
@@ -161,7 +178,55 @@ public class REventHandler {
 	 * 
 	 * } } } }
 	 */
-	private void trySpawn(World world) {
+	/*
+	 * public void trySpawn(World world) { Set<ChunkPos>
+	 * eligibleChunksForSpawning = Sets.newHashSet(); int chunks = 0;
+	 * 
+	 * for (EntityPlayer entityplayer : world.playerEntities) if
+	 * (!entityplayer.isSpectator()) { int playerX =
+	 * MathHelper.floor_double(entityplayer.posX / 16.0D); int playerZ =
+	 * MathHelper.floor_double(entityplayer.posZ / 16.0D);
+	 * 
+	 * for (int x = -8; x <= 8; ++x) for (int z = -8; z <= 8; ++z) { boolean
+	 * flag = x == -8 || x == 8 || z == -8 || z == 8; ChunkPos chunkcoordintpair
+	 * = new ChunkPos(x + playerX, z + playerZ);
+	 * 
+	 * if (!eligibleChunksForSpawning.contains(chunkcoordintpair)) { ++chunks;
+	 * 
+	 * if (!flag && world.getWorldBorder().contains(chunkcoordintpair))
+	 * eligibleChunksForSpawning.add(chunkcoordintpair); } } }
+	 * 
+	 * BlockPos spawnPoint = world.getSpawnPoint(); int current =
+	 * world.countEntities(FloatBarrel.class); int max = 100 * chunks /
+	 * MOB_COUNT_DIV;
+	 * 
+	 * for (ChunkPos chunkcoordintpair : eligibleChunksForSpawning) { if
+	 * (current > max) break;
+	 * 
+	 * if (world.rand.nextFloat() < 0.90f) { BlockPos blockpos =
+	 * getRandomChunkPosition(world, chunkcoordintpair.chunkXPos,
+	 * chunkcoordintpair.chunkZPos); BlockPos waterBlock = null; int r = 4;
+	 * 
+	 * for (int x = -r; x < r; x++) for (int y = -r; y < r; y++) for (int z =
+	 * -r; z < r; z++) { BlockPos check = new BlockPos(blockpos.getX() + x,
+	 * blockpos.getY() + y, blockpos.getZ() + z); Block block =
+	 * world.getBlockState(check).getBlock(); if (block == Blocks.WATER) {
+	 * waterBlock = check; break; } }
+	 * 
+	 * if (waterBlock != null) { int x = waterBlock.getX(); int y =
+	 * waterBlock.getY(); int z = waterBlock.getZ();
+	 * 
+	 * if (spawnPoint.distanceSq((double) x, (double) y, (double) z) >= 24.0 *
+	 * 24.0) { Biome biome = world.getBiome(waterBlock); if (biome.getBiome(0,
+	 * Biomes.OCEAN) != null) { FloatBarrel entity = new FloatBarrel(world);
+	 * entity.setLocationAndAngles((double) x + 0.5, (double) y + 0.5, (double)
+	 * z + 0.5, 0.0F, 0.0F);
+	 * 
+	 * if (entity.isNotColliding()) { current++;
+	 * System.out.println("IS ATTEMPTING SPAWNING");
+	 * world.spawnEntityInWorld(entity); } } } } } } }
+	 */
+	private void trySpawnBarrel(World world) {
 		Set<ChunkPos> eligibleChunksForSpawning = Sets.newHashSet();
 		int chunks = 0;
 
@@ -186,13 +251,92 @@ public class REventHandler {
 
 		BlockPos spawnPoint = world.getSpawnPoint();
 		int current = world.countEntities(FloatBarrel.class);
-		int max = 100 * chunks / MOB_COUNT_DIV;
+		int max = 35 * chunks / MOB_COUNT_DIV;
 
 		for (ChunkPos chunkcoordintpair : eligibleChunksForSpawning) {
 			if (current > max)
 				break;
 
-			if (world.rand.nextFloat() < 0.1f) {
+			if (world.rand.nextFloat() < 100.8f) {
+				BlockPos blockpos = getRandomChunkPosition(world, chunkcoordintpair.chunkXPos,
+						chunkcoordintpair.chunkZPos);
+				BlockPos waterBlock = null;
+				int r = 4;
+
+				for (int x = -r; x < r; x++)
+					for (int y = -r; y < r; y++)
+						for (int z = -r; z < r; z++) {
+							BlockPos check = new BlockPos(blockpos.getX() + x, blockpos.getY() + y,
+									blockpos.getZ() + z);
+							Block block = world.getBlockState(check).getBlock();
+							if (block == Blocks.WATER) {
+								waterBlock = check;
+								//break;
+							}
+						}
+
+				if (waterBlock != null) {
+					int x = waterBlock.getX();
+					int y = waterBlock.getY();
+					int z = waterBlock.getZ();
+
+					if (spawnPoint.distanceSq((double) x, (double) y, (double) z) >= 24.0 * 24.0) {
+						Biome biome = world.getBiome(waterBlock);
+						int bg = 0;
+						if (biome.getBiome(bg) != null) {
+							FloatBarrel entity = new FloatBarrel(world);
+						entity.setLocationAndAngles((double) x + 0.5, (double) y + 0.5, (double) z + 0.5, 0.0F,
+									0.0F);
+							
+
+							if (entity.isNotColliding()) {
+								current++;
+								System.out.println("spawned");
+								world.spawnEntityInWorld(entity);
+								System.out.println("spawned22");
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	
+	
+	
+	private void trySpawnThatch(World world) {
+		Set<ChunkPos> eligibleChunksForSpawning = Sets.newHashSet();
+		int chunks = 0;
+
+		for (EntityPlayer entityplayer : world.playerEntities)
+			if (!entityplayer.isSpectator()) {
+				int playerX = MathHelper.floor_double(entityplayer.posX / 16.0D);
+				int playerZ = MathHelper.floor_double(entityplayer.posZ / 16.0D);
+
+				for (int x = -8; x <= 8; ++x)
+					for (int z = -8; z <= 8; ++z) {
+						boolean flag = x == -8 || x == 8 || z == -8 || z == 8;
+						ChunkPos chunkcoordintpair = new ChunkPos(x + playerX, z + playerZ);
+
+						if (!eligibleChunksForSpawning.contains(chunkcoordintpair)) {
+							++chunks;
+
+							if (!flag && world.getWorldBorder().contains(chunkcoordintpair))
+								eligibleChunksForSpawning.add(chunkcoordintpair);
+						}
+					}
+			}
+
+		BlockPos spawnPoint = world.getSpawnPoint();
+		int current = world.countEntities(ThatchEntity.class);
+		int max = 35 * chunks / MOB_COUNT_DIV;
+
+		for (ChunkPos chunkcoordintpair : eligibleChunksForSpawning) {
+			if (current > max)
+				break;
+
+			if (world.rand.nextFloat() < 0.8f) {
 				BlockPos blockpos = getRandomChunkPosition(world, chunkcoordintpair.chunkXPos,
 						chunkcoordintpair.chunkZPos);
 				BlockPos waterBlock = null;
@@ -217,14 +361,18 @@ public class REventHandler {
 
 					if (spawnPoint.distanceSq((double) x, (double) y, (double) z) >= 24.0 * 24.0) {
 						Biome biome = world.getBiome(waterBlock);
-						if (biome.getTemperature() > 1.8f && biome.getRainfall() == 0f) {
-							FloatBarrel entity = new FloatBarrel(world);
-							entity.setLocationAndAngles((double) x + 0.5, (double) y + 0.5, (double) z + 0.5, 0.0F,
+						int bg = 0;
+						if (biome.getBiome(bg) != null) {
+							ThatchEntity entity = new ThatchEntity(world);
+						entity.setLocationAndAngles((double) x + 0.5, (double) y + 0.5, (double) z + 0.5, 0.0F,
 									0.0F);
+							
 
 							if (entity.isNotColliding()) {
 								current++;
+							//	System.out.println("spawned");
 								world.spawnEntityInWorld(entity);
+								System.out.println("SPANWERThatchEntity");
 							}
 						}
 					}
@@ -232,7 +380,177 @@ public class REventHandler {
 			}
 		}
 	}
+	
+	
+	
+	
+	private void trySpawnPlank(World world) {
+		Set<ChunkPos> eligibleChunksForSpawning = Sets.newHashSet();
+		int chunks = 0;
 
+		for (EntityPlayer entityplayer : world.playerEntities)
+			if (!entityplayer.isSpectator()) {
+				int playerX = MathHelper.floor_double(entityplayer.posX / 16.0D);
+				int playerZ = MathHelper.floor_double(entityplayer.posZ / 16.0D);
+
+				for (int x = -8; x <= 8; ++x)
+					for (int z = -8; z <= 8; ++z) {
+						boolean flag = x == -8 || x == 8 || z == -8 || z == 8;
+						ChunkPos chunkcoordintpair = new ChunkPos(x + playerX, z + playerZ);
+
+						if (!eligibleChunksForSpawning.contains(chunkcoordintpair)) {
+							++chunks;
+
+							if (!flag && world.getWorldBorder().contains(chunkcoordintpair))
+								eligibleChunksForSpawning.add(chunkcoordintpair);
+						}
+					}
+			}
+
+		BlockPos spawnPoint = world.getSpawnPoint();
+		int current = world.countEntities(PlankEntity.class);
+		int max = 35 * chunks / MOB_COUNT_DIV;
+
+		for (ChunkPos chunkcoordintpair : eligibleChunksForSpawning) {
+			if (current > max)
+				break;
+
+			if (world.rand.nextFloat() < 10.8f) {
+				BlockPos blockpos = getRandomChunkPosition(world, chunkcoordintpair.chunkXPos,
+						chunkcoordintpair.chunkZPos);
+				BlockPos waterBlock = null;
+				int r = 4;
+
+				for (int x = -r; x < r; x++)
+					for (int y = -r; y < r; y++)
+						for (int z = -r; z < r; z++) {
+							BlockPos check = new BlockPos(blockpos.getX() + x, blockpos.getY() + y,
+									blockpos.getZ() + z);
+							Block block = world.getBlockState(check).getBlock();
+							if (block == Blocks.WATER) {
+								waterBlock = check;
+								break;
+							}
+						}
+
+				if (waterBlock != null) {
+					int x = waterBlock.getX();
+					int y = waterBlock.getY();
+					int z = waterBlock.getZ();
+
+					if (spawnPoint.distanceSq((double) x, (double) y, (double) z) >= 24.0 * 24.0) {
+						Biome biome = world.getBiome(waterBlock);
+						int bg = 0;
+						if (biome.getBiome(bg) != null) {
+							PlankEntity entity = new PlankEntity(world);
+						entity.setLocationAndAngles((double) x + 0.5, (double) y + 0.5, (double) z + 0.5, 0.0F,
+									0.0F);
+							
+
+							if (entity.isNotColliding()) {
+								current++;
+								//System.out.println("spawned");
+								world.spawnEntityInWorld(entity);
+								System.out.println("spawnedPlankEntity");
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	private void trySpawnScrap(World world) {
+		Set<ChunkPos> eligibleChunksForSpawning = Sets.newHashSet();
+		int chunks = 0;
+
+		for (EntityPlayer entityplayer : world.playerEntities)
+			if (!entityplayer.isSpectator()) {
+				int playerX = MathHelper.floor_double(entityplayer.posX / 16.0D);
+				int playerZ = MathHelper.floor_double(entityplayer.posZ / 16.0D);
+
+				for (int x = -8; x <= 8; ++x)
+					for (int z = -8; z <= 8; ++z) {
+						boolean flag = x == -8 || x == 8 || z == -8 || z == 8;
+						ChunkPos chunkcoordintpair = new ChunkPos(x + playerX, z + playerZ);
+
+						if (!eligibleChunksForSpawning.contains(chunkcoordintpair)) {
+							++chunks;
+
+							if (!flag && world.getWorldBorder().contains(chunkcoordintpair))
+								eligibleChunksForSpawning.add(chunkcoordintpair);
+						}
+					}
+			}
+
+		BlockPos spawnPoint = world.getSpawnPoint();
+		int current = world.countEntities(ScrapEntity.class);
+		int max = 35 * chunks / MOB_COUNT_DIV;
+
+		for (ChunkPos chunkcoordintpair : eligibleChunksForSpawning) {
+			if (current > max)
+				break;
+
+			if (world.rand.nextFloat() < 0.8f) {
+				BlockPos blockpos = getRandomChunkPosition(world, chunkcoordintpair.chunkXPos,
+						chunkcoordintpair.chunkZPos);
+				BlockPos waterBlock = null;
+				int r = 4;
+
+				for (int x = -r; x < r; x++)
+					for (int y = -r; y < r; y++)
+						for (int z = -r; z < r; z++) {
+							BlockPos check = new BlockPos(blockpos.getX() + x, blockpos.getY() + y,
+									blockpos.getZ() + z);
+							Block block = world.getBlockState(check).getBlock();
+							if (block == Blocks.WATER) {
+								waterBlock = check;
+								break;
+							}
+						}
+
+				if (waterBlock != null) {
+					int x = waterBlock.getX();
+					int y = waterBlock.getY();
+					int z = waterBlock.getZ();
+
+					if (spawnPoint.distanceSq((double) x, (double) y, (double) z) >= 24.0 * 24.0) {
+						Biome biome = world.getBiome(waterBlock);
+						int bg = 0;
+						if (biome.getBiome(bg) != null) {
+							ScrapEntity entity = new ScrapEntity(world);
+						entity.setLocationAndAngles((double) x + 0.5, (double) y + 0.5, (double) z + 0.5, 0.0F,
+									0.0F);
+							
+
+							if (entity.isNotColliding()) {
+								current++;
+							//	System.out.println("spawned");
+								world.spawnEntityInWorld(entity);
+								System.out.println("spawnedScrapEntity");
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	private static BlockPos getRandomChunkPosition(World worldIn, int x, int z) {
 		Chunk chunk = worldIn.getChunkFromChunkCoords(x, z);
 		int i = x * 16 + worldIn.rand.nextInt(16);
@@ -252,8 +570,9 @@ public class REventHandler {
 			player.addStat(AchievementList.MINE_WOOD);
 		}
 	}
+
 	@SideOnly(Side.CLIENT)
-	public static void registerItemRenderers(){
+	public static void registerItemRenderers() {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySeparator.class, new RenderTileEntitySeparator());
 	}
 }

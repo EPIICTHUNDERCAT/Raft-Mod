@@ -478,15 +478,18 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 				slot[7] = new ItemStack(Items.WATER_BUCKET);
 			}
 
-			--slot[0].stackSize;
+//			--slot[0].stackSize;
 
-			if (slot[0].stackSize <= 0) {
-				slot[0] = null;
-			}
+		//	if (slot[0].stackSize <= 0) {
+			//	slot[0] = null;
+			int s = slot[0].stackSize - 1;
+			if(s > 0) --slot[0].stackSize;
+			else if(s <= 0) slot[0] = null;
+			//}
 			markDirty();
 			return;
 		}
-		if (canMultiSeparate()) {
+		else if (canMultiSeparate()) {
 
 			List<StackWithChance> outputs = RecipeSeparator.instance().getMultiSeparatingResult(slot[0].getItem());
 			if (outputs != null) {
@@ -537,12 +540,15 @@ public class TileEntitySeparator extends TileEntity implements ITickable, ISided
 							item5.getStack().stackSize + slot[6].stackSize, item5.getStack().getMetadata());
 				} else if (item5 != null && rand.nextInt(item5.getChance()) == 0)
 					slot[6] = item5.getStack();
-				--slot[0].stackSize;
-
 				
-				if (slot[0].stackSize <= 0) {
-					slot[0] = null;
-				}
+			//	--slot[0].stackSize;
+				int s = slot[0].stackSize - 1;
+				if(s > 0) --slot[0].stackSize;
+				else if(s <= 0) slot[0] = null;
+				
+				///if (slot[0].stackSize <= 0) {
+					//slot[0] = null;
+				//}
 				
 				
 				markDirty();

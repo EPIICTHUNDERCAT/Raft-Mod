@@ -24,9 +24,9 @@ public class BarrelLootAdd {
 		REventHandler.addBarrelLoot(new ItemStack(Items.BEETROOT_SEEDS), 1, 0, 1);
 		
 		
-		REventHandler.addPlankLoot(new ItemStack(RItems.plank), 100, 1, 1);
-		REventHandler.addScrapLoot(new ItemStack(RItems.scrap), 100, 1, 1);
-		REventHandler.addThatchLoot(new ItemStack(RItems.thatch), 100, 1, 1);
+		REventHandler.addPlankLoot(new ItemStack(RItems.plank), 1, 0, 0);
+		REventHandler.addScrapLoot(new ItemStack(RItems.scrap), 1, 0, 0);
+		REventHandler.addThatchLoot(new ItemStack(RItems.thatch), 1, 0, 0);
 		
 	}
 }

@@ -108,7 +108,7 @@ public class RItems {
 	public static Item uranium_ore_material = new RItem("uranium_ore_material");
 
 	public static Item plastic = new RItem("plastic");
-	public static Item coconut = new ItemCoconut("coconut", 10, 10, false);
+	public static Item coconut = new ItemCoconut("coconut");
 	public static Item coconut_shell = new RItemFood("coconut_shell", 5, 5, false);
 	public static Item cooked_beet = new RItemFood("cooked_beet", 10, 10, false);
 	public static Item nail = new RItem("nail");

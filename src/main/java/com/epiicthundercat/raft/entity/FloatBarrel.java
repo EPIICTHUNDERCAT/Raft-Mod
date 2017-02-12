@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import org.lwjgl.util.vector.Quaternion;
 
 import com.epiicthundercat.raft.client.renderer.RenderFloatingBarrel;
+import com.epiicthundercat.raft.client.renderer.RenderPlank;
 import com.epiicthundercat.raft.init.REventHandler;
 import com.epiicthundercat.raft.init.RItems;
 import com.epiicthundercat.raft.init.barrel.BarrelLoot;
@@ -212,7 +213,9 @@ public class FloatBarrel extends Entity {
 				if (flag || this.getDamageTaken() > 5.0F) {
 
 					// if (!player.capabilities.isCreativeMode) {
-					if (!flag && this.worldObj.getGameRules().getBoolean("doEntityDrops")) {
+					if (!flag && this.worldObj.getGameRules().getBoolean("doEntityDrops") && !source.isExplosion()
+							&& !source.isFireDamage() && !source.isMagicDamage() && !source.isProjectile()
+							&& !source.isUnblockable()) {
 						BlockPos pos = getPosition();
 						this.extractItems(worldObj, pos, player);
 					}
@@ -322,10 +325,10 @@ public class FloatBarrel extends Entity {
 
 			boolean ground = onGround;
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
-			float windX = 0.1F;
-			float windZ = 0.1F;
+			float windX = 0.08F;
+			float windZ = 0.08F;
 			if (this.isInWater()) {
-				this.motionY += 0.009;
+				this.motionY += 0.007;
 				this.motionX *= 0.95;
 				this.motionZ *= 0.95;
 			} else if (windX != 0 || windZ != 0) {
@@ -344,40 +347,42 @@ public class FloatBarrel extends Entity {
 
 				this.prevQuat = this.quat;
 
-				Quaternion.mul(this.quat, RenderFloatingBarrel.CURRENT, this.quat);
+				Quaternion.mul(this.quat, RenderPlank.CURRENT, this.quat);
 
-				Quaternion.mul(this.quat, RenderFloatingBarrel.CURRENT, this.quat);
+				Quaternion.mul(this.quat, RenderPlank.CURRENT, this.quat);
 			}
 
 			// Bounce on ground
 			if (this.onGround) {
-
+				this.motionX *= 0.098;
+				this.motionY *= 0.098;
+				this.motionZ *= 0.098;
 			}
 
 			// Bounce on walls
 			if (this.isCollidedHorizontally) {
-				this.motionX = -x * 0.4;
-				this.motionZ = -z * 0.4;
+				this.motionX = -x * 0.004;
+				this.motionZ = -z * 0.004;
+
+				this.motionX *= 0.98;
+				this.motionY *= 0.98;
+				this.motionZ *= 0.98;
+
+				if (Math.abs(this.motionX) < 0.005)
+					this.motionX = 0.0;
+
+				if (Math.abs(this.motionY) < 0.005)
+					this.motionY = 0.0;
+
+				if (Math.abs(this.motionZ) < 0.005)
+					this.motionZ = 0.0;
+
+				collideWithNearbyEntities();
 			}
-
-			this.motionX *= 0.98;
-			this.motionY *= 0.98;
-			this.motionZ *= 0.98;
-
-			if (Math.abs(this.motionX) < 0.005)
-				this.motionX = 0.0;
-
-			if (Math.abs(this.motionY) < 0.005)
-				this.motionY = 0.0;
-
-			if (Math.abs(this.motionZ) < 0.005)
-				this.motionZ = 0.0;
-
-			collideWithNearbyEntities();
-
 			if (!this.worldObj.isRemote) {
 				this.age++;
 				despawnEntity();
+
 			}
 
 		}

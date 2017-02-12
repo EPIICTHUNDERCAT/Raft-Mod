@@ -20,18 +20,18 @@ public class ModEntities {
 		// Every entity in our mod has an ID (local to this mod)
 
 		// FemaleShark
-		EntityRegistry.registerModEntity(EntitySharkFemale.class, "Female Shark", 1, Raft.instance, 80, 3, false, 0,
+		EntityRegistry.registerModEntity(EntitySharkFemale.class, "Female Shark", 0, Raft.instance, 80, 3, false, 0,
 				femalesharkegg);
 		// barrel
-		EntityRegistry.registerModEntity(FloatBarrel.class, "Barrel", 2, Raft.instance, 80, 3, false);
+		EntityRegistry.registerModEntity(FloatBarrel.class, "Barrel", 1, Raft.instance, 80, 3, false);
 		// thatch
-		EntityRegistry.registerModEntity(ThatchEntity.class, "Thatch", 3, Raft.instance, 80, 3, false);
+		EntityRegistry.registerModEntity(ThatchEntity.class, "Thatch", 2, Raft.instance, 80, 3, false);
 		// scrap
-		EntityRegistry.registerModEntity(ScrapEntity.class, "Scrap", 4, Raft.instance, 80, 3, false);
+		EntityRegistry.registerModEntity(ScrapEntity.class, "Scrap", 3, Raft.instance, 80, 3, false);
 		// plank
-		EntityRegistry.registerModEntity(PlankEntity.class, "Plank", 5, Raft.instance, 80, 3, false);
+		EntityRegistry.registerModEntity(PlankEntity.class, "Plank", 4, Raft.instance, 80, 3, false);
 		// Fish
-		EntityRegistry.registerModEntity(EntityFish.class, "Fish", 6, Raft.instance, 80, 3, false, 547853,
+		EntityRegistry.registerModEntity(EntityFish.class, "Fish", 5, Raft.instance, 80, 3, false, 547853,
 				femalesharkegg);
 		/*
 		 * We want our mob to spawn in Plains and ice plains biomes. If you
@@ -40,8 +40,8 @@ public class ModEntities {
 		 */
 
 		// Female Shark
-		EntityRegistry.addSpawn(EntitySharkFemale.class, 2, 3, 8, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
-				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER);
+		EntityRegistry.addSpawn(EntitySharkFemale.class, 0, 3, 8, EnumCreatureType.WATER_CREATURE, Biomes.HELL/* Biomes.DEEP_OCEAN,
+				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER*/);
 		// Female Shark
 		EntityRegistry.addSpawn(EntityFish.class, 2, 3, 8, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
 				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER);
