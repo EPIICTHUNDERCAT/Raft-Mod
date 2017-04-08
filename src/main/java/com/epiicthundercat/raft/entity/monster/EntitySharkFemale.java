@@ -494,7 +494,7 @@ public class EntitySharkFemale extends EntityMob {
 
 				if (this.tickCounter == 0) {
 					this.theEntity.setTargetedEntity(this.theEntity.getAttackTarget().getEntityId());
-					this.theEntity.worldObj.setEntityState(this.theEntity, (byte) 21);
+//					this.theEntity.worldObj.setEntityState(this.theEntity, (byte) 21);
 				} else if (this.tickCounter >= this.theEntity.getAttackDuration()) {
 					float f = 1.0F;
 
@@ -647,7 +647,7 @@ public class EntitySharkFemale extends EntityMob {
 
 				if (this.tickCounter == 0) {
 					this.theEntity.setTargetedEntity(this.theEntity.getAttackTarget().getEntityId());
-					this.theEntity.worldObj.setEntityState(this.theEntity, (byte) 21);
+					//this.theEntity.worldObj.setEntityState(this.theEntity, (byte) 21);
 				} else if (this.tickCounter >= this.theEntity.getAttackDuration()) {
 					float f = 1.0F;
 

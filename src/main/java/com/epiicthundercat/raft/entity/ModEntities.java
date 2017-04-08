@@ -40,8 +40,8 @@ public class ModEntities {
 		 */
 
 		// Female Shark
-		EntityRegistry.addSpawn(EntitySharkFemale.class, 0, 3, 8, EnumCreatureType.WATER_CREATURE, Biomes.HELL/* Biomes.DEEP_OCEAN,
-				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER*/);
+		EntityRegistry.addSpawn(EntitySharkFemale.class, 1, 1, 3, EnumCreatureType.WATER_CREATURE,  Biomes.DEEP_OCEAN,
+				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER);
 		// Female Shark
 		EntityRegistry.addSpawn(EntityFish.class, 2, 3, 8, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
 				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER);

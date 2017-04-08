@@ -659,7 +659,9 @@ public class ScrapEntity extends Entity{
 			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.scrap_loot);
 			ItemStack itemStack = returns.returnItem.copy();
 
-			player.inventory.addItemStackToInventory(itemStack);
+			if (itemStack != null)
+				player.inventory.addItemStackToInventory(itemStack);
+			
 		}
 
 	}

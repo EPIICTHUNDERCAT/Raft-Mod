@@ -150,10 +150,7 @@ public class BlockSeparator extends BlockContainer {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(),"inventory"));
 	}
 	
-	@Override
-	public boolean isOpaqueCube(IBlockState state){
-		return false;
-	}
+	
 	
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos){
@@ -189,6 +186,21 @@ public class BlockSeparator extends BlockContainer {
 	            worldIn.setTileEntity(pos, tileentity);
 	        }
 	    }
+	 
+	 @Override
+		public boolean isBlockSolid(IBlockAccess worldIn,BlockPos pos,EnumFacing side){
+			return false;
+		}
+		
+		@Override
+		public boolean isSideSolid(IBlockState state,IBlockAccess world,BlockPos pos,EnumFacing side){
+			return side==EnumFacing.DOWN;
+		}
+		
+		@Override
+		public boolean isOpaqueCube(IBlockState state){
+			return false;
+		}
 	 @SideOnly(Side.CLIENT)
 	    @SuppressWarnings("incomplete-switch")
 	    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)

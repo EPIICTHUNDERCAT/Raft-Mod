@@ -631,8 +631,8 @@ public class ThatchEntity extends Entity {
 		for (int i = 0; i < MathHelper.getRandomIntegerInRange(world.rand, 3, 6); i++) {
 			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.thatch_loot);
 			ItemStack itemStack = returns.returnItem.copy();
-
-			player.inventory.addItemStackToInventory(itemStack);
+			if (itemStack != null)
+				player.inventory.addItemStackToInventory(itemStack);
 		}
 
 	}

@@ -645,6 +645,7 @@ public class PlankEntity extends Entity {
 			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.plank_loot);
 			ItemStack itemStack = returns.returnItem.copy();
 
+			if (itemStack != null)
 			player.inventory.addItemStackToInventory(itemStack);
 		}
 
