@@ -23,37 +23,7 @@ public class RRecipes {
 		/**
 		 * RECIPES
 		 */
-		List<StackWithChance> list = new ArrayList<StackWithChance>();
-
-		list.add(new StackWithChance(RItems.tin_compound, 5));
-		list.add(new StackWithChance(RItems.iron_compound, 20));
-		list.add(new StackWithChance(RItems.copper_compound, 20));
-		list.add(new StackWithChance(RItems.aluminum_compound, 80));
-		list.add(new StackWithChance(RItems.gold_compound, 400));
 		
-
-		
-		
-		
-		List<StackWithChance> list2 = new ArrayList<StackWithChance>();
-		list2.add(new StackWithChance(RItems.tin_compound, 3));
-		list2.add(new StackWithChance(RItems.iron_compound, 14));
-		list2.add(new StackWithChance(RItems.aluminum_compound, 20));
-		list2.add(new StackWithChance(RItems.gold_compound, 40));
-		list2.add(new StackWithChance(RItems.lead_compound, 80));
-		
-		List<StackWithChance> list3 = new ArrayList<StackWithChance>();
-		list3.add(new StackWithChance(RItems.iron_compound, 5));
-		list3.add(new StackWithChance(RItems.gold_compound, 10));
-		list3.add(new StackWithChance(RItems.lead_compound, 20));
-		list3.add(new StackWithChance(RItems.silver_compound, 20));
-		list3.add(new StackWithChance(RItems.tungsten_compound, 30));
-		
-		RecipeSeparator compressor = RecipeSeparator.instance();
-
-		compressor.addMultiSeparatingRecipe(RItems.scrap, list);
-		compressor.addMultiSeparatingRecipe(RItems.compressed_scraps, list2);
-		compressor.addMultiSeparatingRecipe(RItems.double_compressed_scraps, list3);
 
 
 		// Plank > Planks

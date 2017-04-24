@@ -526,7 +526,7 @@ public class REventHandler {
 					if (spawnPoint.distanceSq((double) x, (double) y, (double) z) >= 24.0 * 24.0) {
 						Biome biome = world.getBiome(waterBlock);
 						int bg = 0;
-						if (biome.getBiome(bg) != null) {
+						if (biome.getBiome(bg, Biomes.OCEAN) != null) {
 							ScrapEntity entity = new ScrapEntity(world);
 						entity.setLocationAndAngles((double) x + 0.5, (double) y + 0.5, (double) z + 0.5, 0.0F,
 									0.0F);
