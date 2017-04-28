@@ -1043,8 +1043,5 @@ public class PlankEntity extends Entity {
 	public boolean getCustomWindEnabled() {
 		return this.dataManager.get(CUSTOM_WIND_ENABLED);
 	}
-	public boolean isNotColliding()
-	{
-		return this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.containsAnyLiquid(this.getEntityBoundingBox());
-	}
+	
 }

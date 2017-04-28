@@ -1133,9 +1133,9 @@ public class FloatBarrel extends Entity {
 		return this.dataManager.get(CUSTOM_WIND_ENABLED);
 	}
 
-	public boolean isNotColliding() {
+	/*public boolean isNotColliding() {
 		return this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this)
 				&& this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty()
 				&& !this.worldObj.containsAnyLiquid(this.getEntityBoundingBox());
-	}
+	}*/
 }

@@ -37,12 +37,12 @@ public class SeparatorGui extends GuiContainer {
 	        int j = (this.height - this.ySize) / 2;
 	        this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
 
-	        if (TileEntitySeparator.isBurning(this.tileSeparator))
+	       /* if (TileEntitySeparator.isBurning(this.tileSeparator))
 	        {
 	            int k = this.getBurnLeftScaled(13);
 	            this.drawTexturedModalRect(i + 62.2f, j + 35 + 28 - k, 176, 12 - k, 14, k + 1);
 	        }
-
+*/
 	        int l = this.getCookProgressScaled(24);
 	        this.drawTexturedModalRect(i + 58, j + 10, 176, 14, l + 1, 16);
 	}
