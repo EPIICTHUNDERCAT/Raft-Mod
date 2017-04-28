@@ -6,6 +6,7 @@ import java.util.List;
 import com.epiicthundercat.raft.entity.FloatBarrel;
 import com.epiicthundercat.raft.item.ItemBarrel;
 import com.epiicthundercat.raft.item.ItemCoconut;
+import com.epiicthundercat.raft.item.ItemHook;
 import com.epiicthundercat.raft.item.ItemPlank;
 import com.epiicthundercat.raft.item.ItemScrap;
 import com.epiicthundercat.raft.item.ItemThatch;
@@ -25,7 +26,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class RItems {
 	public static List<Item> items = new ArrayList();
 
-	public static Item hook = new RItem("hook");
+	public static Item hook = new ItemHook("hook");
 	public static Item thatch = new ItemThatch("thatch");
 	public static Item rope = new RItem("rope");
 	public static Item plank = new ItemPlank("plank");
