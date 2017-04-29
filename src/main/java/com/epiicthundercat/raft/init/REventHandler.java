@@ -74,18 +74,21 @@ public class REventHandler {
 		if (event.phase == TickEvent.Phase.END && world.provider.getDimension() == 0) {
 			if (this.ticks == 20) {
 				Random random = new Random();
-				switch (random.nextInt(3)) {
+				switch (random.nextInt(4)) {
 				case 0:
+					//System.out.println("SpawningB");
 					trySpawnBarrel(world);
 					break;
 				case 1:
+					//System.out.println("SpawningT");
 					trySpawnThatch(world);
 					break;
 				case 2:
+					//System.out.println("SpawningS");
 					trySpawnScrap(world);
 					break;
 				case 3:
-					System.out.println("tryspawnplank");
+					//System.out.println("SpawningP");
 					trySpawnPlank(world);
 					break;
 				}
@@ -107,30 +110,11 @@ public class REventHandler {
 		}
 	}
 
-	/*
-	 * @SubscribeEvent public void onTick(TickEvent.WorldTickEvent event) {
-	 * World world = event.world;
-	 * 
-	 * if (event.phase == TickEvent.Phase.END && world.provider.getDimension()
-	 * == 0) { if (this.ticks % (10 * 20) == 0) { List<Entity> entityTypes =
-	 * Lists.newArrayList(new ScrapEntity(world), new ThatchEntity(world), new
-	 * FloatBarrel(world), new PlankEntity(world)); int which =
-	 * world.rand.nextInt(4); trySpawn(world, entityTypes.get(which)); } if
-	 * (ticks % (2 * 60 * 20) == 0) { if (world.rand.nextBoolean()) Raft.windX
-	 * *= -1;
-	 * 
-	 * if (world.rand.nextBoolean()) Raft.windZ *= -1;
-	 * 
-	 * Raft.network.sendToAll(new SendMovePack(Raft.windX, Raft.windZ)); }
-	 * 
-	 * this.ticks++; } }
-	 */
 	@SubscribeEvent
 	public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
 		Raft.network.sendTo(new SendMovePack(Raft.windX, Raft.windZ), (EntityPlayerMP) event.player);
 	}
 
-	
 	private void trySpawnBarrel(World world) {
 		Set<ChunkPos> eligibleChunksForSpawning = Sets.newHashSet();
 		int chunks = 0;
@@ -157,13 +141,13 @@ public class REventHandler {
 
 		BlockPos spawnPoint = world.getSpawnPoint();
 		int current = world.countEntities(FloatBarrel.class);
-		int max = 35 * chunks / MOB_COUNT_DIV;
+		int max = 5 * chunks;
 
 		for (ChunkPos chunkcoordintpair : eligibleChunksForSpawning) {
 			if (current > max)
 				break;
 
-			if (world.rand.nextFloat() < 0.8f) {
+			if (world.rand.nextFloat() < 0.1f) {
 				BlockPos blockpos = getRandomChunkPosition(world, chunkcoordintpair.chunkXPos,
 						chunkcoordintpair.chunkZPos);
 				BlockPos waterBlock = null;
@@ -186,7 +170,7 @@ public class REventHandler {
 					int y = waterBlock.getY();
 					int z = waterBlock.getZ();
 
-					if (spawnPoint.distanceSq((double) x, (double) y, (double) z) >= 4.0 * 4.0) {
+					if (spawnPoint.distanceSq((double) x, (double) y, (double) z) >= 2.0 * 2.0) {
 
 						Biome biome = world.getBiome(waterBlock);
 						int bg = 0;
@@ -197,12 +181,10 @@ public class REventHandler {
 							entity.setLocationAndAngles((double) x + 0.5, (double) y + 0.5, (double) z + 0.5, 0.0F,
 									0.0F);
 
-							
 							current++;
-							
+
 							world.spawnEntityInWorld(entity);
 
-							
 						}
 					}
 				}
@@ -235,13 +217,13 @@ public class REventHandler {
 
 		BlockPos spawnPoint = world.getSpawnPoint();
 		int current = world.countEntities(ThatchEntity.class);
-		int max = 35 * chunks / MOB_COUNT_DIV;
+		int max = 10 * chunks;
 
 		for (ChunkPos chunkcoordintpair : eligibleChunksForSpawning) {
 			if (current > max)
 				break;
 
-			if (world.rand.nextFloat() < 0.8f) {
+			if (world.rand.nextFloat() < 0.1f) {
 				BlockPos blockpos = getRandomChunkPosition(world, chunkcoordintpair.chunkXPos,
 						chunkcoordintpair.chunkZPos);
 				BlockPos waterBlock = null;
@@ -264,7 +246,7 @@ public class REventHandler {
 					int y = waterBlock.getY();
 					int z = waterBlock.getZ();
 
-					if (spawnPoint.distanceSq((double) x, (double) y, (double) z) >= 4.0 * 4.0) {
+					if (spawnPoint.distanceSq((double) x, (double) y, (double) z) >= 2.0 * 2.0) {
 						Biome biome = world.getBiome(waterBlock);
 						int bg = 0;
 						if (Biome.getIdForBiome(biome) == Biome.getIdForBiome(Biomes.OCEAN)
@@ -273,12 +255,10 @@ public class REventHandler {
 							entity.setLocationAndAngles((double) x + 0.5, (double) y + 0.5, (double) z + 0.5, 0.0F,
 									0.0F);
 
-							
-								current++;
+							current++;
 
-								world.spawnEntityInWorld(entity);
-								
-							
+							world.spawnEntityInWorld(entity);
+
 						}
 					}
 				}
@@ -311,13 +291,13 @@ public class REventHandler {
 
 		BlockPos spawnPoint = world.getSpawnPoint();
 		int current = world.countEntities(PlankEntity.class);
-		int max = 35 * chunks / MOB_COUNT_DIV;
+		int max = 10 * chunks;
 
 		for (ChunkPos chunkcoordintpair : eligibleChunksForSpawning) {
 			if (current > max)
 				break;
 
-			if (world.rand.nextFloat() < 0.8f) {
+			if (world.rand.nextFloat() < 0.1f) {
 				BlockPos blockpos = getRandomChunkPosition(world, chunkcoordintpair.chunkXPos,
 						chunkcoordintpair.chunkZPos);
 				BlockPos waterBlock = null;
@@ -340,7 +320,7 @@ public class REventHandler {
 					int y = waterBlock.getY();
 					int z = waterBlock.getZ();
 
-					if (spawnPoint.distanceSq((double) x, (double) y, (double) z) >= 4.0 * 4.0) {
+					if (spawnPoint.distanceSq((double) x, (double) y, (double) z) >= 2.0 * 2.0) {
 						Biome biome = world.getBiome(waterBlock);
 						int bg = 0;
 						if (Biome.getIdForBiome(biome) == Biome.getIdForBiome(Biomes.OCEAN)
@@ -349,12 +329,10 @@ public class REventHandler {
 							entity.setLocationAndAngles((double) x + 0.5, (double) y + 0.5, (double) z + 0.5, 0.0F,
 									0.0F);
 
-							
-								current++;
-								
-								world.spawnEntityInWorld(entity);
-							
-							
+							current++;
+
+							world.spawnEntityInWorld(entity);
+
 						}
 					}
 				}
@@ -387,13 +365,13 @@ public class REventHandler {
 
 		BlockPos spawnPoint = world.getSpawnPoint();
 		int current = world.countEntities(ScrapEntity.class);
-		int max = 35 * chunks / MOB_COUNT_DIV;
+		int max = 10 * chunks;
 
 		for (ChunkPos chunkcoordintpair : eligibleChunksForSpawning) {
 			if (current > max)
 				break;
 
-			if (world.rand.nextFloat() < 0.8f) {
+			if (world.rand.nextFloat() < 0.1f) {
 				BlockPos blockpos = getRandomChunkPosition(world, chunkcoordintpair.chunkXPos,
 						chunkcoordintpair.chunkZPos);
 				BlockPos waterBlock = null;
@@ -416,7 +394,7 @@ public class REventHandler {
 					int y = waterBlock.getY();
 					int z = waterBlock.getZ();
 
-					if (spawnPoint.distanceSq((double) x, (double) y, (double) z) >= 4.0 * 4.0) {
+					if (spawnPoint.distanceSq((double) x, (double) y, (double) z) >= 2.0 * 2.0) {
 						Biome biome = world.getBiome(waterBlock);
 						int bg = 0;
 						if (Biome.getIdForBiome(biome) == Biome.getIdForBiome(Biomes.OCEAN)
@@ -425,11 +403,10 @@ public class REventHandler {
 							entity.setLocationAndAngles((double) x + 0.5, (double) y + 0.5, (double) z + 0.5, 0.0F,
 									0.0F);
 
-							
-								current++;
-								
-								world.spawnEntityInWorld(entity);
-								
+							current++;
+
+							world.spawnEntityInWorld(entity);
+
 						}
 					}
 				}

@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import org.lwjgl.util.vector.Quaternion;
 
 import com.epiicthundercat.raft.client.renderer.RenderPlank;
-import com.epiicthundercat.raft.client.renderer.RenderThatch;
 import com.epiicthundercat.raft.init.REventHandler;
 import com.epiicthundercat.raft.init.RItems;
 import com.epiicthundercat.raft.init.barrel.BarrelLoot;
@@ -25,6 +24,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -199,19 +199,19 @@ public class ThatchEntity extends Entity {
 				this.setTimeSinceHit(10);
 				this.setDamageTaken(this.getDamageTaken() + amount * 10.0F);
 				this.setBeenAttacked();
-				// if (source.getEntity() instanceof EntityPlayer) {
+				
 				boolean flag = source.getEntity() instanceof EntityPlayer
 						&& ((EntityPlayer) source.getEntity()).capabilities.isCreativeMode;
 
 				EntityPlayer player = (EntityPlayer) source.getEntity();
 
-				// if (this.getDamageTaken() > 5.0F) {
+				
 				if (flag || this.getDamageTaken() > 5.0F) {
 
-					// if (!player.capabilities.isCreativeMode) {
+					
 					if (!flag && this.worldObj.getGameRules().getBoolean("doEntityDrops")) {
 						BlockPos pos = getPosition();
-						this.extractItems(worldObj, pos, player);
+						this.dropItems(worldObj, pos);
 					}
 
 					this.setDead();
@@ -279,7 +279,6 @@ public class ThatchEntity extends Entity {
 	public EnumFacing getAdjustedHorizontalFacing() {
 		return this.getHorizontalFacing().rotateY();
 	}
-
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
@@ -296,7 +295,6 @@ public class ThatchEntity extends Entity {
 		} else {
 			if (!this.isInWater())
 				this.motionY -= 0.012;
-		
 
 			double x = this.motionX;
 			double y = this.motionY;
@@ -304,12 +302,12 @@ public class ThatchEntity extends Entity {
 
 			boolean ground = onGround;
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
-			float windX = 0.068F;
-			float windZ = 0.068F;
+			float windX = 0.08F;
+			float windZ = 0.08F;
 			if (this.isInWater()) {
-				this.motionY += 0.0068;
-				this.motionX *= 0.88;
-				this.motionZ *= 0.88;
+				this.motionY += 0.0045;
+				this.motionX += 0.0015;
+				this.motionZ += 0.0015;
 			} else if (windX != 0 || windZ != 0) {
 				this.motionX = windX;
 				this.motionZ = windZ;
@@ -340,29 +338,28 @@ public class ThatchEntity extends Entity {
 
 			// Bounce on walls
 			if (this.isCollidedHorizontally) {
-				this.motionX = -x * 0.004;
-				this.motionZ = -z * 0.004;
-			
+				this.motionX = -x * 0.054;
+				this.motionZ = -z * 0.054;
 
-			this.motionX *= 0.98;
-			this.motionY *= 0.98;
-			this.motionZ *= 0.98;
+				this.motionX += 0.028;
+				this.motionY += 0.0008;
+				this.motionZ += 0.018;
 
-			if (Math.abs(this.motionX) < 0.005)
-				this.motionX = 0.0;
+				if (Math.abs(this.motionX) < 0.005)
+					this.motionX = 0.0;
 
-			if (Math.abs(this.motionY) < 0.005)
-				this.motionY = 0.0;
+				if (Math.abs(this.motionY) < 0.005)
+					this.motionY = 0.0;
 
-			if (Math.abs(this.motionZ) < 0.005)
-				this.motionZ = 0.0;
-			
-			collideWithNearbyEntities();
+				if (Math.abs(this.motionZ) < 0.005)
+					this.motionZ = 0.0;
+
+				collideWithNearbyEntities();
 			}
 			if (!this.worldObj.isRemote) {
 				this.age++;
 				despawnEntity();
-				
+
 			}
 
 		}
@@ -627,8 +624,23 @@ public class ThatchEntity extends Entity {
 		}
 	}
 
+	private void dropItems(World world, BlockPos pos) {
+		for (int i = 0; i < MathHelper.getRandomIntegerInRange(world.rand, 1, 1); i++) {
+			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.thatch_loot);
+			ItemStack itemStack = returns.returnItem.copy();
+			float dX = world.rand.nextFloat() * 0.8F + 0.1F;
+			float dY = world.rand.nextFloat() * 0.8F + 0.1F;
+			float dZ = world.rand.nextFloat() * 0.8F + 0.1F;
+			EntityItem entityItem = new EntityItem(world, pos.getX() + dX, pos.getY() + dY, pos.getZ() + dZ, itemStack);
+			float factor = 0.05F;
+			entityItem.motionX = world.rand.nextGaussian() * factor;
+			entityItem.motionY = world.rand.nextGaussian() * factor + 0.2F;
+			entityItem.motionZ = world.rand.nextGaussian() * factor;
+			world.spawnEntityInWorld(entityItem);
+		}
+	}
 	private void extractItems(World world, BlockPos pos, EntityPlayer player) {
-		for (int i = 0; i < MathHelper.getRandomIntegerInRange(world.rand, 3, 6); i++) {
+		for (int i = 0; i < MathHelper.getRandomIntegerInRange(world.rand, 1, 1); i++) {
 			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.thatch_loot);
 			ItemStack itemStack = returns.returnItem.copy();
 			if (itemStack != null)
@@ -999,7 +1011,7 @@ public class ThatchEntity extends Entity {
 		if (!getCanDespawn()) {
 			this.age = 0;
 		} else {
-			Entity entity = this.worldObj.getClosestPlayerToEntity(this, -1.0D);
+			Entity entity = this.worldObj.getClosestPlayerToEntity(this, -0.1D);
 
 			if (entity != null) {
 				double d0 = entity.posX - this.posX;
@@ -1007,7 +1019,7 @@ public class ThatchEntity extends Entity {
 				double d2 = entity.posZ - this.posZ;
 				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 
-				if (d3 > 110 * 110)
+				if (d3 > 32 * 32)
 					this.setDead();
 			}
 

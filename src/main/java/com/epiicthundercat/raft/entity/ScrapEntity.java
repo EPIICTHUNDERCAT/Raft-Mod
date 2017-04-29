@@ -25,6 +25,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -49,7 +50,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ScrapEntity extends Entity{
+public class ScrapEntity extends Entity {
 	private static final DataParameter<Integer> TIME_SINCE_HIT = EntityDataManager.<Integer>createKey(ScrapEntity.class,
 			DataSerializers.VARINT);
 	private static final DataParameter<Integer> FORWARD_DIRECTION = EntityDataManager
@@ -67,7 +68,6 @@ public class ScrapEntity extends Entity{
 	private static final DataParameter<Float> CUSTOM_WIND_Z = EntityDataManager.createKey(ScrapEntity.class,
 			DataSerializers.FLOAT);
 	private static final float BASE_SIZE = 0.75f;
-	
 
 	/** How much of current speed to retain. Value zero to one. */
 	private float momentum;
@@ -84,7 +84,7 @@ public class ScrapEntity extends Entity{
 	private boolean forwardInputDown;
 	private boolean backInputDown;
 	private double waterLevel;
-	
+
 	private int age;
 	public float rot1, rot2, rot3;
 	private int groundTicks;
@@ -96,12 +96,7 @@ public class ScrapEntity extends Entity{
 	public Quaternion prevQuat;
 	private float windModX, windModZ;
 	private int nextStepDistance;
-	
-	
-	
-	
-	
-	
+
 	/**
 	 * How much the Scrap should glide given the slippery blocks it's currently
 	 * gliding over. Halved every tick.
@@ -148,8 +143,6 @@ public class ScrapEntity extends Entity{
 		return false;
 	}
 
-	
-
 	protected void entityInit() {
 		this.dataManager.register(TIME_SINCE_HIT, Integer.valueOf(0));
 		this.dataManager.register(FORWARD_DIRECTION, Integer.valueOf(1));
@@ -159,13 +152,13 @@ public class ScrapEntity extends Entity{
 		this.dataManager.register(CUSTOM_WIND_ENABLED, false);
 		this.dataManager.register(CUSTOM_WIND_X, 0f);
 		this.dataManager.register(CUSTOM_WIND_Z, 0f);
-		
+
 	}
 
 	/**
 	 * Returns a boundingBox used to collide the entity with other entities and
-	 * blocks. This enables the entity to be pushable on contact, like Scraps
-	 * or minecarts.
+	 * blocks. This enables the entity to be pushable on contact, like Scraps or
+	 * minecarts.
 	 */
 	@Nullable
 	public AxisAlignedBB getCollisionBox(Entity entityIn) {
@@ -204,19 +197,17 @@ public class ScrapEntity extends Entity{
 				this.setTimeSinceHit(10);
 				this.setDamageTaken(this.getDamageTaken() + amount * 10.0F);
 				this.setBeenAttacked();
-				// if (source.getEntity() instanceof EntityPlayer) {
+
 				boolean flag = source.getEntity() instanceof EntityPlayer
 						&& ((EntityPlayer) source.getEntity()).capabilities.isCreativeMode;
 
 				EntityPlayer player = (EntityPlayer) source.getEntity();
 
-				// if (this.getDamageTaken() > 5.0F) {
 				if (flag || this.getDamageTaken() > 5.0F) {
 
-					// if (!player.capabilities.isCreativeMode) {
 					if (!flag && this.worldObj.getGameRules().getBoolean("doEntityDrops")) {
 						BlockPos pos = getPosition();
-						this.extractItems(worldObj, pos, player);
+						this.dropItems(worldObj, pos);
 					}
 
 					this.setDead();
@@ -242,8 +233,6 @@ public class ScrapEntity extends Entity{
 			super.applyEntityCollision(entityIn);
 		}
 	}
-
-	
 
 	/**
 	 * Setups the entity to do the hurt animation. Only used by packets in
@@ -287,7 +276,6 @@ public class ScrapEntity extends Entity{
 		return this.getHorizontalFacing().rotateY();
 	}
 
-
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
@@ -304,7 +292,6 @@ public class ScrapEntity extends Entity{
 		} else {
 			if (!this.isInWater())
 				this.motionY -= 0.012;
-		
 
 			double x = this.motionX;
 			double y = this.motionY;
@@ -315,9 +302,9 @@ public class ScrapEntity extends Entity{
 			float windX = 0.08F;
 			float windZ = 0.08F;
 			if (this.isInWater()) {
-				this.motionY += 0.007;
-				this.motionX *= 0.95;
-				this.motionZ *= 0.95;
+				this.motionY += 0.0045;
+				this.motionX += 0.0015;
+				this.motionZ += 0.0015;
 			} else if (windX != 0 || windZ != 0) {
 				this.motionX = windX;
 				this.motionZ = windZ;
@@ -348,35 +335,32 @@ public class ScrapEntity extends Entity{
 
 			// Bounce on walls
 			if (this.isCollidedHorizontally) {
-				this.motionX = -x * 0.004;
-				this.motionZ = -z * 0.004;
-			
+				this.motionX = -x * 0.054;
+				this.motionZ = -z * 0.054;
 
-			this.motionX *= 0.98;
-			this.motionY *= 0.98;
-			this.motionZ *= 0.98;
+				this.motionX += 0.028;
+				this.motionY += 0.0008;
+				this.motionZ += 0.018;
 
-			if (Math.abs(this.motionX) < 0.005)
-				this.motionX = 0.0;
+				if (Math.abs(this.motionX) < 0.005)
+					this.motionX = 0.0;
 
-			if (Math.abs(this.motionY) < 0.005)
-				this.motionY = 0.0;
+				if (Math.abs(this.motionY) < 0.005)
+					this.motionY = 0.0;
 
-			if (Math.abs(this.motionZ) < 0.005)
-				this.motionZ = 0.0;
-			
-			collideWithNearbyEntities();
+				if (Math.abs(this.motionZ) < 0.005)
+					this.motionZ = 0.0;
+
+				collideWithNearbyEntities();
 			}
 			if (!this.worldObj.isRemote) {
 				this.age++;
 				despawnEntity();
-				
+
 			}
 
 		}
 	}
-
-
 	private void tickLerp() {
 		if (this.lerpSteps > 0) {
 			double d0 = this.posX + (this.ScrapPitch - this.posX) / (double) this.lerpSteps;
@@ -651,17 +635,30 @@ public class ScrapEntity extends Entity{
 		}
 	}
 
-	
+	private void dropItems(World world, BlockPos pos) {
+		for (int i = 0; i < MathHelper.getRandomIntegerInRange(world.rand, 1, 1); i++) {
+			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.scrap_loot);
+			ItemStack itemStack = returns.returnItem.copy();
+			float dX = world.rand.nextFloat() * 0.8F + 0.1F;
+			float dY = world.rand.nextFloat() * 0.8F + 0.1F;
+			float dZ = world.rand.nextFloat() * 0.8F + 0.1F;
+			EntityItem entityItem = new EntityItem(world, pos.getX() + dX, pos.getY() + dY, pos.getZ() + dZ, itemStack);
+			float factor = 0.05F;
+			entityItem.motionX = world.rand.nextGaussian() * factor;
+			entityItem.motionY = world.rand.nextGaussian() * factor + 0.2F;
+			entityItem.motionZ = world.rand.nextGaussian() * factor;
+			world.spawnEntityInWorld(entityItem);
+		}
+	}
 
-	
 	private void extractItems(World world, BlockPos pos, EntityPlayer player) {
-		for (int i = 0; i < MathHelper.getRandomIntegerInRange(world.rand, 3, 6); i++) {
+		for (int i = 0; i < MathHelper.getRandomIntegerInRange(world.rand, 1, 1); i++) {
 			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.scrap_loot);
 			ItemStack itemStack = returns.returnItem.copy();
 
 			if (itemStack != null)
 				player.inventory.addItemStackToInventory(itemStack);
-			
+
 		}
 
 	}
@@ -748,7 +745,6 @@ public class ScrapEntity extends Entity{
 				f -= 0.005F;
 			}
 
-		
 		}
 	}
 
@@ -794,13 +790,9 @@ public class ScrapEntity extends Entity{
 		return ((Integer) this.dataManager.get(FORWARD_DIRECTION)).intValue();
 	}
 
-	
-
 	public static enum Status {
 		IN_WATER, UNDER_WATER, UNDER_FLOWING_WATER, ON_LAND, IN_AIR;
 	}
-
-
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
@@ -1033,7 +1025,7 @@ public class ScrapEntity extends Entity{
 		if (!getCanDespawn()) {
 			this.age = 0;
 		} else {
-			Entity entity = this.worldObj.getClosestPlayerToEntity(this, -1.0D);
+			Entity entity = this.worldObj.getClosestPlayerToEntity(this, -0.1D);
 
 			if (entity != null) {
 				double d0 = entity.posX - this.posX;
@@ -1041,7 +1033,7 @@ public class ScrapEntity extends Entity{
 				double d2 = entity.posZ - this.posZ;
 				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 
-				if (d3 > 110 * 110)
+				if (d3 > 32 * 32)
 					this.setDead();
 			}
 
@@ -1063,8 +1055,10 @@ public class ScrapEntity extends Entity{
 	public boolean getCustomWindEnabled() {
 		return this.dataManager.get(CUSTOM_WIND_ENABLED);
 	}
-	public boolean isNotColliding()
-	{
-		return this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.containsAnyLiquid(this.getEntityBoundingBox());
+
+	public boolean isNotColliding() {
+		return this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this)
+				&& this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty()
+				&& !this.worldObj.containsAnyLiquid(this.getEntityBoundingBox());
 	}
 }
