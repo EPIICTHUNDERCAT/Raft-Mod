@@ -8,9 +8,11 @@ import com.epiicthundercat.raft.init.REventHandler;
 import com.epiicthundercat.raft.init.RItems;
 import com.epiicthundercat.raft.init.RRecipes;
 import com.epiicthundercat.raft.init.barrel.BarrelLootAdd;
+import com.epiicthundercat.raft.integration.TANIntegration;
 import com.epiicthundercat.raft.rafttileentitity.TileEntityRegistry;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -39,7 +41,10 @@ public class CommonProxy {
 		RRecipes.register(preEvent);
 		
 		MinecraftForge.EVENT_BUS.register(new REventHandler());
-		
+		if (Loader.isModLoaded("ToughAsNails")) {
+			MinecraftForge.EVENT_BUS.register(new TANIntegration());
+			
+		}
 		NetworkRegistry.INSTANCE.registerGuiHandler(Raft.instance, new RGuiHandler());
 		
 	

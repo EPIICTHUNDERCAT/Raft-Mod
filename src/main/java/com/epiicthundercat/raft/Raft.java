@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VER)
+@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VER, dependencies = Reference.DEPENDENCIES)
 public class Raft {
 	public static float windX = 0.07f;
 	public static float windZ = -0.07f;

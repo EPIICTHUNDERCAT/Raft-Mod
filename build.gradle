@@ -1,3 +1,6 @@
+
+
+
 buildscript {
     repositories {
         jcenter()
@@ -11,7 +14,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 
 
-version = "1.0"
+version = "0.0.4BETA"
 group= "com.yourname.modid" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "raft-1.10.2-"
 
@@ -21,7 +24,7 @@ compileJava {
 }
 
 minecraft {
-    version = "1.10.2-12.18.3.2185"
+    version = "1.10.2-12.18.3.2297"
     runDir = "run"
     
     // the mappings can be changed at any time, and must be in the following format.
@@ -45,11 +48,17 @@ dependencies {
 
     // the 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
     //provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+    
+    
+    
+provided files('build/libs/ToughAsNails-1.9.4-1.1.1.jar')
+
+
 
     // the deobf configurations:  'deobfCompile' and 'deobfProvided' are the same as the normal compile and provided,
     // except that these dependencies get remapped to your current MCP mappings
     //deobfCompile 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-    //deobfProvided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+    //deobfProvided 'com.mod-buildcraft:buildcraft:1.1.1'
 
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
@@ -76,3 +85,5 @@ processResources
         exclude 'mcmod.info'
     }
 }
+ 
+  
