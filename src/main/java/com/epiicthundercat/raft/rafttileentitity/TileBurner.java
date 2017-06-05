@@ -33,10 +33,10 @@ public class TileBurner extends TileEntity implements ITickable {
 		}
 
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			if ((!stack.isEmpty()) && ((stack.getItem() instanceof ItemFood))
-					&& (FurnaceRecipes.instance().getSmeltingResult(stack) != null)
-					&& ((FurnaceRecipes.instance().getSmeltingResult(stack).getItem() instanceof ItemFood))) {
-				return super.insertItem(slot, stack, simulate);
+			 if ((stack != null) && ((stack.getItem() instanceof ItemFood)) && 
+				        (FurnaceRecipes.instance().getSmeltingResult(stack) != null) && 
+				        ((FurnaceRecipes.instance().getSmeltingResult(stack).getItem() instanceof ItemFood))) {
+				        return super.insertItem(slot, stack, simulate);
 			}
 			return stack;
 		}
@@ -76,23 +76,24 @@ public class TileBurner extends TileEntity implements ITickable {
 		}
 		return false;
 	}
-
+@Override
 	public void update() {
 		if (!this.world.isRemote) {
 			if ((isCooking()) && (canCookAnything())) {
-				this.cookTimeRemaining -= 1;
+				this.cookTimeRemaining--;
 				if (this.cookTimeRemaining <= 0) {
-					for (int i = 0; i < inventory().getSlots(); i++) {
-						ItemStack stack = this.items.getStackInSlot(i);
-						if (!getCookingResult(stack).isEmpty()) {
-							this.items.setStackInSlot(i, getCookingResult(stack));
-						}
-					}
+					 for (int i = 0; i < inventory().getSlots(); i++)
+			          {
+			            ItemStack stack = this.items.getStackInSlot(i);
+			            if (!getCookingResult(stack).isEmpty()) {
+			              this.items.setStackInSlot(i, getCookingResult(stack));
+			            }
+			          }
 					this.cookTimeRemaining = 300;
 				}
 				markDirty();
 			} else if (this.cookTimeRemaining < 300) {
-				this.cookTimeRemaining += 1;
+				this.cookTimeRemaining++;
 				markDirty();
 			}
 		}
@@ -110,34 +111,34 @@ public class TileBurner extends TileEntity implements ITickable {
 		}
 		return false;
 	}
-
+	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return true;
 		}
 		return super.hasCapability(capability, facing);
 	}
-
+	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			 return (T) this.items;
 		}
 		return (T) super.getCapability(capability, facing);
 	}
-
+	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound = super.writeToNBT(compound);
 		compound.setTag("Items", this.items.serializeNBT());
 		compound.setInteger("CookTime", (short) this.cookTimeRemaining);
 		return compound;
 	}
-
+	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		this.items.deserializeNBT(compound.getCompoundTag("Items"));
 		this.cookTimeRemaining = compound.getInteger("CookTime");
 	}
-
+	
 	public IItemHandler inventory() {
 		return this.items;
 	}
