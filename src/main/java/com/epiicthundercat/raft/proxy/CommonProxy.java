@@ -41,11 +41,11 @@ public class CommonProxy {
 		RRecipes.register(preEvent);
 		
 		MinecraftForge.EVENT_BUS.register(new REventHandler());
-		if (Loader.isModLoaded("ToughAsNails")) {
+		if (Loader.isModLoaded("toughasnails")) {
 			MinecraftForge.EVENT_BUS.register(new TANIntegration());
 			
 		}
-		NetworkRegistry.INSTANCE.registerGuiHandler(Raft.instance, new RGuiHandler());
+	//	NetworkRegistry.INSTANCE.registerGuiHandler(Raft.instance, new RGuiHandler());
 		
 	
 

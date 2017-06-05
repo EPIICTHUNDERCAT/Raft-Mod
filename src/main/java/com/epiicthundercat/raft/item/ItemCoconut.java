@@ -44,7 +44,7 @@ public class ItemCoconut extends ItemBucketMilk {
 		EntityPlayer entityplayer = entityLiving instanceof EntityPlayer ? (EntityPlayer) entityLiving : null;
 
 		if (entityplayer == null || !entityplayer.capabilities.isCreativeMode) {
-			--stack.stackSize;
+			stack.shrink(1);
 		}
 
 		if (!worldIn.isRemote) {
@@ -58,7 +58,7 @@ public class ItemCoconut extends ItemBucketMilk {
 		}
 
 		if (entityplayer == null || !entityplayer.capabilities.isCreativeMode) {
-			if (stack.stackSize <= 0) {
+			if (stack.getCount() <= 0) {
 				return new ItemStack(RItems.coconut_shell);
 			}
 
@@ -85,9 +85,10 @@ public class ItemCoconut extends ItemBucketMilk {
 		return EnumAction.DRINK;
 	}
 
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn,
-			EnumHand hand) {
-		playerIn.setActiveHand(hand);
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn,
+			EnumHand handIn) {
+		ItemStack itemStackIn = playerIn.getHeldItem(handIn);
+		playerIn.setActiveHand(handIn);
 		return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
 	}
 	

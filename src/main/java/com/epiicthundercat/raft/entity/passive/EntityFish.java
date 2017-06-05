@@ -87,7 +87,7 @@ public class EntityFish extends EntityAnimal {
 	}
 
 	public static void registerFixesFish(DataFixer fixer) {
-		EntityLiving.registerFixesMob(fixer, "Fish");
+		EntityLiving.registerFixesMob(fixer, EntityFish.class);
 	}
 
 	@Override
@@ -97,19 +97,19 @@ public class EntityFish extends EntityAnimal {
 	}
 
 	public void onLivingUpdate() {
-		if (this.worldObj.isRemote) {
+		if (this.world.isRemote) {
 			this.clientSideTailAnimationO = this.clientSideTailAnimation;
 
 			if (!this.isInWater()) {
 				this.clientSideTailAnimationSpeed = 2.0F;
 
 				if (this.motionY > 0.0D && this.clientSideTouchedGround && !this.isSilent()) {
-					this.worldObj.playSound(this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GUARDIAN_FLOP,
+					this.world.playSound(this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GUARDIAN_FLOP,
 							this.getSoundCategory(), 1.0F, 1.0F, false);
 				}
 
 				this.clientSideTouchedGround = this.motionY < 0.0D
-						&& this.worldObj.isBlockNormalCube((new BlockPos(this)).down(), false);
+						&& this.world.isBlockNormalCube((new BlockPos(this)).down(), false);
 			} else if (this.isMoving()) {
 				if (this.clientSideTailAnimationSpeed < 0.5F) {
 					this.clientSideTailAnimationSpeed = 4.0F;
@@ -126,7 +126,7 @@ public class EntityFish extends EntityAnimal {
 				Vec3d vec3d = this.getLook(0.0F);
 
 				for (int i = 0; i < 2; ++i) {
-					this.worldObj.spawnParticle(EnumParticleTypes.WATER_BUBBLE,
+					this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE,
 							this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width - vec3d.xCoord * 1.5D,
 							this.posY + this.rand.nextDouble() * (double) this.height - vec3d.yCoord * 1.5D,
 							this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width - vec3d.zCoord * 1.5D,
@@ -170,7 +170,7 @@ public class EntityFish extends EntityAnimal {
 				double d1 = this.posY - this.EntityFish.posY;
 				double d2 = this.posZ - this.EntityFish.posZ;
 				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-				d3 = (double) MathHelper.sqrt_double(d3);
+				d3 = (double) MathHelper.sqrt(d3);
 				d1 = d1 / d3;
 				float f = (float) (MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F;
 				this.EntityFish.rotationYaw = this.limitAngle(this.EntityFish.rotationYaw, f, 90.0F);
@@ -275,7 +275,7 @@ public class EntityFish extends EntityAnimal {
 	}
 
 	private int getRandomFishType() {
-		Biome biome = this.worldObj.getBiome(new BlockPos(this));
+		Biome biome = this.world.getBiome(new BlockPos(this));
 		int i = this.rand.nextInt(100);
 		return biome.isSnowyBiome() ? (i < 80 ? 1 : 3)
 				: (biome instanceof BiomeOcean ? 4 : (i < 50 ? 0 : (i < 90 ? 5 : 2)));

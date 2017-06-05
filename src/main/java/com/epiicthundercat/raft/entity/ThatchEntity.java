@@ -112,13 +112,13 @@ public class ThatchEntity extends Entity {
 
 		this.preventEntitySpawning = true;
 		this.setSize(1F, 0.9F);
-		this.windModX = 1.2f - 0.4f * worldObj.rand.nextFloat();
-		this.windModZ = 1.2f - 0.4f * worldObj.rand.nextFloat();
+		this.windModX = 1.2f - 0.4f * world.rand.nextFloat();
+		this.windModZ = 1.2f - 0.4f * world.rand.nextFloat();
 
-		if (this.worldObj.isRemote) {
-			this.rot1 = 360f * worldObj.rand.nextFloat();
-			this.rot2 = 360f * worldObj.rand.nextFloat();
-			this.rot3 = 360f * worldObj.rand.nextFloat();
+		if (this.world.isRemote) {
+			this.rot1 = 360f * world.rand.nextFloat();
+			this.rot2 = 360f * world.rand.nextFloat();
+			this.rot3 = 360f * world.rand.nextFloat();
 
 			this.quat = new Quaternion();
 			this.prevQuat = new Quaternion();
@@ -149,7 +149,7 @@ public class ThatchEntity extends Entity {
 		this.dataManager.register(FORWARD_DIRECTION, Integer.valueOf(1));
 		this.dataManager.register(DAMAGE_TAKEN, Float.valueOf(0.0F));
 		this.dataManager.register(CAN_DESPAWN, true);
-		this.dataManager.register(SIZE, -2 + worldObj.rand.nextInt(5));
+		this.dataManager.register(SIZE, -2 + world.rand.nextInt(5));
 		this.dataManager.register(CUSTOM_WIND_ENABLED, false);
 		this.dataManager.register(CUSTOM_WIND_X, 0f);
 		this.dataManager.register(CUSTOM_WIND_Z, 0f);
@@ -191,7 +191,7 @@ public class ThatchEntity extends Entity {
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 		if (this.isEntityInvulnerable(source)) {
 			return false;
-		} else if (!this.worldObj.isRemote && !this.isDead) {
+		} else if (!this.world.isRemote && !this.isDead) {
 			if (source instanceof EntityDamageSourceIndirect && source.getEntity() != null) {
 				return false;
 			} else {
@@ -209,9 +209,9 @@ public class ThatchEntity extends Entity {
 				if (flag || this.getDamageTaken() > 5.0F) {
 
 					
-					if (!flag && this.worldObj.getGameRules().getBoolean("doEntityDrops")) {
+					if (!flag && this.world.getGameRules().getBoolean("doEntityDrops")) {
 						BlockPos pos = getPosition();
-						this.dropItems(worldObj, pos);
+						this.dropItems(world, pos);
 					}
 
 					this.setDead();
@@ -314,7 +314,7 @@ public class ThatchEntity extends Entity {
 			}
 
 			// Rotate
-			if (this.worldObj.isRemote) {
+			if (this.world.isRemote) {
 				groundTicks--;
 
 				if ((!ground && onGround) || isInWater())
@@ -356,7 +356,7 @@ public class ThatchEntity extends Entity {
 
 				collideWithNearbyEntities();
 			}
-			if (!this.worldObj.isRemote) {
+			if (!this.world.isRemote) {
 				this.age++;
 				despawnEntity();
 
@@ -390,12 +390,12 @@ public class ThatchEntity extends Entity {
 
 	public float getWaterLevelAbove() {
 		AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
-		int i = MathHelper.floor_double(axisalignedbb.minX);
-		int j = MathHelper.ceiling_double_int(axisalignedbb.maxX);
-		int k = MathHelper.floor_double(axisalignedbb.maxY);
-		int l = MathHelper.ceiling_double_int(axisalignedbb.maxY - this.lastYd);
-		int i1 = MathHelper.floor_double(axisalignedbb.minZ);
-		int j1 = MathHelper.ceiling_double_int(axisalignedbb.maxZ);
+		int i = MathHelper.floor(axisalignedbb.minX);
+		int j = MathHelper.ceil(axisalignedbb.maxX);
+		int k = MathHelper.floor(axisalignedbb.maxY);
+		int l = MathHelper.ceil(axisalignedbb.maxY - this.lastYd);
+		int i1 = MathHelper.floor(axisalignedbb.minZ);
+		int j1 = MathHelper.ceil(axisalignedbb.maxZ);
 		BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain();
 
 		try {
@@ -417,11 +417,11 @@ public class ThatchEntity extends Entity {
 
 					for (int i2 = i1; i2 < j1; ++i2) {
 						blockpos$pooledmutableblockpos.setPos(l1, k1, i2);
-						IBlockState iblockstate = this.worldObj.getBlockState(blockpos$pooledmutableblockpos);
+						IBlockState iblockstate = this.world.getBlockState(blockpos$pooledmutableblockpos);
 
 						if (iblockstate.getMaterial() == Material.WATER) {
 							f = Math.max(f,
-									getBlockLiquidHeight(iblockstate, this.worldObj, blockpos$pooledmutableblockpos));
+									getBlockLiquidHeight(iblockstate, this.world, blockpos$pooledmutableblockpos));
 						}
 
 						if (f >= 1.0F) {
@@ -448,12 +448,12 @@ public class ThatchEntity extends Entity {
 		AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
 		AxisAlignedBB axisalignedbb1 = new AxisAlignedBB(axisalignedbb.minX, axisalignedbb.minY - 0.001D,
 				axisalignedbb.minZ, axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
-		int i = MathHelper.floor_double(axisalignedbb1.minX) - 1;
-		int j = MathHelper.ceiling_double_int(axisalignedbb1.maxX) + 1;
-		int k = MathHelper.floor_double(axisalignedbb1.minY) - 1;
-		int l = MathHelper.ceiling_double_int(axisalignedbb1.maxY) + 1;
-		int i1 = MathHelper.floor_double(axisalignedbb1.minZ) - 1;
-		int j1 = MathHelper.ceiling_double_int(axisalignedbb1.maxZ) + 1;
+		int i = MathHelper.floor(axisalignedbb1.minX) - 1;
+		int j = MathHelper.ceil(axisalignedbb1.maxX) + 1;
+		int k = MathHelper.floor(axisalignedbb1.minY) - 1;
+		int l = MathHelper.ceil(axisalignedbb1.maxY) + 1;
+		int i1 = MathHelper.floor(axisalignedbb1.minZ) - 1;
+		int j1 = MathHelper.ceil(axisalignedbb1.maxZ) + 1;
 		List<AxisAlignedBB> list = Lists.<AxisAlignedBB>newArrayList();
 		float f = 0.0F;
 		int k1 = 0;
@@ -468,9 +468,9 @@ public class ThatchEntity extends Entity {
 						for (int k2 = k; k2 < l; ++k2) {
 							if (j2 <= 0 || k2 != k && k2 != l - 1) {
 								blockpos$pooledmutableblockpos.setPos(l1, k2, i2);
-								IBlockState iblockstate = this.worldObj.getBlockState(blockpos$pooledmutableblockpos);
-								iblockstate.addCollisionBoxToList(this.worldObj, blockpos$pooledmutableblockpos,
-										axisalignedbb1, list, this);
+								IBlockState iblockstate = this.world.getBlockState(blockpos$pooledmutableblockpos);
+								iblockstate.addCollisionBoxToList(this.world, blockpos$pooledmutableblockpos,
+										axisalignedbb1, list, this, true);
 
 								if (!list.isEmpty()) {
 									f += iblockstate.getBlock().slipperiness;
@@ -492,12 +492,12 @@ public class ThatchEntity extends Entity {
 
 	private boolean checkInWater() {
 		AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
-		int i = MathHelper.floor_double(axisalignedbb.minX);
-		int j = MathHelper.ceiling_double_int(axisalignedbb.maxX);
-		int k = MathHelper.floor_double(axisalignedbb.minY);
-		int l = MathHelper.ceiling_double_int(axisalignedbb.minY + 0.001D);
-		int i1 = MathHelper.floor_double(axisalignedbb.minZ);
-		int j1 = MathHelper.ceiling_double_int(axisalignedbb.maxZ);
+		int i = MathHelper.floor(axisalignedbb.minX);
+		int j = MathHelper.ceil(axisalignedbb.maxX);
+		int k = MathHelper.floor(axisalignedbb.minY);
+		int l = MathHelper.ceil(axisalignedbb.minY + 0.001D);
+		int i1 = MathHelper.floor(axisalignedbb.minZ);
+		int j1 = MathHelper.ceil(axisalignedbb.maxZ);
 		boolean flag = false;
 		this.waterLevel = Double.MIN_VALUE;
 		BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain();
@@ -507,10 +507,10 @@ public class ThatchEntity extends Entity {
 				for (int l1 = k; l1 < l; ++l1) {
 					for (int i2 = i1; i2 < j1; ++i2) {
 						blockpos$pooledmutableblockpos.setPos(k1, l1, i2);
-						IBlockState iblockstate = this.worldObj.getBlockState(blockpos$pooledmutableblockpos);
+						IBlockState iblockstate = this.world.getBlockState(blockpos$pooledmutableblockpos);
 
 						if (iblockstate.getMaterial() == Material.WATER) {
-							float f = getLiquidHeight(iblockstate, this.worldObj, blockpos$pooledmutableblockpos);
+							float f = getLiquidHeight(iblockstate, this.world, blockpos$pooledmutableblockpos);
 							this.waterLevel = Math.max((double) f, this.waterLevel);
 							flag |= axisalignedbb.minY < (double) f;
 						}
@@ -531,12 +531,12 @@ public class ThatchEntity extends Entity {
 	private ThatchEntity.Status getUnderwaterStatus() {
 		AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
 		double d0 = axisalignedbb.maxY + 0.001D;
-		int i = MathHelper.floor_double(axisalignedbb.minX);
-		int j = MathHelper.ceiling_double_int(axisalignedbb.maxX);
-		int k = MathHelper.floor_double(axisalignedbb.maxY);
-		int l = MathHelper.ceiling_double_int(d0);
-		int i1 = MathHelper.floor_double(axisalignedbb.minZ);
-		int j1 = MathHelper.ceiling_double_int(axisalignedbb.maxZ);
+		int i = MathHelper.floor(axisalignedbb.minX);
+		int j = MathHelper.ceil(axisalignedbb.maxX);
+		int k = MathHelper.floor(axisalignedbb.maxY);
+		int l = MathHelper.ceil(d0);
+		int i1 = MathHelper.floor(axisalignedbb.minZ);
+		int j1 = MathHelper.ceil(axisalignedbb.maxZ);
 		boolean flag = false;
 		BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain();
 
@@ -545,10 +545,10 @@ public class ThatchEntity extends Entity {
 				for (int l1 = k; l1 < l; ++l1) {
 					for (int i2 = i1; i2 < j1; ++i2) {
 						blockpos$pooledmutableblockpos.setPos(k1, l1, i2);
-						IBlockState iblockstate = this.worldObj.getBlockState(blockpos$pooledmutableblockpos);
+						IBlockState iblockstate = this.world.getBlockState(blockpos$pooledmutableblockpos);
 
 						if (iblockstate.getMaterial() == Material.WATER && d0 < (double) getLiquidHeight(iblockstate,
-								this.worldObj, blockpos$pooledmutableblockpos)) {
+								this.world, blockpos$pooledmutableblockpos)) {
 							if (((Integer) iblockstate.getValue(BlockLiquid.LEVEL)).intValue() != 0) {
 								ThatchEntity.Status ThatchEntity$status = ThatchEntity.Status.UNDER_FLOWING_WATER;
 								return ThatchEntity$status;
@@ -625,7 +625,7 @@ public class ThatchEntity extends Entity {
 	}
 
 	private void dropItems(World world, BlockPos pos) {
-		for (int i = 0; i < MathHelper.getRandomIntegerInRange(world.rand, 1, 1); i++) {
+		for (int i = 0; i < MathHelper.getInt(world.rand, 1, 1); i++) {
 			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.thatch_loot);
 			ItemStack itemStack = returns.returnItem.copy();
 			float dX = world.rand.nextFloat() * 0.8F + 0.1F;
@@ -636,11 +636,11 @@ public class ThatchEntity extends Entity {
 			entityItem.motionX = world.rand.nextGaussian() * factor;
 			entityItem.motionY = world.rand.nextGaussian() * factor + 0.2F;
 			entityItem.motionZ = world.rand.nextGaussian() * factor;
-			world.spawnEntityInWorld(entityItem);
+			world.spawnEntity(entityItem);
 		}
 	}
 	private void extractItems(World world, BlockPos pos, EntityPlayer player) {
-		for (int i = 0; i < MathHelper.getRandomIntegerInRange(world.rand, 1, 1); i++) {
+		for (int i = 0; i < MathHelper.getInt(world.rand, 1, 1); i++) {
 			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.thatch_loot);
 			ItemStack itemStack = returns.returnItem.copy();
 			if (itemStack != null)
@@ -648,91 +648,16 @@ public class ThatchEntity extends Entity {
 		}
 
 	}
-
-	public boolean processInitialInteract(EntityPlayer player, @Nullable ItemStack stack, EnumHand hand) {
-
-		if (!this.worldObj.isRemote && !player.isSneaking() && this.outOfControlTicks < 60.0F) {
+	@Override
+	public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
+		if (!this.world.isRemote && !player.isSneaking() && this.outOfControlTicks < 60.0F) {
 			BlockPos pos = getPosition();
-			this.extractItems(worldObj, pos, player);
+			this.extractItems(world, pos, player);
 		}
 		this.setDead();
 		return true;
 	}
 
-	protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {
-		this.lastYd = this.motionY;
-
-		if (!this.isRiding()) {
-			if (onGroundIn) {
-				if (this.fallDistance > 3.0F) {
-					if (this.status != ThatchEntity.Status.ON_LAND) {
-						this.fallDistance = 0.0F;
-						return;
-					}
-
-					this.fall(this.fallDistance, 1.0F);
-
-					if (!this.worldObj.isRemote && !this.isDead) {
-						this.setDead();
-
-						if (this.worldObj.getGameRules().getBoolean("doEntityDrops")) {
-							for (int i = 0; i < 3; ++i) {
-								this.entityDropItem(new ItemStack(Item.getItemFromBlock(Blocks.PLANKS), 1), 0f);
-							}
-
-							for (int j = 0; j < 2; ++j) {
-								this.dropItemWithOffset(Items.STICK, 1, 0.0F);
-							}
-							for (int j = 0; j < 2; ++j) {
-								this.dropItemWithOffset(RItems.scrap, 1, 0.0F);
-							}
-							for (int j = 0; j < 2; ++j) {
-								this.dropItemWithOffset(RItems.thatch, 1, 0.0F);
-							}
-							for (int j = 0; j < 2; ++j) {
-								this.dropItemWithOffset(RItems.plank, 1, 0.0F);
-							}
-
-						}
-					}
-				}
-
-				this.fallDistance = 0.0F;
-			} else if (this.worldObj.getBlockState((new BlockPos(this)).down()).getMaterial() != Material.WATER
-					&& y < 0.0D) {
-				this.fallDistance = (float) ((double) this.fallDistance - y);
-			}
-		}
-	}
-
-	private void controlBoat() {
-		if (!isBeingRidden()) {
-			float f = 0.0F;
-
-			if (this.leftInputDown) {
-				this.deltaRotation += -1.0F;
-			}
-
-			if (this.rightInputDown) {
-				++this.deltaRotation;
-			}
-
-			if (this.rightInputDown != this.leftInputDown && !this.forwardInputDown && !this.backInputDown) {
-				f += 0.005F;
-			}
-
-			this.rotationYaw += this.deltaRotation;
-
-			if (this.forwardInputDown) {
-				f += 0.04F;
-			}
-
-			if (this.backInputDown) {
-				f -= 0.005F;
-			}
-
-		}
-	}
 
 	/**
 	 * Sets the damage taken from the last hit.
@@ -813,7 +738,7 @@ public class ThatchEntity extends Entity {
 		return this.dataManager.get(CAN_DESPAWN);
 	}
 
-	@Override
+	
 	public void moveEntity(double x, double y, double z) {
 		if (this.noClip) {
 			this.setEntityBoundingBox(this.getEntityBoundingBox().offset(x, y, z));
@@ -837,7 +762,7 @@ public class ThatchEntity extends Entity {
 			double d4 = y;
 			double d5 = z;
 
-			List<AxisAlignedBB> list1 = this.worldObj.getCollisionBoxes(this,
+			List<AxisAlignedBB> list1 = this.world.getCollisionBoxes(this,
 					this.getEntityBoundingBox().addCoord(x, y, z));
 
 			for (AxisAlignedBB axisalignedbb1 : list1)
@@ -860,15 +785,15 @@ public class ThatchEntity extends Entity {
 			this.isCollidedVertically = d4 != y;
 			this.onGround = this.isCollidedVertically && d4 < 0.0D;
 			this.isCollided = this.isCollidedHorizontally || this.isCollidedVertically;
-			int i = MathHelper.floor_double(this.posX);
-			int j = MathHelper.floor_double(this.posY - 0.2D);
-			int k = MathHelper.floor_double(this.posZ);
+			int i = MathHelper.floor(this.posX);
+			int j = MathHelper.floor(this.posY - 0.2D);
+			int k = MathHelper.floor(this.posZ);
 			BlockPos blockpos = new BlockPos(i, j, k);
-			IBlockState state = this.worldObj.getBlockState(blockpos);
+			IBlockState state = this.world.getBlockState(blockpos);
 			Block block = state.getBlock();
 
 			if (state.getBlock() == Blocks.AIR) {
-				IBlockState state1 = this.worldObj.getBlockState(blockpos.down());
+				IBlockState state1 = this.world.getBlockState(blockpos.down());
 				Block block1 = state1.getBlock();
 
 				if (block1 instanceof BlockFence || block1 instanceof BlockWall || block1 instanceof BlockFenceGate) {
@@ -886,14 +811,14 @@ public class ThatchEntity extends Entity {
 				this.motionZ = 0.0D;
 
 			if (d4 != y) {
-				block.onLanded(this.worldObj, this);
+				block.onLanded(this.world, this);
 
 				if (block == Blocks.FARMLAND) {
-					if (!worldObj.isRemote && worldObj.rand.nextFloat() < 0.7F) {
-						if (!worldObj.getGameRules().getBoolean("mobGriefing"))
+					if (!world.isRemote && world.rand.nextFloat() < 0.7F) {
+						if (!world.getGameRules().getBoolean("mobGriefing"))
 							return;
 
-						worldObj.setBlockState(blockpos, Blocks.DIRT.getDefaultState());
+						world.setBlockState(blockpos, Blocks.DIRT.getDefaultState());
 					}
 				}
 			}
@@ -906,19 +831,19 @@ public class ThatchEntity extends Entity {
 				d16 = 0.0D;
 
 			if (this.onGround)
-				block.onEntityWalk(this.worldObj, blockpos, this);
+				block.onEntityWalk(this.world, blockpos, this);
 
 			this.distanceWalkedModified = (float) ((double) this.distanceWalkedModified
-					+ (double) MathHelper.sqrt_double(d15 * d15 + d17 * d17) * 0.6D);
+					+ (double) MathHelper.sqrt(d15 * d15 + d17 * d17) * 0.6D);
 			this.distanceWalkedOnStepModified = (float) ((double) this.distanceWalkedOnStepModified
-					+ (double) MathHelper.sqrt_double(d15 * d15 + d16 * d16 + d17 * d17) * 0.6D);
+					+ (double) MathHelper.sqrt(d15 * d15 + d16 * d16 + d17 * d17) * 0.6D);
 
 			if (this.distanceWalkedOnStepModified > (float) this.nextStepDistance
 					&& state.getMaterial() != Material.AIR) {
 				this.nextStepDistance = (int) this.distanceWalkedOnStepModified + 1;
 
 				if (this.isInWater()) {
-					float f = MathHelper.sqrt_double(this.motionX * this.motionX * 0.2D + this.motionY * this.motionY
+					float f = MathHelper.sqrt(this.motionX * this.motionX * 0.2D + this.motionY * this.motionY
 							+ this.motionZ * this.motionZ * 0.2D) * 0.35F;
 
 					if (f > 1.0F)
@@ -947,7 +872,7 @@ public class ThatchEntity extends Entity {
 	}
 
 	private void collideWithNearbyEntities() {
-		List list = this.worldObj.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(0.2D, 0.0D, 0.2D),
+		List list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(0.2D, 0.0D, 0.2D),
 				new Predicate<Entity>() {
 					public boolean apply(Entity p_apply_1_) {
 						return p_apply_1_.canBePushed();
@@ -964,7 +889,7 @@ public class ThatchEntity extends Entity {
 	private void collision(Entity entity) {
 		if (!isPassenger(entity) && this.getRidingEntity() != entity) {
 			if (!this.noClip && !entity.noClip) {
-				if (!this.worldObj.isRemote && entity instanceof EntityMinecart
+				if (!this.world.isRemote && entity instanceof EntityMinecart
 						&& ((EntityMinecart) entity).getType() == EntityMinecart.Type.RIDEABLE
 						&& entity.motionX * entity.motionX + entity.motionZ * entity.motionZ > 0.01D
 						&& entity.getPassengers().isEmpty() && this.getRidingEntity() == null) {
@@ -974,10 +899,10 @@ public class ThatchEntity extends Entity {
 				} else {
 					double dx = this.posX - entity.posX;
 					double dz = this.posZ - entity.posZ;
-					double dmax = MathHelper.abs_max(dx, dz);
+					double dmax = MathHelper.absMax(dx, dz);
 
 					if (dmax >= 0.01D) {
-						dmax = (double) MathHelper.sqrt_double(dmax);
+						dmax = (double) MathHelper.sqrt(dmax);
 						dx /= dmax;
 						dz /= dmax;
 						double d3 = 1.0D / dmax;
@@ -1011,7 +936,7 @@ public class ThatchEntity extends Entity {
 		if (!getCanDespawn()) {
 			this.age = 0;
 		} else {
-			Entity entity = this.worldObj.getClosestPlayerToEntity(this, -0.1D);
+			Entity entity = this.world.getClosestPlayerToEntity(this, -0.1D);
 
 			if (entity != null) {
 				double d0 = entity.posX - this.posX;

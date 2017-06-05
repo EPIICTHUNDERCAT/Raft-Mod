@@ -3,15 +3,14 @@ package com.epiicthundercat.raft.init;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.epiicthundercat.raft.block.BlockBurner;
 import com.epiicthundercat.raft.block.BlockPalmLeaves;
 import com.epiicthundercat.raft.block.BlockPalmLog;
 import com.epiicthundercat.raft.block.BlockPalmSapling;
 import com.epiicthundercat.raft.block.BlockPalmWood;
-import com.epiicthundercat.raft.block.BlockSeparator;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockSapling;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -38,7 +37,7 @@ public class RBlocks {
 
 	public static List<Block> blocks = new ArrayList();
 
-	public static Block separator = new BlockSeparator("separator", Material.ANVIL, false);
+	public static Block burner = new BlockBurner("burner", Material.ANVIL);
 	public static Block palm_sapling = new BlockPalmSapling("palm_sapling");
 	public static Block palm_leaves = new BlockPalmLeaves("palm_leaves");
 	public static Block palm_log = new BlockPalmLog("palm_log");

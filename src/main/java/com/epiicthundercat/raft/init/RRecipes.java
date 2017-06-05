@@ -1,18 +1,11 @@
 package com.epiicthundercat.raft.init;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.epiicthundercat.raft.registry.recipe.RecipeSeparator;
-import com.epiicthundercat.raft.registry.recipe.StackWithChance;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class RRecipes {
 
@@ -52,11 +45,11 @@ public class RRecipes {
 		GameRegistry.addShapedRecipe(new ItemStack(Blocks.SAND), "DD", "DD", 'D', new ItemStack(RItems.sand_piece));
 		// Gravel
 		GameRegistry.addShapedRecipe(new ItemStack(Blocks.GRAVEL), "DD", "DD", 'D', new ItemStack(RItems.gravel_piece));
-		// Separator
+	/*	// Separator
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(RBlocks.separator),
 				new Object[] { "CTC", "CRC", "CLC", 'L', "logWood", 'C', new ItemStack(RItems.double_compressed_scraps),
 						'R', new ItemStack(RItems.rope), 'T', new ItemStack(RItems.tin_can_potion) }));
-		// Wood>planks
+		*/ // Wood>planks
 		GameRegistry.addShapelessRecipe(new ItemStack(RBlocks.palm_planks, 4), new ItemStack(RBlocks.palm_log));
 
 		// Dirty Filled Tin > Filled Tin Can

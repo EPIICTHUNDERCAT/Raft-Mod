@@ -30,8 +30,7 @@ public class ItemPlank extends RItem {
 
 	}
 
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn,
-			EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		float f = 1.0F;
 		float f1 = playerIn.prevRotationPitch + (playerIn.rotationPitch - playerIn.prevRotationPitch) * 1.0F;
 		float f2 = playerIn.prevRotationYaw + (playerIn.rotationYaw - playerIn.prevRotationYaw) * 1.0F;
@@ -48,7 +47,7 @@ public class ItemPlank extends RItem {
 		double d3 = 5.0D;
 		Vec3d vec3d1 = vec3d.addVector((double) f7 * 5.0D, (double) f6 * 5.0D, (double) f8 * 5.0D);
 		RayTraceResult raytraceresult = worldIn.rayTraceBlocks(vec3d, vec3d1, true);
-
+		ItemStack itemStackIn = playerIn.getHeldItem(handIn);
 		if (raytraceresult == null) {
 			return new ActionResult(EnumActionResult.PASS, itemStackIn);
 		} else {
@@ -88,11 +87,11 @@ public class ItemPlank extends RItem {
 					return new ActionResult(EnumActionResult.FAIL, itemStackIn);
 				} else {
 					if (!worldIn.isRemote) {
-						worldIn.spawnEntityInWorld(PlankEntity);
+						worldIn.spawnEntity(PlankEntity);
 					}
 
 					if (!playerIn.capabilities.isCreativeMode) {
-						--itemStackIn.stackSize;
+						itemStackIn.shrink(1);
 					}
 
 					playerIn.addStat(StatList.getObjectUseStats(this));

@@ -1,16 +1,13 @@
 package com.epiicthundercat.raft.client.gui;
 
-import com.epiicthundercat.raft.block.ContainerBlockSeparator;
-import com.epiicthundercat.raft.rafttileentitity.TileEntitySeparator;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
-public class RGuiHandler implements IGuiHandler {
-	public static final int GUI_SEPERATOR = 0;
+public class RGuiHandler{} //implements IGuiHandler {
+
+	
+/*	public static final int GUI_SEPERATOR = 0;
 
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -38,4 +35,4 @@ public class RGuiHandler implements IGuiHandler {
 		return null;
 	}
 	
-}
+}*/

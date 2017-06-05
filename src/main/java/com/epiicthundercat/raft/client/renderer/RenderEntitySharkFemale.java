@@ -13,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderEntitySharkFemale extends RenderLiving<EntitySharkFemale>{
 
-	private static final ResourceLocation CHICKEN_TEXTURE = new ResourceLocation(Reference.ID, "textures/entity/entitysharkfemale.png");
+	private static final ResourceLocation SHARK_TEXTURE = new ResourceLocation(Reference.ID, "textures/entity/entitysharkfemale.png");
 	
 	
 	private final EntitySharkFemaleModel femaleSharkModel;
@@ -26,13 +26,13 @@ public class RenderEntitySharkFemale extends RenderLiving<EntitySharkFemale>{
 	@Override
 	public void doRender(EntitySharkFemale entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		
-bindTexture(CHICKEN_TEXTURE);
+bindTexture(SHARK_TEXTURE);
 		
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 	}
 	@Override
 	protected ResourceLocation getEntityTexture(EntitySharkFemale entity) {
-		return CHICKEN_TEXTURE;
+		return SHARK_TEXTURE;
 	}
 	
 }

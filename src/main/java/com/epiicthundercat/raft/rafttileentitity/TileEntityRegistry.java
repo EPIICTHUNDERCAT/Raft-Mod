@@ -8,7 +8,7 @@ public class TileEntityRegistry {
 	
 	
 public static void registerTile(){
-	GameRegistry.registerTileEntity(TileEntitySeparator.class, "Seperator");
+	GameRegistry.registerTileEntity(TileBurner.class, "Burner");
 }
 
 

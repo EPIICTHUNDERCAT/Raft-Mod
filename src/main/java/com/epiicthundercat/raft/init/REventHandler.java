@@ -11,8 +11,8 @@ import com.epiicthundercat.raft.entity.PlankEntity;
 import com.epiicthundercat.raft.entity.ScrapEntity;
 import com.epiicthundercat.raft.entity.ThatchEntity;
 import com.epiicthundercat.raft.init.barrel.BarrelLoot;
-import com.epiicthundercat.raft.rafttileentitity.RenderTileEntitySeparator;
-import com.epiicthundercat.raft.rafttileentitity.TileEntitySeparator;
+import com.epiicthundercat.raft.rafttileentitity.RenderTileBurner;
+import com.epiicthundercat.raft.rafttileentitity.TileBurner;
 import com.google.common.collect.Sets;
 
 import net.minecraft.block.Block;
@@ -121,8 +121,8 @@ public class REventHandler {
 
 		for (EntityPlayer entityplayer : world.playerEntities)
 			if (!entityplayer.isSpectator()) {
-				int playerX = MathHelper.floor_double(entityplayer.posX / 16.0D);
-				int playerZ = MathHelper.floor_double(entityplayer.posZ / 16.0D);
+				int playerX = MathHelper.floor(entityplayer.posX / 16.0D);
+				int playerZ = MathHelper.floor(entityplayer.posZ / 16.0D);
 
 				for (int x = -8; x <= 8; ++x)
 					for (int z = -8; z <= 8; ++z) {
@@ -183,7 +183,7 @@ public class REventHandler {
 
 							current++;
 
-							world.spawnEntityInWorld(entity);
+							world.spawnEntity(entity);
 
 						}
 					}
@@ -198,8 +198,8 @@ public class REventHandler {
 
 		for (EntityPlayer entityplayer : world.playerEntities)
 			if (!entityplayer.isSpectator()) {
-				int playerX = MathHelper.floor_double(entityplayer.posX / 16.0D);
-				int playerZ = MathHelper.floor_double(entityplayer.posZ / 16.0D);
+				int playerX = MathHelper.floor(entityplayer.posX / 16.0D);
+				int playerZ = MathHelper.floor(entityplayer.posZ / 16.0D);
 
 				for (int x = -8; x <= 8; ++x)
 					for (int z = -8; z <= 8; ++z) {
@@ -257,7 +257,7 @@ public class REventHandler {
 
 							current++;
 
-							world.spawnEntityInWorld(entity);
+							world.spawnEntity(entity);
 
 						}
 					}
@@ -272,8 +272,8 @@ public class REventHandler {
 
 		for (EntityPlayer entityplayer : world.playerEntities)
 			if (!entityplayer.isSpectator()) {
-				int playerX = MathHelper.floor_double(entityplayer.posX / 16.0D);
-				int playerZ = MathHelper.floor_double(entityplayer.posZ / 16.0D);
+				int playerX = MathHelper.floor(entityplayer.posX / 16.0D);
+				int playerZ = MathHelper.floor(entityplayer.posZ / 16.0D);
 
 				for (int x = -8; x <= 8; ++x)
 					for (int z = -8; z <= 8; ++z) {
@@ -331,7 +331,7 @@ public class REventHandler {
 
 							current++;
 
-							world.spawnEntityInWorld(entity);
+							world.spawnEntity(entity);
 
 						}
 					}
@@ -346,8 +346,8 @@ public class REventHandler {
 
 		for (EntityPlayer entityplayer : world.playerEntities)
 			if (!entityplayer.isSpectator()) {
-				int playerX = MathHelper.floor_double(entityplayer.posX / 16.0D);
-				int playerZ = MathHelper.floor_double(entityplayer.posZ / 16.0D);
+				int playerX = MathHelper.floor(entityplayer.posX / 16.0D);
+				int playerZ = MathHelper.floor(entityplayer.posZ / 16.0D);
 
 				for (int x = -8; x <= 8; ++x)
 					for (int z = -8; z <= 8; ++z) {
@@ -405,7 +405,7 @@ public class REventHandler {
 
 							current++;
 
-							world.spawnEntityInWorld(entity);
+							world.spawnEntity(entity);
 
 						}
 					}
@@ -436,6 +436,6 @@ public class REventHandler {
 
 	@SideOnly(Side.CLIENT)
 	public static void registerItemRenderers() {
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySeparator.class, new RenderTileEntitySeparator());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileBurner.class, new RenderTileBurner());
 	}
 }

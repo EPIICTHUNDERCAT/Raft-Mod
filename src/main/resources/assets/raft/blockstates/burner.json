@@ -1,0 +1,44 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "raft:burner",
+        "uvlock": true
+    },
+    "variants": {
+      
+		"age=0,burning=true": { "model": "raft:burner" },
+		"age=1,burning=true": { "model": "raft:burner" },
+		"age=2,burning=true": { "model": "raft:burner" },
+		"age=3,burning=true": { "model": "raft:burner" },
+		"age=4,burning=true": { "model": "raft:burner" },
+		"age=5,burning=true": { "model": "raft:burner" },
+		"age=6,burning=true": { "model": "raft:burner" },
+		"age=7,burning=true": { "model": "raft:burner" },
+		"age=8,burning=true": { "model": "raft:burner" },
+		"age=9,burning=true": { "model": "raft:burner" },
+		"age=10,burning=true": { "model": "raft:burner" },
+		"age=11,burning=true": { "model": "raft:burner" },
+		"age=12,burning=true": { "model": "raft:burner" },
+		"age=13,burning=true": { "model": "raft:burner" },
+		"age=14,burning=true": { "model": "raft:burner" },
+		"age=15,burning=true": { "model": "raft:burner" },
+		"age=0,burning=false": { "model": "raft:burner" },
+		"age=1,burning=false": { "model": "raft:burner" },
+		"age=2,burning=false": { "model": "raft:burner" },
+		"age=3,burning=false": { "model": "raft:burner" },
+		"age=4,burning=false": { "model": "raft:burner" },
+		"age=5,burning=false": { "model": "raft:burner" },
+		"age=6,burning=false": { "model": "raft:burner" },
+		"age=7,burning=false": { "model": "raft:burner" },
+		"age=8,burning=false": { "model": "raft:burner" },
+		"age=9,burning=false": { "model": "raft:burner" },
+		"age=10,burning=false": { "model": "raft:burner" },
+		"age=11,burning=false": { "model": "raft:burner" },
+		"age=12,burning=false": { "model": "raft:burner" },
+		"age=13,burning=false": { "model": "raft:burner" },
+		"age=14,burning=false": { "model": "raft:burner" },
+		"age=15,burning=false": { "model": "raft:burner" }
+ 
+
+    }
+}

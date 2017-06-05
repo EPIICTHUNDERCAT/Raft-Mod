@@ -4,6 +4,7 @@ import com.epiicthundercat.raft.creativetab.RCreativeTab;
 import com.epiicthundercat.raft.init.RItems;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class RItem extends Item {
 	
@@ -21,4 +22,6 @@ public class RItem extends Item {
 		RItems.items.add(item);
 
 	}
+
+
 }

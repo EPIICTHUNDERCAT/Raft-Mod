@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "raft:separator" },
-        "facing=south": { "model": "raft:separator", "y": 180 },
-        "facing=west":  { "model": "raft:separator", "y": 270 },
-        "facing=east":  { "model": "raft:separator", "y": 90 }
-    }
-}
