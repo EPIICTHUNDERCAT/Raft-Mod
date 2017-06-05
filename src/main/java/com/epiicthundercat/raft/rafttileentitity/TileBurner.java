@@ -2,6 +2,7 @@ package com.epiicthundercat.raft.rafttileentitity;
 
 import javax.annotation.Nullable;
 
+import com.epiicthundercat.raft.block.BlockBurner;
 import com.epiicthundercat.raft.init.RBlocks;
 
 import net.minecraft.block.state.IBlockState;
@@ -18,19 +19,21 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import toughasnails.api.TANBlocks;
-import toughasnails.block.BlockTANCampfire;
 
 public class TileBurner extends TileEntity implements ITickable {
-	public int cookTimeRemaining = 700;
-	private static final int totalTime = 700;
+	public int cookTimeRemaining = 300;
+	private static final int totalTime = 300;
+	
+	
+	
+	
 	public ItemStackHandler items = new ItemStackHandler(3) {
 		protected int getStackLimit(int slot, ItemStack stack) {
 			return 1;
 		}
 
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			if ((stack != null) && ((stack.getItem() instanceof ItemFood))
+			if ((!stack.isEmpty()) && ((stack.getItem() instanceof ItemFood))
 					&& (FurnaceRecipes.instance().getSmeltingResult(stack) != null)
 					&& ((FurnaceRecipes.instance().getSmeltingResult(stack).getItem() instanceof ItemFood))) {
 				return super.insertItem(slot, stack, simulate);
@@ -68,7 +71,7 @@ public class TileBurner extends TileEntity implements ITickable {
 	private boolean isCooking() {
 		IBlockState down = this.world.getBlockState(this.pos.down());
 		if ((down.getBlock() == RBlocks.burner)
-				&& (((Boolean) down.getValue(BlockTANCampfire.BURNING)).booleanValue())) {
+				&& (((Boolean) down.getValue(BlockBurner.BURNING)).booleanValue())) {
 			return true;
 		}
 		return false;
@@ -85,10 +88,10 @@ public class TileBurner extends TileEntity implements ITickable {
 							this.items.setStackInSlot(i, getCookingResult(stack));
 						}
 					}
-					this.cookTimeRemaining = 700;
+					this.cookTimeRemaining = 300;
 				}
 				markDirty();
-			} else if (this.cookTimeRemaining < 700) {
+			} else if (this.cookTimeRemaining < 300) {
 				this.cookTimeRemaining += 1;
 				markDirty();
 			}

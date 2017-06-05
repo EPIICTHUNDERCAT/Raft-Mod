@@ -1,7 +1,7 @@
 {
   "pools": [
     {
-      "name": "raft:Female Shark",
+      "name": "raft:FemaleShark",
       "conditions": [
         {
           "condition": "killed_by_player"
@@ -16,7 +16,7 @@
       "entries": [
         {
           "type": "item",
-          "name": "raft:shark_meat",
+          "name": "raft:raw_shark_meat",
           "functions": [
             {
               "function": "set_data",
