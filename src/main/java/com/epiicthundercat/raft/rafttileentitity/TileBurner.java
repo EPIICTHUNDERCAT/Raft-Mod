@@ -117,7 +117,7 @@ public class TileBurner extends TileEntity implements ITickable {
 
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-
+			 return (T) this.items;
 		}
 		return (T) super.getCapability(capability, facing);
 	}
