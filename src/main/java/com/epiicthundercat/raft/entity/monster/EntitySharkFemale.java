@@ -48,9 +48,6 @@ public class EntitySharkFemale extends EntityMob {
 			DataSerializers.BYTE);
 	private static final DataParameter<Integer> TARGET_ENTITY = EntityDataManager
 			.<Integer>createKey(EntitySharkFemale.class, DataSerializers.VARINT);
-	private static float clientSideTailAnimation;
-	private static float clientSideTailAnimationO;
-	private static float clientSideTailAnimationSpeed;
 
 	private EntityLivingBase targetedEntity;
 	private int clientSideAttackTime;
@@ -61,14 +58,13 @@ public class EntitySharkFemale extends EntityMob {
 		super(worldIn);
 		this.experienceValue = 10;
 		this.setSize(0.85F, 0.85F);
-		this.moveHelper = new EntitySharkFemale.SharkMoveHelper(this);
-		this.clientSideTailAnimation = this.rand.nextFloat();
-		this.clientSideTailAnimationO = this.clientSideTailAnimation;
+	//	this.moveHelper = new EntitySharkFemale.SharkMoveHelper(this);
+		
 	}
 
 	@Override
 	protected void initEntityAI() {
-		EntityAIMoveTowardsRestriction entityaimovetowardsrestriction = new EntityAIMoveTowardsRestriction(this, 1.0D);
+	/*	EntityAIMoveTowardsRestriction entityaimovetowardsrestriction = new EntityAIMoveTowardsRestriction(this, 1.0D);
 		this.wander = new EntityAIWander(this, 1.0D, 80);
 		this.tasks.addTask(4, new EntitySharkFemale.AISharkAttack(this));
 		this.tasks.addTask(5, entityaimovetowardsrestriction);
@@ -79,7 +75,7 @@ public class EntitySharkFemale extends EntityMob {
 		this.wander.setMutexBits(3);
 		entityaimovetowardsrestriction.setMutexBits(3);
 		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 10, true, false,
-				new EntitySharkFemale.SharkTargetSelector(this)));
+				new EntitySharkFemale.SharkTargetSelector(this)));*/
 	}
 
 	@Override
@@ -226,10 +222,10 @@ public class EntitySharkFemale extends EntityMob {
 	@Override
 	public void onLivingUpdate() {
 		if (this.world.isRemote) {
-			this.clientSideTailAnimationO = this.clientSideTailAnimation;
+			
 
 			if (!this.isInWater()) {
-				this.clientSideTailAnimationSpeed = 2.0F;
+				
 
 				if (this.motionY > 0.0D && this.clientSideTouchedGround && !this.isSilent()) {
 					this.world.playSound(this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GUARDIAN_FLOP,
@@ -238,18 +234,7 @@ public class EntitySharkFemale extends EntityMob {
 
 				this.clientSideTouchedGround = this.motionY < 0.0D
 						&& this.world.isBlockNormalCube((new BlockPos(this)).down(), false);
-			} else if (this.isMoving()) {
-				if (this.clientSideTailAnimationSpeed < 0.5F) {
-					this.clientSideTailAnimationSpeed = 4.0F;
-				} else {
-					this.clientSideTailAnimationSpeed += (0.5F - this.clientSideTailAnimationSpeed) * 0.1F;
-				}
-			} else {
-				this.clientSideTailAnimationSpeed += (0.125F - this.clientSideTailAnimationSpeed) * 0.2F;
-			}
-
-			this.clientSideTailAnimation += this.clientSideTailAnimationSpeed;
-
+			} 
 			if (this.isMoving() && this.isInWater()) {
 				Vec3d vec3d = this.getLook(0.0F);
 
@@ -311,44 +296,12 @@ public class EntitySharkFemale extends EntityMob {
 		super.onLivingUpdate();
 	}
 
-	@SideOnly(Side.CLIENT)
-	public static float getTailAnimation(float p_175471_1_) {
-		return clientSideTailAnimationO + (clientSideTailAnimation - clientSideTailAnimationO) * p_175471_1_;
-	}
-
+	
 	public float getAttackAnimationScale(float p_175477_1_) {
 		return ((float) this.clientSideAttackTime + p_175477_1_) / (float) this.getAttackDuration();
 	}
 
-	protected void updateAITasks() {
-		super.updateAITasks();
-
-		// if (this.isshark())
-		{
-			int i = 1200;
-			int j = 1200;
-			int k = 6000;
-			int l = 2;
-
-			if ((this.ticksExisted + this.getEntityId()) % 1200 == 0) {
-				// Potion potion = MobEffects.MINING_FATIGUE;
-
-				for (EntityPlayerMP entityplayermp : this.world.getPlayers(EntityPlayerMP.class,
-						new Predicate<EntityPlayerMP>() {
-							public boolean apply(@Nullable EntityPlayerMP p_apply_1_) {
-								return EntitySharkFemale.this.getDistanceSqToEntity(p_apply_1_) < 2500.0D
-										&& p_apply_1_.interactionManager.survivalOrAdventure();
-							}
-						}))
-					;
-
-			}
-
-			if (!this.hasHome()) {
-				this.setHomePosAndDistance(new BlockPos(this), 16);
-			}
-		}
-	}
+	
 
 	@Nullable
 	@Override

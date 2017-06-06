@@ -9,8 +9,8 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 
 public class RenderFish extends RenderLiving<EntityFish>{
-	 private static final ResourceLocation NEMO = new ResourceLocation(Reference.ID, "textures/entity/fish/fish.png");
-	    private static final ResourceLocation FISH = new ResourceLocation(Reference.ID, "textures/entity/fish/nemo.png");
+	 private static final ResourceLocation NEMO = new ResourceLocation(Reference.ID, "textures/entity/fish/nemo.png");
+	    private static final ResourceLocation FISH = new ResourceLocation(Reference.ID, "textures/entity/fish/fish.png");
 	    private static final ResourceLocation SALMON = new ResourceLocation(Reference.ID, "textures/entity/fish/salmon.png");
 	//private static final ResourceLocation SIAMESE_OCELOT_TEXTURES = new ResourceLocation(Reference.ID, "textures/entity/fish/siamese.png");
 	
@@ -31,15 +31,15 @@ public class RenderFish extends RenderLiving<EntityFish>{
 	    {
 	        switch (entity.getFishType())
 	        {
+	        default:
 	            case 0:
-	            default:
-	                return FISH;
+	                //return NEMO;
 	            case 1:
-	                return NEMO;
+	                return FISH;
 	            case 2:
 	                return SALMON;
-	           // case 3:
-	              //  return SIAMESE_OCELOT_TEXTURES;
+	            case 3:
+	                return NEMO;
 	        }
 	    }
 }

@@ -141,12 +141,13 @@ public class EntitySharkFemaleModel extends ModelBase {
 
 	}
 
-	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw,
-			float headPitch, float scaleFactor, Entity entityIn) {
+	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entityIn) {
+		super.setRotationAngles(f, f1, f2, f3, f4, f5, entityIn);
+
 		EntitySharkFemale entitySharkFemale = (EntitySharkFemale) entityIn;
-		float f = ageInTicks - (float) entitySharkFemale.ticksExisted;
-		this.Body.rotateAngleY = netHeadYaw * 0.017453292F;
-		this.Body.rotateAngleX = headPitch * 0.017453292F;
+		float c = f2 - (float) entitySharkFemale.ticksExisted;
+		this.Body.rotateAngleY = f3 * 0.017453292F;
+		this.Body.rotateAngleX = f4 * 0.017453292F;
 		float[] afloat = new float[] { 1.75F, 0.25F, 0.0F, 0.0F, 0.5F, 0.5F, 0.5F, 0.5F, 1.25F, 0.75F, 0.0F, 0.0F };
 		float[] afloat1 = new float[] { 0.0F, 0.0F, 0.0F, 0.0F, 0.25F, 1.75F, 1.25F, 0.75F, 0.0F, 0.0F, 0.0F, 0.0F };
 		float[] afloat2 = new float[] { 0.0F, 0.0F, 0.25F, 1.75F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.75F, 1.25F };
@@ -173,15 +174,48 @@ public class EntitySharkFemaleModel extends ModelBase {
 
 		}
 
-		float f2 = EntitySharkFemale.getTailAnimation(f);
-		this.Tail1.rotateAngleY = MathHelper.sin(f2) * (float) Math.PI * 0.05F;
-		this.Tail2.rotateAngleY = MathHelper.sin(f2) * (float) Math.PI * 0.1F;
-		this.Tail2.rotationPointX = -1.5F;
-		this.Tail2.rotationPointY = 0.5F;
-		this.Tail2.rotationPointZ = 14.0F;
-		this.Tail3.rotateAngleY = MathHelper.sin(f2) * (float) Math.PI * 0.15F;
-		this.Tail3.rotationPointX = 0.5F;
-		this.Tail3.rotationPointY = 0.5F;
-		this.Tail3.rotationPointZ = 6.0F;
+		f = entity.ticksExisted;
+		f1 = 0.5f;
+		float globalSpeed = 1.0f;
+		float globalDegree = 1.0f;
+		float globalHeight = 1.0f;
+
+		swing(Body, 0.3f * globalSpeed, 0.3f * globalDegree, 0.0f, 0.0f, f, f1);
+		swing(Neck, 0.4f * globalSpeed, 0.4f * globalDegree, 0f, 0.0f, f, f1);
+		flap(MouthBottom, 0.6f * globalSpeed, 0.9f * globalDegree, false, -5.0f, 1.0f, f, f1);
+		flap(MouthTop, 0.3f * globalSpeed, 0.9f * globalDegree, false, 3.0f, 0.0f, f, f1);
+		flap(NeckFin1, 0.5f * globalSpeed, 0.9f * globalDegree, false, 5f, 0f, f, f1);
+		flap(NeckFin2, 0.5f * globalSpeed, 0.9f * globalDegree, true, 5f, 0f, f, f1);
+
+		swing(Tail2FinTop, 0.7f * globalSpeed, 0.5f * globalDegree, 0f, 0f, f, f1);
+		swing(Tail3Fin2, 0.7f * globalSpeed, 1.5f * globalDegree, 0f, 0f, f, f1);
+		swing(Tail3Fin1, 0.7f * globalSpeed, 1.5f * globalDegree, 0f, 0f, f, f1);
+
+		swing(Tail1, 0.5f * globalSpeed, 0.4f * globalDegree, 0f, 0.0f, f, f1);
+
+		swing(Tail2, 0.5f * globalSpeed, 0.5f * globalDegree, 0f, 0.0f, f, f1);
+		swing(Tail3, 0.5f * globalSpeed, 0.6f * globalDegree, 0f, 0.0f, f, f1);
+
 	}
+
+	public void swing(ModelRenderer box, float speed, float degree, float offset, float weight, float f, float f1) {
+		box.rotateAngleY = degree * f1 * MathHelper.cos(speed * f + offset) + weight * f1;
+	}
+
+	public void flap(ModelRenderer box, float speed, float degree, boolean invert, float offset, float weight, float f,
+			float f1) {
+
+		box.rotateAngleZ = degree * f1 * MathHelper.cos(speed * f + offset) + weight * f1;
+	}
+
+	public void bob(ModelRenderer box, float speed, float degree, float offset, float weight, float f, float f1) {
+		box.rotationPointY = degree * f1 * MathHelper.cos(speed * f + offset) + weight * f1;
+	}
+
+	public void walk(ModelRenderer box, float speed, float degree, boolean invert, float offset, float weight, float f,
+			float f1) {
+
+		box.rotateAngleX = degree * f1 * MathHelper.cos(speed * f + offset) + weight * f1;
+	}
+
 }

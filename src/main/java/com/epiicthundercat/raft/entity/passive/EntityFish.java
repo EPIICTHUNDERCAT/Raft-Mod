@@ -38,31 +38,31 @@ public class EntityFish extends EntityAnimal {
 	private static final DataParameter<Byte> STATUS = EntityDataManager.<Byte>createKey(EntityFish.class,
 			DataSerializers.BYTE);
 	public static final ResourceLocation LOOT_FISH = new ResourceLocation(Reference.ID, "entities/fish");
-	
+
 	private static final DataParameter<Integer> FISH_VARIANT = EntityDataManager.<Integer>createKey(EntityFish.class,
 			DataSerializers.VARINT);
 	private EntityAIAvoidEntity<EntityPlayer> avoidEntity;
-	private float clientSideTailAnimation;
-	private float clientSideTailAnimationO;
-	private float clientSideTailAnimationSpeed;
+	// private float clientSideTailAnimation;
+	// private float clientSideTailAnimationO;
+	// private float clientSideTailAnimationSpeed;
 	private EntityAIWander wander;
 	private boolean clientSideTouchedGround;
 
 	public EntityFish(World worldIn) {
 		super(worldIn);
 		this.setSize(0.6F, 0.7F);
-		this.moveHelper = new EntityFish.FishMoveHelper(this);
-		this.clientSideTailAnimation = this.rand.nextFloat();
-		this.clientSideTailAnimationO = this.clientSideTailAnimation;
+	//	this.moveHelper = new EntityFish.FishMoveHelper(this);
+		
 	}
 
 	protected void initEntityAI() {
-		this.wander = new EntityAIWander(this, 1.0D, 80);
+	/*	this.wander = new EntityAIWander(this, 1.0D, 80);
 		this.tasks.addTask(7, this.wander);
 		this.tasks.addTask(9, new EntityAILookIdle(this));
-		this.wander.setMutexBits(3);
+		this.wander.setMutexBits(3);*/
 	}
 
+	@Override
 	protected void entityInit() {
 		super.entityInit();
 		this.dataManager.register(STATUS, Byte.valueOf((byte) 0));
@@ -82,7 +82,7 @@ public class EntityFish extends EntityAnimal {
 
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(2.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.30000001192092896D);
 	}
 
@@ -98,10 +98,10 @@ public class EntityFish extends EntityAnimal {
 
 	public void onLivingUpdate() {
 		if (this.world.isRemote) {
-			this.clientSideTailAnimationO = this.clientSideTailAnimation;
+			// this.clientSideTailAnimationO = this.clientSideTailAnimation;
 
 			if (!this.isInWater()) {
-				this.clientSideTailAnimationSpeed = 2.0F;
+				// this.clientSideTailAnimationSpeed = 2.0F;
 
 				if (this.motionY > 0.0D && this.clientSideTouchedGround && !this.isSilent()) {
 					this.world.playSound(this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GUARDIAN_FLOP,
@@ -111,16 +111,9 @@ public class EntityFish extends EntityAnimal {
 				this.clientSideTouchedGround = this.motionY < 0.0D
 						&& this.world.isBlockNormalCube((new BlockPos(this)).down(), false);
 			} else if (this.isMoving()) {
-				if (this.clientSideTailAnimationSpeed < 0.5F) {
-					this.clientSideTailAnimationSpeed = 4.0F;
-				} else {
-					this.clientSideTailAnimationSpeed += (0.5F - this.clientSideTailAnimationSpeed) * 0.1F;
-				}
-			} else {
-				this.clientSideTailAnimationSpeed += (0.125F - this.clientSideTailAnimationSpeed) * 0.2F;
-			}
 
-			this.clientSideTailAnimation += this.clientSideTailAnimationSpeed;
+			} else {
+			}
 
 			if (this.isMoving() && this.isInWater()) {
 				Vec3d vec3d = this.getLook(0.0F);
@@ -150,13 +143,7 @@ public class EntityFish extends EntityAnimal {
 		super.onLivingUpdate();
 	}
 
-	@SideOnly(Side.CLIENT)
-	public float getTailAnimation(float p_175471_1_) {
-		return this.clientSideTailAnimationO
-				+ (this.clientSideTailAnimation - this.clientSideTailAnimationO) * p_175471_1_;
-	}
-
-	static class FishMoveHelper extends EntityMoveHelper {
+	/*	static class FishMoveHelper extends EntityMoveHelper {
 		private final EntityFish EntityFish;
 
 		public FishMoveHelper(EntityFish fish) {
@@ -210,7 +197,7 @@ public class EntityFish extends EntityAnimal {
 				this.EntityFish.setMoving(false);
 			}
 		}
-	}
+	}*/
 
 	public boolean isMoving() {
 		return this.isSyncedFlagSet(2);
@@ -289,9 +276,9 @@ public class EntityFish extends EntityAnimal {
 			this.typeData = type;
 		}
 	}
+
 	@Nullable
-    protected ResourceLocation getLootTable()
-    {
-    	return LOOT_FISH;
-    }
+	protected ResourceLocation getLootTable() {
+		return LOOT_FISH;
+	}
 }
