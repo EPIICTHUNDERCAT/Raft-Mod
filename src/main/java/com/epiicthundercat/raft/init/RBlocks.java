@@ -3,11 +3,7 @@ package com.epiicthundercat.raft.init;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.epiicthundercat.raft.block.BlockBurner;
-import com.epiicthundercat.raft.block.BlockPalmLeaves;
-import com.epiicthundercat.raft.block.BlockPalmLog;
-import com.epiicthundercat.raft.block.BlockPalmSapling;
-import com.epiicthundercat.raft.block.BlockPalmWood;
+import com.epiicthundercat.raft.block.*;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;

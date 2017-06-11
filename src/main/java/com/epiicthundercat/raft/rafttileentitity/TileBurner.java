@@ -2,9 +2,6 @@ package com.epiicthundercat.raft.rafttileentitity;
 
 import javax.annotation.Nullable;
 
-import com.epiicthundercat.raft.block.BlockBurner;
-import com.epiicthundercat.raft.init.RBlocks;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -16,16 +13,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class TileBurner extends TileEntity implements ITickable {
-	public int cookTimeRemaining = 300;
-	private static final int totalTime = 300;
-	
-	
-	
+	public int cookTimeRemaining;
+	public int totalTime = 20; //change to the value you want later
 	
 	public ItemStackHandler items = new ItemStackHandler(3) {
 		protected int getStackLimit(int slot, ItemStack stack) {
@@ -47,60 +43,51 @@ public class TileBurner extends TileEntity implements ITickable {
 
 			IBlockState state = TileBurner.this.world.getBlockState(TileBurner.this.pos);
 			TileBurner.this.world.notifyBlockUpdate(TileBurner.this.pos, state, state, 3);
+			TileBurner.this.markDirty();
 		}
 	};
 
-	public SPacketUpdateTileEntity func_189518_D_() {
+	@Nullable
+	@Override
+	public SPacketUpdateTileEntity getUpdatePacket() {
 		NBTTagCompound tag = new NBTTagCompound();
 		writeToNBT(tag);
 		return new SPacketUpdateTileEntity(this.pos, 0, tag);
 	}
 
-	public NBTTagCompound getUpdateTag() {
-		return writeToNBT(new NBTTagCompound());
+	@Override
+	public NBTTagCompound getUpdateTag()
+	{
+		NBTTagCompound nbtTagCompound = new NBTTagCompound();
+		writeToNBT(nbtTagCompound);
+		return nbtTagCompound;
 	}
 
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-		super.onDataPacket(net, packet);
-		readFromNBT(packet.getNbtCompound());
-
-		IBlockState state = this.world.getBlockState(this.pos);
-		this.world.notifyBlockUpdate(this.pos, state, state, 3);
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onDataPacket(NetworkManager networkManager, SPacketUpdateTileEntity s35PacketUpdateTileEntity) {
+		readFromNBT(s35PacketUpdateTileEntity.getNbtCompound());
+		world.markBlockRangeForRenderUpdate(this.pos, this.pos);
+		this.world.notifyBlockUpdate(this.pos, world.getBlockState(this.pos), world.getBlockState(this.pos), 3);
 	}
 
-	private boolean isCooking() {
-		IBlockState down = this.world.getBlockState(this.pos.down());
-		if ((down.getBlock() == RBlocks.burner)
-				&& (((Boolean) down.getValue(BlockBurner.BURNING)).booleanValue())) {
-			return true;
-		}
-		return false;
-	}
-@Override
+	@Override
 	public void update() {
-		if (!this.world.isRemote) {
-			if ((isCooking()) && (canCookAnything())) {
-				this.cookTimeRemaining--;
-				if (this.cookTimeRemaining <= 0) {
-					 for (int i = 0; i < inventory().getSlots(); i++)
-			          {
-			            ItemStack stack = this.items.getStackInSlot(i);
-			            if (!getCookingResult(stack).isEmpty()) {
-			              this.items.setStackInSlot(i, getCookingResult(stack));
-			            }
-			          }
-					this.cookTimeRemaining = 300;
-				}
-				markDirty();
-			} else if (this.cookTimeRemaining < 300) {
+		if(!this.world.isRemote) {
+			if(canCookAnything()) {
 				this.cookTimeRemaining++;
-				markDirty();
+				if(this.cookTimeRemaining >= totalTime) {
+					this.cookTimeRemaining = 0;
+					for(int i = 0; i < inventory().getSlots(); i++) {
+						ItemStack stack = this.items.getStackInSlot(i);
+						ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack).copy();
+						this.items.setStackInSlot(i, result);
+					}
+				}
+			}else if(this.cookTimeRemaining > 0) {
+				this.cookTimeRemaining = 0;
 			}
 		}
-	}
-
-	public static ItemStack getCookingResult(ItemStack stack) {
-		return FurnaceRecipes.instance().getSmeltingResult(stack).copy();
 	}
 
 	private boolean canCookAnything() {
@@ -113,10 +100,7 @@ public class TileBurner extends TileEntity implements ITickable {
 	}
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return true;
-		}
-		return super.hasCapability(capability, facing);
+		return this.getCapability(capability, facing) != null;
 	}
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
@@ -130,13 +114,17 @@ public class TileBurner extends TileEntity implements ITickable {
 		compound = super.writeToNBT(compound);
 		compound.setTag("Items", this.items.serializeNBT());
 		compound.setInteger("CookTime", (short) this.cookTimeRemaining);
+		compound.setInteger("TotalTime", (short) this.totalTime);
 		return compound;
 	}
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		this.items.deserializeNBT(compound.getCompoundTag("Items"));
+		if (compound.hasKey("Items")) {
+			this.items.deserializeNBT((NBTTagCompound) compound.getTag("Items"));
+		}
 		this.cookTimeRemaining = compound.getInteger("CookTime");
+		this.totalTime = compound.getInteger("TotalTime");
 	}
 	
 	public IItemHandler inventory() {
