@@ -3,14 +3,18 @@ package com.epiicthundercat.raft.entity.monster;
 import javax.annotation.Nullable;
 
 import com.epiicthundercat.raft.Reference;
+import com.epiicthundercat.raft.entity.passive.EntityFish;
+import com.epiicthundercat.raft.init.RItems;
 import com.google.common.base.Predicate;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -18,11 +22,13 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityLookHelper;
 import net.minecraft.entity.ai.EntityMoveHelper;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -36,21 +42,15 @@ import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntitySharkFemale extends EntityMob {
 
 	public static final ResourceLocation LOOT_FEMALESHARK = new ResourceLocation(Reference.ID, "entities/femaleshark");
-	private static final DataParameter<Byte> STATUS = EntityDataManager.<Byte>createKey(EntitySharkFemale.class,
-			DataSerializers.BYTE);
-	private static final DataParameter<Integer> TARGET_ENTITY = EntityDataManager
-			.<Integer>createKey(EntitySharkFemale.class, DataSerializers.VARINT);
 
-	private EntityLivingBase targetedEntity;
-	private int clientSideAttackTime;
+	private static final DataParameter<Boolean> MOVING = EntityDataManager.<Boolean>createKey(EntitySharkFemale.class,
+			DataSerializers.BOOLEAN);
+
 	private boolean clientSideTouchedGround;
 	private EntityAIWander wander;
 
@@ -58,30 +58,37 @@ public class EntitySharkFemale extends EntityMob {
 		super(worldIn);
 		this.experienceValue = 10;
 		this.setSize(0.85F, 0.85F);
-	//	this.moveHelper = new EntitySharkFemale.SharkMoveHelper(this);
-		
+		this.moveHelper = new EntitySharkFemale.SharkMoveHelper(this);
+
 	}
 
 	@Override
 	protected void initEntityAI() {
-	/*	EntityAIMoveTowardsRestriction entityaimovetowardsrestriction = new EntityAIMoveTowardsRestriction(this, 1.0D);
+		EntityAIMoveTowardsRestriction entityaimovetowardsrestriction = new EntityAIMoveTowardsRestriction(this, 1.0D);
 		this.wander = new EntityAIWander(this, 1.0D, 80);
-		this.tasks.addTask(4, new EntitySharkFemale.AISharkAttack(this));
+		this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
 		this.tasks.addTask(5, entityaimovetowardsrestriction);
 		this.tasks.addTask(7, this.wander);
-		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntitySharkFemale.class, 12.0F, 0.01F));
 		this.tasks.addTask(9, new EntityAILookIdle(this));
 		this.wander.setMutexBits(3);
 		entityaimovetowardsrestriction.setMutexBits(3);
-		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 10, true, false,
-				new EntitySharkFemale.SharkTargetSelector(this)));*/
+		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntitySharkFemale.class, 12.0F, 0.01F));
+		this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false, new Class[0]));
+
+	}
+
+	protected void applyEntityAI() {
+
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
+		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityEel.class, true));
+		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityFish.class, true));
 	}
 
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(12.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
 		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
@@ -112,90 +119,37 @@ public class EntitySharkFemale extends EntityMob {
 	/**
 	 * Returns new PathNavigateGround instance
 	 */
+
 	protected PathNavigate getNewNavigator(World worldIn) {
 		return new PathNavigateSwimmer(this, worldIn);
+	}
+
+	private boolean shouldAttackPlayer(EntityPlayer player) {
+		ItemStack itemstack = (ItemStack) player.inventory.armorInventory.get(3);
+
+		Vec3d vec3d = player.getLook(1.0F).normalize();
+		Vec3d vec3d1 = new Vec3d(this.posX - player.posX, this.getEntityBoundingBox().minY
+				+ (double) this.getEyeHeight() - (player.posY + (double) player.getEyeHeight()),
+				this.posZ - player.posZ);
+		double d0 = vec3d1.lengthVector();
+		vec3d1 = vec3d1.normalize();
+		double d1 = vec3d.dotProduct(vec3d1);
+		return d1 > 1.0D - 0.025D / d0 ? player.canEntityBeSeen(this) : false;
 	}
 
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		this.dataManager.register(STATUS, Byte.valueOf((byte) 0));
-		this.dataManager.register(TARGET_ENTITY, Integer.valueOf(0));
-	}
 
-	/**
-	 * Returns true if given flag is set
-	 */
-	private boolean isSyncedFlagSet(int flagId) {
-		return (((Byte) this.dataManager.get(STATUS)).byteValue() & flagId) != 0;
-	}
-
-	/**
-	 * Sets a flag state "on/off" on both sides (client/server) by using
-	 * DataWatcher
-	 */
-
-	private void setSyncedFlag(int flagId, boolean state) {
-		byte b0 = ((Byte) this.dataManager.get(STATUS)).byteValue();
-
-		if (state) {
-			this.dataManager.set(STATUS, Byte.valueOf((byte) (b0 | flagId)));
-		} else {
-			this.dataManager.set(STATUS, Byte.valueOf((byte) (b0 & ~flagId)));
-		}
+		this.dataManager.register(MOVING, Boolean.valueOf(false));
 	}
 
 	public boolean isMoving() {
-		return this.isSyncedFlagSet(2);
+		return ((Boolean) this.dataManager.get(MOVING)).booleanValue();
 	}
 
 	private void setMoving(boolean moving) {
-		this.setSyncedFlag(2, moving);
-	}
-
-	public int getAttackDuration() {
-		return 80;
-	}
-
-	private void setTargetedEntity(int entityId) {
-		this.dataManager.set(TARGET_ENTITY, Integer.valueOf(entityId));
-	}
-
-	public boolean hasTargetedEntity() {
-		return ((Integer) this.dataManager.get(TARGET_ENTITY)).intValue() != 0;
-	}
-
-	public EntityLivingBase getTargetedEntity() {
-		if (!this.hasTargetedEntity()) {
-			return null;
-		} else if (this.world.isRemote) {
-			if (this.targetedEntity != null) {
-				return this.targetedEntity;
-			} else {
-				Entity entity = this.world.getEntityByID(((Integer) this.dataManager.get(TARGET_ENTITY)).intValue());
-
-				if (entity instanceof EntityLivingBase) {
-					this.targetedEntity = (EntityLivingBase) entity;
-					return this.targetedEntity;
-				} else {
-					return null;
-				}
-			}
-		} else {
-			return this.getAttackTarget();
-		}
-	}
-
-	@Override
-	public void notifyDataManagerChange(DataParameter<?> key) {
-		super.notifyDataManagerChange(key);
-
-		if (STATUS.equals(key)) {
-
-		} else if (TARGET_ENTITY.equals(key)) {
-			this.clientSideAttackTime = 0;
-			this.targetedEntity = null;
-		}
+		this.dataManager.set(MOVING, Boolean.valueOf(moving));
 	}
 
 	@Override
@@ -208,12 +162,6 @@ public class EntitySharkFemale extends EntityMob {
 		return this.height * 0.5F;
 	}
 
-	@Override
-	public float getBlockPathWeight(BlockPos pos) {
-		return this.world.getBlockState(pos).getMaterial() == Material.WATER
-				? 10.0F + this.world.getLightBrightness(pos) - 0.5F : super.getBlockPathWeight(pos);
-	}
-
 	/**
 	 * Called frequently so the entity can update its state every tick as
 	 * required. For example, zombies and skeletons use this to react to
@@ -222,10 +170,8 @@ public class EntitySharkFemale extends EntityMob {
 	@Override
 	public void onLivingUpdate() {
 		if (this.world.isRemote) {
-			
 
 			if (!this.isInWater()) {
-				
 
 				if (this.motionY > 0.0D && this.clientSideTouchedGround && !this.isSilent()) {
 					this.world.playSound(this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GUARDIAN_FLOP,
@@ -234,7 +180,7 @@ public class EntitySharkFemale extends EntityMob {
 
 				this.clientSideTouchedGround = this.motionY < 0.0D
 						&& this.world.isBlockNormalCube((new BlockPos(this)).down(), false);
-			} 
+			}
 			if (this.isMoving() && this.isInWater()) {
 				Vec3d vec3d = this.getLook(0.0F);
 
@@ -247,39 +193,12 @@ public class EntitySharkFemale extends EntityMob {
 				}
 			}
 
-			if (this.hasTargetedEntity()) {
-				if (this.clientSideAttackTime < this.getAttackDuration()) {
-					++this.clientSideAttackTime;
-				}
-
-				EntityLivingBase entitylivingbase = this.getTargetedEntity();
-
-				if (entitylivingbase != null) {
-					this.getLookHelper().setLookPositionWithEntity(entitylivingbase, 90.0F, 90.0F);
-					this.getLookHelper().onUpdateLook();
-					double d5 = (double) this.getAttackAnimationScale(0.0F);
-					double d0 = entitylivingbase.posX - this.posX;
-					double d1 = entitylivingbase.posY + (double) (entitylivingbase.height * 0.5F)
-							- (this.posY + (double) this.getEyeHeight());
-					double d2 = entitylivingbase.posZ - this.posZ;
-					double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
-					d0 = d0 / d3;
-					d1 = d1 / d3;
-					d2 = d2 / d3;
-					double d4 = this.rand.nextDouble();
-
-					while (d4 < d3) {
-						d4 += 1.8D - d5 + this.rand.nextDouble() * (1.7D - d5);
-						this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX + d0 * d4,
-								this.posY + d1 * d4 + (double) this.getEyeHeight(), this.posZ + d2 * d4, 0.0D, 0.0D,
-								0.0D, new int[0]);
-					}
-				}
-			}
 		}
 
 		if (this.inWater) {
 			this.setAir(300);
+			
+
 		} else if (this.onGround) {
 			this.motionY += 0.5D;
 			this.motionX += (double) ((this.rand.nextFloat() * 2.0F - 1.0F) * 0.4F);
@@ -289,19 +208,8 @@ public class EntitySharkFemale extends EntityMob {
 			this.isAirBorne = true;
 		}
 
-		if (this.hasTargetedEntity()) {
-			this.rotationYaw = this.rotationYawHead;
-		}
-
 		super.onLivingUpdate();
 	}
-
-	
-	public float getAttackAnimationScale(float p_175477_1_) {
-		return ((float) this.clientSideAttackTime + p_175477_1_) / (float) this.getAttackDuration();
-	}
-
-	
 
 	@Nullable
 	@Override
@@ -345,7 +253,7 @@ public class EntitySharkFemale extends EntityMob {
 			EntityLivingBase entitylivingbase = (EntityLivingBase) source.getSourceOfDamage();
 
 			if (!source.isExplosion()) {
-				entitylivingbase.attackEntityFrom(DamageSource.causeThornsDamage(this), 2.0F);
+			//	entitylivingbase.attackEntityFrom(DamageSource.causeThornsDamage(this), 2.0F);
 			}
 		}
 
@@ -371,12 +279,12 @@ public class EntitySharkFemale extends EntityMob {
 		if (this.isServerWorld()) {
 			if (this.isInWater()) {
 				this.moveRelative(strafe, forward, 0.1F);
-				//this.faceEntity(this.motionX, this.motionY, this.motionZ);
+				 this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 				this.motionX *= 0.8999999761581421D;
 				this.motionY *= 0.8999999761581421D;
 				this.motionZ *= 0.8999999761581421D;
 
-				if (!this.isMoving() && this.getAttackTarget() == null) {
+				if (!this.isMoving() ) {
 					this.motionY -= 0.005D;
 				}
 			} else {
@@ -384,86 +292,6 @@ public class EntitySharkFemale extends EntityMob {
 			}
 		} else {
 			super.moveEntityWithHeading(strafe, forward);
-		}
-	}
-
-	static class AISharkAttack extends EntityAIBase {
-		private final EntitySharkFemale theEntity;
-		private int tickCounter;
-
-		public AISharkAttack(EntitySharkFemale shark) {
-			this.theEntity = shark;
-			this.setMutexBits(3);
-		}
-
-		/**
-		 * Returns whether the EntityAIBase should begin execution.
-		 */
-		public boolean shouldExecute() {
-			EntityLivingBase entitylivingbase = this.theEntity.getAttackTarget();
-			return entitylivingbase != null && entitylivingbase.isEntityAlive();
-		}
-
-		/**
-		 * Returns whether an in-progress EntityAIBase should continue executing
-		 */
-		public boolean continueExecuting() {
-			return super.continueExecuting()
-					&& (this.theEntity.getDistanceSqToEntity(this.theEntity.getAttackTarget()) > 9.0D);
-		}
-
-		/**
-		 * Execute a one shot task or start executing a continuous task
-		 */
-		public void startExecuting() {
-			this.tickCounter = -10;
-			this.theEntity.getNavigator().clearPathEntity();
-			this.theEntity.getLookHelper().setLookPositionWithEntity(this.theEntity.getAttackTarget(), 90.0F, 90.0F);
-			this.theEntity.isAirBorne = true;
-		}
-
-		/**
-		 * Resets the task
-		 */
-		public void resetTask() {
-			this.theEntity.setTargetedEntity(0);
-			this.theEntity.setAttackTarget((EntityLivingBase) null);
-			this.theEntity.wander.makeUpdate();
-		}
-
-		/**
-		 * Updates the task
-		 */
-		public void updateTask() {
-			EntityLivingBase entitylivingbase = this.theEntity.getAttackTarget();
-			this.theEntity.getNavigator().clearPathEntity();
-			this.theEntity.getLookHelper().setLookPositionWithEntity(entitylivingbase, 90.0F, 90.0F);
-
-			if (!this.theEntity.canEntityBeSeen(entitylivingbase)) {
-				this.theEntity.setAttackTarget((EntityLivingBase) null);
-			} else {
-				++this.tickCounter;
-
-				if (this.tickCounter == 0) {
-					this.theEntity.setTargetedEntity(this.theEntity.getAttackTarget().getEntityId());
-//					this.theEntity.world.setEntityState(this.theEntity, (byte) 21);
-				} else if (this.tickCounter >= this.theEntity.getAttackDuration()) {
-					float f = 1.0F;
-
-					if (this.theEntity.world.getDifficulty() == EnumDifficulty.HARD) {
-						f += 2.0F;
-					}
-
-					entitylivingbase
-							.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this.theEntity, this.theEntity), f);
-					entitylivingbase.attackEntityFrom(DamageSource.causeMobDamage(this.theEntity),
-							(float) this.theEntity.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE)
-									.getAttributeValue());
-					this.theEntity.setAttackTarget((EntityLivingBase) null);
-				}
-
-				super.updateTask();
-			}
 		}
 	}
 
@@ -579,7 +407,7 @@ public class EntitySharkFemale extends EntityMob {
 		 * Resets the task
 		 */
 		public void resetTask() {
-			this.theEntity.setTargetedEntity(0);
+
 			this.theEntity.setAttackTarget((EntityLivingBase) null);
 			this.theEntity.wander.makeUpdate();
 		}
@@ -598,26 +426,22 @@ public class EntitySharkFemale extends EntityMob {
 				++this.tickCounter;
 
 				if (this.tickCounter == 0) {
-					this.theEntity.setTargetedEntity(this.theEntity.getAttackTarget().getEntityId());
-					//this.theEntity.world.setEntityState(this.theEntity, (byte) 21);
-				} else if (this.tickCounter >= this.theEntity.getAttackDuration()) {
-					float f = 1.0F;
 
-					if (this.theEntity.world.getDifficulty() == EnumDifficulty.HARD) {
-						f += 2.0F;
-					}
-
-					entitylivingbase
-							.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this.theEntity, this.theEntity), f);
-					entitylivingbase.attackEntityFrom(DamageSource.causeMobDamage(this.theEntity),
-							(float) this.theEntity.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE)
-									.getAttributeValue());
-					this.theEntity.setAttackTarget((EntityLivingBase) null);
 				}
 
 				super.updateTask();
 			}
 		}
+	}
+
+	public void onDeath(DamageSource cause) {
+		super.onDeath(cause);
+
+		if (cause.getEntity() instanceof EntityLiving) {
+
+			this.entityDropItem(new ItemStack(RItems.shark_tooth, 1, 1), 0.0F);
+		}
+
 	}
 
 }

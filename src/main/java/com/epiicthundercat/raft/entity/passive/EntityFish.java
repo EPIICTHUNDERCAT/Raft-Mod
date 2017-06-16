@@ -31,8 +31,6 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeOcean;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityFish extends EntityAnimal {
 	private static final DataParameter<Byte> STATUS = EntityDataManager.<Byte>createKey(EntityFish.class,
@@ -42,24 +40,24 @@ public class EntityFish extends EntityAnimal {
 	private static final DataParameter<Integer> FISH_VARIANT = EntityDataManager.<Integer>createKey(EntityFish.class,
 			DataSerializers.VARINT);
 	private EntityAIAvoidEntity<EntityPlayer> avoidEntity;
-	// private float clientSideTailAnimation;
-	// private float clientSideTailAnimationO;
-	// private float clientSideTailAnimationSpeed;
+
 	private EntityAIWander wander;
 	private boolean clientSideTouchedGround;
 
 	public EntityFish(World worldIn) {
 		super(worldIn);
 		this.setSize(0.6F, 0.7F);
-	//	this.moveHelper = new EntityFish.FishMoveHelper(this);
-		
+		this.moveHelper = new EntityFish.FishMoveHelper(this);
+
 	}
 
+	@Override
 	protected void initEntityAI() {
-	/*	this.wander = new EntityAIWander(this, 1.0D, 80);
+		this.wander = new EntityAIWander(this, 1.0D, 80);
 		this.tasks.addTask(7, this.wander);
+
 		this.tasks.addTask(9, new EntityAILookIdle(this));
-		this.wander.setMutexBits(3);*/
+		this.wander.setMutexBits(3);
 	}
 
 	@Override
@@ -72,6 +70,7 @@ public class EntityFish extends EntityAnimal {
 	/**
 	 * Determines if an entity can be despawned, used on idle far away entities
 	 */
+	@Override
 	protected boolean canDespawn() {
 		return this.ticksExisted > 2400;
 	}
@@ -80,6 +79,7 @@ public class EntityFish extends EntityAnimal {
 		return new PathNavigateSwimmer(this, worldIn);
 	}
 
+	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(2.0D);
@@ -92,16 +92,15 @@ public class EntityFish extends EntityAnimal {
 
 	@Override
 	public EntityAgeable createChild(EntityAgeable ageable) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
+	@Override
 	public void onLivingUpdate() {
 		if (this.world.isRemote) {
-			// this.clientSideTailAnimationO = this.clientSideTailAnimation;
 
 			if (!this.isInWater()) {
-				// this.clientSideTailAnimationSpeed = 2.0F;
 
 				if (this.motionY > 0.0D && this.clientSideTouchedGround && !this.isSilent()) {
 					this.world.playSound(this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GUARDIAN_FLOP,
@@ -120,9 +119,9 @@ public class EntityFish extends EntityAnimal {
 
 				for (int i = 0; i < 2; ++i) {
 					this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE,
-							this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width - vec3d.xCoord * 1.5D,
-							this.posY + this.rand.nextDouble() * (double) this.height - vec3d.yCoord * 1.5D,
-							this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width - vec3d.zCoord * 1.5D,
+							this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width - vec3d.xCoord * 0.5D,
+							this.posY + this.rand.nextDouble() * (double) this.height - vec3d.yCoord * 0.5D,
+							this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width - vec3d.zCoord * 0.5D,
 							0.0D, 0.0D, 0.0D, new int[0]);
 				}
 			}
@@ -143,7 +142,7 @@ public class EntityFish extends EntityAnimal {
 		super.onLivingUpdate();
 	}
 
-	/*	static class FishMoveHelper extends EntityMoveHelper {
+	static class FishMoveHelper extends EntityMoveHelper {
 		private final EntityFish EntityFish;
 
 		public FishMoveHelper(EntityFish fish) {
@@ -197,7 +196,7 @@ public class EntityFish extends EntityAnimal {
 				this.EntityFish.setMoving(false);
 			}
 		}
-	}*/
+	}
 
 	public boolean isMoving() {
 		return this.isSyncedFlagSet(2);
@@ -218,6 +217,7 @@ public class EntityFish extends EntityAnimal {
 	 * Sets a flag state "on/off" on both sides (client/server) by using
 	 * DataWatcher
 	 */
+
 	private void setSyncedFlag(int flagId, boolean state) {
 		byte b0 = ((Byte) this.dataManager.get(STATUS)).byteValue();
 
@@ -238,6 +238,7 @@ public class EntityFish extends EntityAnimal {
 	}
 
 	@Nullable
+	@Override
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
 
 		livingdata = super.onInitialSpawn(difficulty, livingdata);
@@ -277,7 +278,18 @@ public class EntityFish extends EntityAnimal {
 		}
 	}
 
+	@Override
+	public boolean canBreatheUnderwater() {
+		return true;
+	}
+
+	@Override
+	public boolean isPushedByWater() {
+		return false;
+	}
+
 	@Nullable
+	
 	protected ResourceLocation getLootTable() {
 		return LOOT_FISH;
 	}

@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import com.epiicthundercat.raft.Raft;
 import com.epiicthundercat.raft.Reference;
+import com.epiicthundercat.raft.entity.monster.EntityEel;
 import com.epiicthundercat.raft.entity.monster.EntitySharkFemale;
 import com.epiicthundercat.raft.entity.passive.EntityFish;
 
@@ -39,6 +40,9 @@ public class ModEntities {
 		// Fish
 		EntityRegistry.registerModEntity(getEntityResource("Fish"), EntityFish.class, "Fish", 5, Raft.instance, 80, 3,
 				false, 547853, femalesharkegg);
+		// Eel
+		EntityRegistry.registerModEntity(getEntityResource("Eel"), EntityEel.class, "Eel", 6, Raft.instance, 80, 3,
+				false, 547853, femalesharkegg);
 		/*
 		 * We want our mob to spawn in Plains and ice plains biomes. If you
 		 * don't add this then it will not spawn automatically but you can of
@@ -48,8 +52,12 @@ public class ModEntities {
 		// Female Shark
 		EntityRegistry.addSpawn(EntitySharkFemale.class, 1, 1, 3, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
 				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER);
-		// Female Shark
+		// Fish
 		EntityRegistry.addSpawn(EntityFish.class, 2, 3, 8, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
+				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER);
+
+		// Eel
+		EntityRegistry.addSpawn(EntityEel.class, 2, 3, 8, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
 				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER);
 
 		/*
@@ -58,8 +66,10 @@ public class ModEntities {
 
 		// Female Shark
 		EntitySpawnPlacementRegistry.setPlacementType(EntitySharkFemale.class, SpawnPlacementType.IN_WATER);
-		// Female Shark
+		// Fish
 		EntitySpawnPlacementRegistry.setPlacementType(EntityFish.class, SpawnPlacementType.IN_WATER);
+		// Eel
+		EntitySpawnPlacementRegistry.setPlacementType(EntityEel.class, SpawnPlacementType.IN_WATER);
 
 		/*
 		 * This is the loot table for our mob
@@ -69,6 +79,8 @@ public class ModEntities {
 		LootTableList.register(EntitySharkFemale.LOOT_FEMALESHARK);
 		// FISH
 		LootTableList.register(EntityFish.LOOT_FISH);
+		// FISH
+		LootTableList.register(EntityEel.LOOT_EEL);
 
 	}
 

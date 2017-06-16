@@ -1,12 +1,13 @@
 package com.epiicthundercat.raft.client.model;
 
-import org.lwjgl.opengl.GL11;
+import com.epiicthundercat.raft.entity.FloatBarrel;
+import com.epiicthundercat.raft.entity.passive.EntityFish;
 
-import net.minecraft.client.model.IMultipassModel;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -21,6 +22,9 @@ public class ModelBarrel extends ModelBase  {
 	public ModelRenderer BarrelTop;
 
 	public ModelBarrel() {
+		this.textureWidth = 92;
+		this.textureHeight = 64;
+
 		this.textureWidth = 92;
 		this.textureHeight = 64;
 
@@ -53,9 +57,13 @@ public class ModelBarrel extends ModelBase  {
 	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw,
 			float rotationPitch, float scale) {
 		
-		this.BarrelCenter.render(scale);
+		
+		  GlStateManager.pushMatrix();
+	        GlStateManager.translate(-0.4f, 0.0f, -0.4f);
+	      this.BarrelCenter.render(scale);
 	
 		this.BarrelTop.render(scale);
+	           GlStateManager.popMatrix();
 		
 	}
 
@@ -69,4 +77,36 @@ public class ModelBarrel extends ModelBase  {
 	{
 		return 45;
 	}
+	  public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entityIn) {
+			super.setRotationAngles(f, f1, f2, f3, f4, f5, entityIn);
+
+			FloatBarrel fish = (FloatBarrel) entityIn;
+			f = entityIn.ticksExisted;
+			f1 = 0.5f;
+			float globalSpeed = 1.0f;
+			float globalDegree = 1.0f;
+			float globalHeight = 1.0f;
+swing(BarrelCenter, 1, 1, 1, 1, f, f1);
+		
+		}
+
+		public void swing(ModelRenderer box, float speed, float degree, float offset, float weight, float f, float f1) {
+			box.rotateAngleY = degree * f1 * MathHelper.cos(speed * f + offset) + weight * f1;
+		}
+
+		public void flap(ModelRenderer box, float speed, float degree, boolean invert, float offset, float weight, float f,
+				float f1) {
+
+			box.rotateAngleZ = degree * f1 * MathHelper.cos(speed * f + offset) + weight * f1;
+		}
+
+		public void bob(ModelRenderer box, float speed, float degree, float offset, float weight, float f, float f1) {
+			box.rotationPointY = degree * f1 * MathHelper.cos(speed * f + offset) + weight * f1;
+		}
+
+		public void walk(ModelRenderer box, float speed, float degree, boolean invert, float offset, float weight, float f,
+				float f1) {
+
+			box.rotateAngleX = degree * f1 * MathHelper.cos(speed * f + offset) + weight * f1;
+		}
 }

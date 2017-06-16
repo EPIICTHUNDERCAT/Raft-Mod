@@ -10,6 +10,7 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -29,7 +30,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockPalmLeaves extends BlockLeaves {
 	public BlockPalmLeaves(String name) {
 		super();
-		
+
 		addToBlocks(this);
 		this.setRegistryName(name.toLowerCase());
 		this.setUnlocalizedName(name.toLowerCase());
@@ -90,18 +91,24 @@ public class BlockPalmLeaves extends BlockLeaves {
 
 	@Override
 	protected void dropApple(World worldIn, BlockPos pos, IBlockState state, int chance) {
-		// if (state.getValue(VARIANT) == BlockPlanks.EnumType.OAK &&
-		// worldIn.rand.nextInt(chance) == 0)
-		// {
-		spawnAsEntity(worldIn, pos, new ItemStack(RItems.thatch));
-		// }
-	}
+	
+		if (worldIn.rand.nextInt(chance) == 0.9) {
 
+			spawnAsEntity(worldIn, pos, new ItemStack(RItems.coconut));
+		}
+		spawnAsEntity(worldIn, pos, new ItemStack(RItems.thatch));
+
+	}
+	int chance = 2;
 	@Override
 	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity tile,
 			ItemStack stack) {
-		if (!world.isRemote && stack != null && stack.getItem() == Items.SHEARS) {
+		
+		if (!world.isRemote && stack.getItem() == Items.SHEARS) {
 			player.addStat(StatList.getBlockStats(this));
+			spawnAsEntity(world, pos, new ItemStack(Item.getItemFromBlock(this)));
+		} else if (!world.isRemote && stack.getItem() == RItems.hook && world.rand.nextInt(chance) == 1) {
+			spawnAsEntity(world, pos, new ItemStack(RItems.coconut));
 		} else
 			super.harvestBlock(world, player, pos, state, tile, stack);
 	}

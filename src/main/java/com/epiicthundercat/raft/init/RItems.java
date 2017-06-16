@@ -119,7 +119,14 @@ public class RItems {
 	public static Item raw_shark_meat = new RItemFood("raw_shark_meat", 3, 1, true);
 	public static Item cooked_shark_meat = new RItemFood("cooked_shark_meat", 10, 10, true);
 	public static Item stones = new RItem("stones");
-
+	public static Item raw_eel_meat = new RItemFood("raw_eel_meat", 3, 1, true);
+	public static Item cooked_eel_meat = new RItemFood("cooked_eel_meat", 10, 10, true);
+	public static Item shark_tooth = new RItem("shark_tooth");
+	
+	
+	
+	
+	
 	private static List<Item> getItems() {
 		return items;
 	}

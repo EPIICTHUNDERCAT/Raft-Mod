@@ -304,9 +304,11 @@ public class PlankEntity extends Entity {
 			float windX = 0.08F;
 			float windZ = 0.08F;
 			if (this.isInWater()) {
+				
 				this.motionY += 0.0045;
 				this.motionX += 0.0015;
 				this.motionZ += 0.0015;
+				
 			} else if (windX != 0 || windZ != 0) {
 				this.motionX = windX;
 				this.motionZ = windZ;
