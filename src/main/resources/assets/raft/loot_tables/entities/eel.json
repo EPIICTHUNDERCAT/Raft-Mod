@@ -1,31 +1,58 @@
 {
   "pools": [
     {
-      "name": "raft:Fish",
-      "conditions": [
-        {
-          "condition": "killed_by_player"
-        },
-        {
-          "condition": "random_chance_with_looting",
-          "chance": 100.6,
-          "looting_multiplier": 0.2
-        }
-      ],
+      "name": "raft:Eel",
       "rolls": 1,
       "entries": [
         {
           "type": "item",
           "name": "raft:raw_eel_meat",
+      "weight": 1,
           "functions": [
-            {
-              "function": "set_data",
-              "data": 0
-            }
-          ],
-          "weight": 100
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 3
+                            }
+                        },
+                        {
+                            "function": "looting_enchant",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        }
+                    ]
+                }
+            ]
+         
+        },
+        {"name": "raft:Eel",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name":"raft:plastic",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 2
+                            }
+                        },
+                        {
+                            "function": "looting_enchant",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        }
+                    ]
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }

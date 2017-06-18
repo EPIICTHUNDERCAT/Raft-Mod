@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class RRecipes {
 
@@ -20,7 +21,11 @@ public class RRecipes {
 
 
 		// Plank > Planks
+		
+				GameRegistry.addShapedRecipe(new ItemStack(Blocks.PLANKS), "DD", "DD", 'D',
+						new ItemStack(RItems.plank));
 
+		
 		// Rope
 		GameRegistry.addShapelessRecipe(new ItemStack(RItems.rope), new ItemStack(RItems.thatch),
 				new ItemStack(RItems.thatch), new ItemStack(RItems.thatch));
@@ -58,6 +63,7 @@ public class RRecipes {
 		GameRegistry.addSmelting(RBlocks.palm_log, new ItemStack(Items.COAL, 1, 1), 10);
 		GameRegistry.addSmelting(new ItemStack(Items.BEETROOT), new ItemStack(RItems.cooked_beet), 10);
 		GameRegistry.addSmelting(new ItemStack(RItems.raw_shark_meat), new ItemStack(RItems.cooked_shark_meat), 20);
+		GameRegistry.addSmelting(new ItemStack(RItems.raw_eel_meat), new ItemStack(RItems.cooked_eel_meat), 20);
 
 		// INGOTS
 		// aluminum
@@ -66,6 +72,7 @@ public class RRecipes {
 		GameRegistry.addShapedRecipe(new ItemStack(RItems.aluminum_ore_material), "DS", "SD", 'D',
 				new ItemStack(RItems.aluminum_compound), 'S', new ItemStack(RItems.stones));
 
+		
 		// tin
 		GameRegistry.addSmelting(new ItemStack(RItems.tin_ore_material), new ItemStack(RItems.tin_ingot), 50);
 		// tin ore material
@@ -132,6 +139,13 @@ public class RRecipes {
 		GameRegistry.addShapedRecipe(new ItemStack(RItems.gold_ore_material), "DS", "SD", 'D',
 				new ItemStack(RItems.gold_compound), 'S', new ItemStack(RItems.stones));
 
+		//Burner
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(RBlocks.burner),
+				new Object[] {"SSS", "DLD", "PLP", 'D', new ItemStack(Items.STICK), 'S', new ItemStack(RItems.compressed_scraps), 'P', "plankWood", 'L', "logWood" }));
+		
+
+		
+		
 		OreDictionary.registerOre("ingotLead", new ItemStack(RItems.lead_ingot));
 		OreDictionary.registerOre("ingotCopper", new ItemStack(RItems.copper_ingot));
 		OreDictionary.registerOre("ingotSilver", new ItemStack(RItems.silver_ingot));

@@ -48,7 +48,7 @@ public class EntityEel extends EntityMob {
 	public EntityEel(World worldIn) {
 		super(worldIn);
 		this.experienceValue = 10;
-		this.setSize(2F, 0.2F);
+		this.setSize(1.5F, 0.8F);
 		this.moveHelper = new EntityEel.EelMoveHelper(this);
 	}
 	@Override

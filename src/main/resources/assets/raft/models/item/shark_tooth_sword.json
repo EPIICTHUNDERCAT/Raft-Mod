@@ -1,0 +1,6 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "raft:items/shark_tooth_sword"
+    }
+}

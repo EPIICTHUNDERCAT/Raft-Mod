@@ -1,16 +1,16 @@
-
+itemGroup.rtabs=Raft Mod
 
 item.hook.name=Hook
 item.thatch.name=Thatch
 item.rope.name=Rope
 item.plank.name=Plank
-item.barrel.oak.name=Oak Barrel
-item.barrel.spruce.name=Spruce Barrel
-item.barrel.birch.name=Birch Barrel
-item.barrel.dark_oak.name=Dark Oak Barrel
-item.barrel.jungle.name=Jungle Barrel
-item.barrel.acacia.name=Acacia Barrel
-item.spear.name=Spear
+item.barrel.name=Oak Barrel
+item.spruce_barrel.name=Spruce Barrel
+item.birch_barrel.name=Birch Barrel
+item.dark_oak_barrel.name=Dark Oak Barrel
+item..jungle_barrel.name=Jungle Barrel
+item.acacia_barrel.name=Acacia Barrel
+item.spear.name=Flint Spear
 item.tin_can.name=Tin Can
 item.scrap.name=Scrap
 item.dirt_piece.name=Dirt Piece
@@ -30,6 +30,21 @@ item.tin_can_dirty.name=Salt Water
 item.raw_shark_meat.name=Raw Shark Meat
 item.cooked_shark_meat.name=Cooked Shark Meat
 item.stones.name=Stones
+item.shark_tooth.name=Shark Tooth
+item.raw_eel_meat.name=Raw Eel
+item.cooked_eel_meat.name=Charred Eel
+item.shark_tooth_sword.name=Shark Tooth Sword
+
+
+tile.burner.name=Burner
+
+entity.raft.Fish.name=Fish
+entity.raft.FemaleShark.name=Shark
+entity.raft.Eel.name=Electric Eel
+entity.Barrel.name=Barrel
+entity.raft.Plank.name=Plank
+entity.raft.Thatch.name=Thatch
+entity.raft.Scrap.name=Scrap
 
 
 

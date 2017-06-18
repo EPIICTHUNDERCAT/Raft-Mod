@@ -14,11 +14,13 @@ import com.epiicthundercat.raft.item.ItemTinCan;
 import com.epiicthundercat.raft.item.ItemTinPotion;
 import com.epiicthundercat.raft.item.RItem;
 import com.epiicthundercat.raft.item.RItemFood;
+import com.epiicthundercat.raft.item.RItemSword;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -36,7 +38,7 @@ public class RItems {
 	public static Item dark_oak_barrel = new ItemBarrel("dark_oak_barrel", FloatBarrel.Type.DARK_OAK);
 	public static Item acacia_barrel = new ItemBarrel("acacia_barrel", FloatBarrel.Type.ACACIA);
 	public static Item jungle_barrel = new ItemBarrel("jungle_barrel", FloatBarrel.Type.JUNGLE);
-	public static Item spear = new RItem("spear");
+	public static Item spear = new RItemSword("spear", ToolMaterial.STONE);
 	public static Item tin_can = new ItemTinCan("tin_can");
 	public static Item scrap = new ItemScrap("scrap");
 	public static Item dirt_piece = new RItem("dirt_piece");
@@ -122,7 +124,7 @@ public class RItems {
 	public static Item raw_eel_meat = new RItemFood("raw_eel_meat", 3, 1, true);
 	public static Item cooked_eel_meat = new RItemFood("cooked_eel_meat", 10, 10, true);
 	public static Item shark_tooth = new RItem("shark_tooth");
-	
+	public static Item shark_tooth_sword = new RItemSword("shark_tooth_sword", ToolMaterial.DIAMOND);
 	
 	
 	
