@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 
 import org.lwjgl.util.vector.Quaternion;
 
-import com.epiicthundercat.raft.client.renderer.RenderFloatingBarrel;
 import com.epiicthundercat.raft.client.renderer.RenderPlank;
 import com.epiicthundercat.raft.init.REventHandler;
 import com.epiicthundercat.raft.init.RItems;
@@ -28,9 +27,9 @@ import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -208,11 +207,12 @@ public class FloatBarrel extends Entity {
 				boolean flag = source.getEntity() instanceof EntityPlayer
 						&& ((EntityPlayer) source.getEntity()).capabilities.isCreativeMode;
 
+				boolean flag1 = source.getEntity() instanceof EntityCreeper;
 				EntityPlayer player = (EntityPlayer) source.getEntity();
 
 				if (flag || this.getDamageTaken() > 5.0F) {
 
-					if (!flag && this.world.getGameRules().getBoolean("doEntityDrops")) {
+					if (!flag && this.world.getGameRules().getBoolean("doEntityDrops") && !flag1) {
 						BlockPos pos = getPosition();
 
 						this.dropItems(world, pos);
@@ -258,25 +258,19 @@ public class FloatBarrel extends Entity {
 			return RItems.dark_oak_barrel;
 		}
 	}
-
-	/**
-	 * Setups the entity to do the hurt animation. Only used by packets in
-	 * multiplayer.
-	 */
-	@SideOnly(Side.CLIENT)
-	public void performHurtAnimation() {
-		this.setForwardDirection(-this.getForwardDirection());
-		this.setTimeSinceHit(10);
-		this.setDamageTaken(this.getDamageTaken() * 1.0F);
+	@Override
+	public boolean canBeCollidedWith() {
+		return false;
 	}
+
 
 	/**
 	 * Returns true if other Entities should be prevented from moving through
 	 * this Entity.
-	 */
+	 
 	public boolean canBeCollidedWith() {
 		return !this.isDead;
-	}
+	}*/
 
 	/**
 	 * Set the position and rotation values directly without any clamping.

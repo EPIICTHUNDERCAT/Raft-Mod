@@ -13,13 +13,17 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.EnumPlantType;
+import net.minecraftforge.common.IPlantable;
 
-public class BlockPalmLog extends BlockLog {
+public class BlockPalmLog extends BlockLog implements IPlantable{
 	public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.create("variant", EnumType.class);
 	public BlockPalmLog(String name) {
 		super();
@@ -176,5 +180,27 @@ public class BlockPalmLog extends BlockLog {
 				META_LOOKUP[type.getMetadata()] = type;
 			}
 		}
+	}
+	protected boolean checkAndDropBlock(World worldIn, BlockPos pos, IBlockState state) {
+        if (this.canBlockStay(worldIn, pos, state)) {
+            return true;
+        } else {
+            this.dropBlockAsItem(worldIn, pos, state, 0);
+            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+            return false;
+        }
+    }
+	public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
+        return canPlaceBlockAt(world, pos);
+    }
+	@Override
+	public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public IBlockState getPlant(IBlockAccess world, BlockPos pos) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

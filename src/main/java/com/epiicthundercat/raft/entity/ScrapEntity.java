@@ -27,6 +27,7 @@ import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -200,19 +201,19 @@ public class ScrapEntity extends Entity {
 
 				boolean flag = source.getEntity() instanceof EntityPlayer
 						&& ((EntityPlayer) source.getEntity()).capabilities.isCreativeMode;
-
+				boolean flag1 = source.getEntity() instanceof EntityCreeper;
 				EntityPlayer player = (EntityPlayer) source.getEntity();
 
 				if (flag || this.getDamageTaken() > 5.0F) {
 
-					if (!flag && this.world.getGameRules().getBoolean("doEntityDrops")) {
+					if (!flag && this.world.getGameRules().getBoolean("doEntityDrops") && !flag1) {
 						BlockPos pos = getPosition();
+
 						this.dropItems(world, pos);
 					}
 
 					this.setDead();
 				}
-
 				return true;
 			}
 		} else {
@@ -234,16 +235,6 @@ public class ScrapEntity extends Entity {
 		}
 	}
 
-	/**
-	 * Setups the entity to do the hurt animation. Only used by packets in
-	 * multiplayer.
-	 */
-	@SideOnly(Side.CLIENT)
-	public void performHurtAnimation() {
-		this.setForwardDirection(-this.getForwardDirection());
-		this.setTimeSinceHit(10);
-		this.setDamageTaken(this.getDamageTaken() * 11.0F);
-	}
 
 	/**
 	 * Returns true if other Entities should be prevented from moving through
@@ -251,7 +242,7 @@ public class ScrapEntity extends Entity {
 	 */
 	@Override
 	public boolean canBeCollidedWith() {
-		return true;
+		return false;
 	}
 
 	/**

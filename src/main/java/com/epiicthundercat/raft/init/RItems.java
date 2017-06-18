@@ -125,8 +125,9 @@ public class RItems {
 	public static Item cooked_eel_meat = new RItemFood("cooked_eel_meat", 10, 10, true);
 	public static Item shark_tooth = new RItem("shark_tooth");
 	public static Item shark_tooth_sword = new RItemSword("shark_tooth_sword", ToolMaterial.DIAMOND);
-	
-	
+	public static Item clay_chunk = new RItem("clay_chunk");
+	public static Item pebble = new RItem("pebble");
+	//public static Item clay_chunk = new RItem("clay_chunk");
 	
 	
 	private static List<Item> getItems() {

@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "normal": { "model": "raft:nickel_compound_ore" }
+    }
+}

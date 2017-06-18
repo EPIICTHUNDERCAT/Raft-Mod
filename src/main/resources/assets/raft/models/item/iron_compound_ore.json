@@ -1,0 +1,6 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "raft:items/ores/iron_compound_ore"
+    }
+}

@@ -3,7 +3,22 @@ package com.epiicthundercat.raft.init;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.epiicthundercat.raft.block.*;
+import com.epiicthundercat.raft.block.BlockBurner;
+import com.epiicthundercat.raft.block.BlockPalmLeaves;
+import com.epiicthundercat.raft.block.BlockPalmLog;
+import com.epiicthundercat.raft.block.BlockPalmSapling;
+import com.epiicthundercat.raft.block.BlockPalmWood;
+import com.epiicthundercat.raft.block.BlockPalmWoodSlab;
+import com.epiicthundercat.raft.block.orecompounds.BlockAluminumCompound;
+import com.epiicthundercat.raft.block.orecompounds.BlockCopperCompound;
+import com.epiicthundercat.raft.block.orecompounds.BlockGoldCompound;
+import com.epiicthundercat.raft.block.orecompounds.BlockIronCompound;
+import com.epiicthundercat.raft.block.orecompounds.BlockLeadCompound;
+import com.epiicthundercat.raft.block.orecompounds.BlockNickelCompound;
+import com.epiicthundercat.raft.block.orecompounds.BlockSilverCompound;
+import com.epiicthundercat.raft.block.orecompounds.BlockTinCompound;
+import com.epiicthundercat.raft.block.orecompounds.BlockTungstenCompound;
+import com.epiicthundercat.raft.block.orecompounds.BlockUraniumCompound;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
@@ -38,7 +53,22 @@ public class RBlocks {
 	public static Block palm_leaves = new BlockPalmLeaves("palm_leaves");
 	public static Block palm_log = new BlockPalmLog("palm_log");
 	public static Block palm_planks = new BlockPalmWood("palm_planks");
-
+	public static Block palm_slab = new BlockPalmWoodSlab("palm_slab", Material.WOOD);
+	
+	
+	//Ore BLocks
+	public static Block aluminum_compound_ore = new BlockAluminumCompound("aluminum_compound_ore", Material.ROCK);
+	public static Block copper_compound_ore = new BlockCopperCompound("copper_compound_ore", Material.ROCK);
+	public static Block gold_compound_ore = new BlockGoldCompound("gold_compound_ore", Material.ROCK);
+	public static Block iron_compound_ore = new BlockIronCompound("iron_compound_ore", Material.ROCK);
+	public static Block lead_compound_ore = new BlockLeadCompound("lead_compound_ore", Material.ROCK);
+	public static Block nickel_compound_ore = new BlockNickelCompound("nickel_compound_ore", Material.ROCK);
+	public static Block silver_compound_ore = new BlockSilverCompound("silver_compound_ore", Material.ROCK);
+	public static Block tin_compound_ore = new BlockTinCompound("tin_compound_ore", Material.ROCK);
+	public static Block tungsten_compound_ore = new BlockTungstenCompound("tungsten_compound_ore", Material.ROCK);
+	public static Block uranium_compound_ore = new BlockUraniumCompound("uranium_compound_ore", Material.ROCK);
+	
+	
 	public static List<Block> blockList() {
 		return blocks;
 	}

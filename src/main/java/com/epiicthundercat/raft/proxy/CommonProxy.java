@@ -1,7 +1,5 @@
 package com.epiicthundercat.raft.proxy;
 
-import com.epiicthundercat.raft.Raft;
-import com.epiicthundercat.raft.client.gui.RGuiHandler;
 import com.epiicthundercat.raft.entity.ModEntities;
 import com.epiicthundercat.raft.init.RBlocks;
 import com.epiicthundercat.raft.init.REventHandler;
@@ -10,12 +8,13 @@ import com.epiicthundercat.raft.init.RRecipes;
 import com.epiicthundercat.raft.init.barrel.BarrelLootAdd;
 import com.epiicthundercat.raft.integration.TANIntegration;
 import com.epiicthundercat.raft.rafttileentitity.TileEntityRegistry;
+import com.epiicthundercat.raft.world.WorldGenOreOnReef;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class CommonProxy {
 	
@@ -39,7 +38,7 @@ public class CommonProxy {
 		RItems.register(preEvent);
 		RBlocks.register(preEvent);
 		RRecipes.register(preEvent);
-		
+		 //GameRegistry.registerWorldGenerator(new WorldGenOreOnReef(),1);
 		MinecraftForge.EVENT_BUS.register(new REventHandler());
 		if (Loader.isModLoaded("toughasnails")) {
 			MinecraftForge.EVENT_BUS.register(new TANIntegration());

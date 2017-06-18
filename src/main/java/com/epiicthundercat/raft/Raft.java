@@ -2,6 +2,7 @@ package com.epiicthundercat.raft;
 
 import com.epiicthundercat.raft.init.SendMovePack;
 import com.epiicthundercat.raft.proxy.CommonProxy;
+import com.epiicthundercat.raft.world.WorldGenOreOnReef;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -11,6 +12,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VER, dependencies = Reference.DEPENDENCIES)
@@ -31,6 +33,7 @@ public class Raft {
 		network.registerMessage(SendMovePack.class, SendMovePack.class, 0, Side.CLIENT);
 		network.registerMessage(SendMovePack.class, SendMovePack.class, 0, Side.SERVER);
 		proxy.preInit(preEvent);
+		 GameRegistry.registerWorldGenerator(new WorldGenOreOnReef(),1);
 	}
 
 	@EventHandler

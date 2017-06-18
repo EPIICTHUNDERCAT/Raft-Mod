@@ -1,0 +1,22 @@
+{
+    "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
+    "textures": {
+        "0": "raft:blocks/ores/silver_compound_ore"
+    },
+    "elements": [
+        {
+            "name": "ore",
+            "from": [ 2.7999999970197678, -3.0, 4.0 ], 
+            "to": [ 9.799999997019768, 4.0, 11.0 ], 
+            "rotation": { "origin": [ 8.0, 3.0, 8.0 ], "axis": "z", "angle": 45.0 },
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 8.0, 6.0, 12.0, 10.0 ] },
+                "east": { "texture": "#0", "uv": [ 8.0, 6.0, 13.0, 10.0 ] },
+                "south": { "texture": "#0", "uv": [ 7.0, 7.0, 12.0, 11.0 ] },
+                "west": { "texture": "#0", "uv": [ 7.0, 7.0, 12.0, 11.0 ] },
+                "up": { "texture": "#0", "uv": [ 8.0, 6.0, 12.0, 10.0 ] },
+                "down": { "texture": "#0", "uv": [ 7.0, 7.0, 11.0, 11.0 ] }
+            }
+        }
+    ]
+}

@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "normal": { "model": "raft:copper_compound_ore" }
+    }
+}
