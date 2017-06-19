@@ -39,8 +39,8 @@ public class BlockAluminumCompound extends RBlock implements IPlantable {
 
     public BlockAluminumCompound(String name, Material material) {
         super(name, material);
-        setTickRandomly(true);
-        setHardness(5.0F);
+        setTickRandomly(false);
+        setHardness(0.5F);
         setSoundType(SoundType.METAL);
          }
 
@@ -75,7 +75,7 @@ public class BlockAluminumCompound extends RBlock implements IPlantable {
 
     
   
-
+    @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
     {
     	this.spawnAsEntity(worldIn, pos, new ItemStack(RItems.aluminum_compound));
@@ -88,7 +88,7 @@ public class BlockAluminumCompound extends RBlock implements IPlantable {
         IBlockState state = worldIn.getBlockState(pos.down());
         Block block = state.getBlock();
 
-        if (worldIn.getBlockState(pos.up(2)).getMaterial() != Material.WATER) return false;
+      //  if (worldIn.getBlockState(pos.up(2)).getMaterial() != Material.WATER) return false;
         if (block.canSustainPlant(state, worldIn, pos.down(), EnumFacing.UP, this)) return true;
         if (block == this) {
            

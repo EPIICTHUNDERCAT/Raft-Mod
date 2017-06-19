@@ -39,8 +39,8 @@ public class BlockNickelCompound extends RBlock implements IPlantable {
 
     public BlockNickelCompound(String name, Material material) {
         super(name, material);
-        setTickRandomly(true);
-        setHardness(5.0F);
+        setTickRandomly(false);
+        setHardness(0.5F);
         setSoundType(SoundType.METAL);
          }
 

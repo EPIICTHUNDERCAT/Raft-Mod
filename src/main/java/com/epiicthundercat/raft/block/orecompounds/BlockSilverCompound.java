@@ -39,8 +39,8 @@ public class BlockSilverCompound extends RBlock implements IPlantable {
 
     public BlockSilverCompound(String name, Material material) {
         super(name, material);
-        setTickRandomly(true);
-        setHardness(5.0F);
+        setTickRandomly(false);
+        setHardness(0.5F);
         setSoundType(SoundType.METAL);
          }
 

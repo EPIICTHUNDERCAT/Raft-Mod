@@ -39,8 +39,8 @@ public class BlockTinCompound extends RBlock implements IPlantable {
 
     public BlockTinCompound(String name, Material material) {
         super(name, material);
-        setTickRandomly(true);
-        setHardness(5.0F);
+        setTickRandomly(false);
+        setHardness(0.5F);
         setSoundType(SoundType.METAL);
          }
 

@@ -24,12 +24,15 @@ import primetoxinz.coralreef.BlockCoral;
 import primetoxinz.coralreef.CoralReef;
 
 public class WorldGenOreOnReef implements IWorldGenerator {
-	private WorldGenerator genCoralReef;
-	//private WorldGenerator genSmallReef;
-	 public static int oreClusterRarity = 8;
+	private WorldGenerator genOreCoralReef;
+	
+
+	public static int oreClusterRarity = 9;
+
 	public WorldGenOreOnReef() {
-		genCoralReef = new WorldGenOreReef();
-		//genSmallReef = new WorldGenSmallOreReef();
+		genOreCoralReef = new WorldGenOreReef();
+		
+
 	}
 
 	@Override
@@ -50,9 +53,11 @@ public class WorldGenOreOnReef implements IWorldGenerator {
 					maxHeight);
 			BlockPos position = new BlockPos(x, y, z);
 			Biome biome = world.getBiome(position);
-			if ((BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN))
-					|| BiomeDictionary.hasType(biome, WATER) || BiomeDictionary.hasType(biome, WET)) {
-				genCoralReef.generate(world, rand, position);
+			if ((BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) || BiomeDictionary.hasType(biome, WATER)
+					|| BiomeDictionary.hasType(biome, WET)) {
+				genOreCoralReef.generate(world, rand, position);
+				
+
 			}
 		}
 	}
@@ -67,45 +72,77 @@ public class WorldGenOreOnReef implements IWorldGenerator {
 							new BlockPos(position.getX() + x, position.getY(), position.getZ() + z));
 					if ((x * x) + (z * z) > r * r || rand.nextInt(r) < r / 2 || pos.getY() > worldIn.getSeaLevel() - 5)
 						continue;
-										
-					Block block = worldIn.getBlockState(pos).getBlock();
-					if (block == Blocks.GRAVEL || block == Blocks.DIRT || block == Blocks.SAND || block == CoralReef.reef.getDefaultState()) {
-						if (worldIn.setBlockState(pos, CoralReef.reef.getDefaultState())) {
-							}
-							 
-						IBlockState variant2 = CoralReef.coral.getDefaultState().withProperty(BlockCoral.VARIANTS, rand.nextInt(6));
-						 
-						IBlockState variant = RBlocks.palm_log.getDefaultState();
-						IBlockState variant3 = Blocks.GOLD_BLOCK.getDefaultState();
 
-						IBlockState variant1 = Blocks.DIAMOND_BLOCK.getDefaultState();
-							for (int i = 1; i <= rand.nextInt(4); i++) {
-								Random random = new Random();
-								switch (random.nextInt(4)) {
-								case 0:
-									//System.out.println("SpawningB");
-									worldIn.setBlockState(pos.up(), variant1);
-									break;
-								case 1:
-									//System.out.println("SpawningT");
-									worldIn.setBlockState(pos.up(), variant);
-									break;
-								case 2:
-									//System.out.println("SpawningS");
-									worldIn.setBlockState(pos.up(i), variant2);
-									break;
-								case 3:
-									//System.out.println("SpawningP");
-									worldIn.setBlockState(pos.up(), variant3);
-									break;
+					Block block = worldIn.getBlockState(pos).getBlock();
+					if (block == Blocks.GRAVEL || block == Blocks.DIRT || block == Blocks.SAND
+							|| block == CoralReef.reef.getDefaultState()) {
+						if (worldIn.setBlockState(pos, CoralReef.reef.getDefaultState())) {
+						}
+
+						
+						IBlockState variant = RBlocks.copper_compound_ore.getDefaultState();
+						IBlockState variant1 = RBlocks.aluminum_compound_ore.getDefaultState();
+						IBlockState variant2 = CoralReef.coral.getDefaultState().withProperty(BlockCoral.VARIANTS,
+								rand.nextInt(6));
+						IBlockState variant3 = RBlocks.tin_compound_ore.getDefaultState();
+						IBlockState variant4 = RBlocks.iron_compound_ore.getDefaultState();
+						IBlockState variant5 = RBlocks.gold_compound_ore.getDefaultState();
+						IBlockState variant6 = RBlocks.tungsten_compound_ore.getDefaultState();
+						IBlockState variant7 = RBlocks.lead_compound_ore.getDefaultState();
+						IBlockState variant8 = RBlocks.silver_compound_ore.getDefaultState();
+						IBlockState variant9 = RBlocks.uranium_compound_ore.getDefaultState();
+						IBlockState variant10 = RBlocks.nickel_compound_ore.getDefaultState();
+						
+						for (int i = 1; i <= rand.nextInt(4); i++) {
+							Random random = new Random();
+							switch (random.nextInt(11)) {
+							case 0:
+
+								worldIn.setBlockState(pos.up(), variant1);
+								break;
+							case 1:
+
+								worldIn.setBlockState(pos.up(), variant);
+								break;
+							case 2:
+
+								worldIn.setBlockState(pos.up(i), variant2);
+								break;
+							case 3:
+
+								worldIn.setBlockState(pos.up(), variant3);
+								break;
+							case 4:
+
+								worldIn.setBlockState(pos.up(), variant4);
+								break;
+							case 5:
+
+								worldIn.setBlockState(pos.up(), variant5);
+								break;
+							case 6:
+
+								worldIn.setBlockState(pos.up(), variant6);
+								break;
+							case 7:
+
+								worldIn.setBlockState(pos.up(), variant7);
+								break;
+							case 8:
+
+								worldIn.setBlockState(pos.up(), variant8);
+								break;
+							case 9:
+
+								worldIn.setBlockState(pos.up(), variant9);
+								break;
+							case 10:
+
+								worldIn.setBlockState(pos.up(), variant10);
+								break;
 							
-								
-								}
-									
-									
-									
-								
-						//	}
+
+							}
 
 						}
 					}
@@ -132,61 +169,4 @@ public class WorldGenOreOnReef implements IWorldGenerator {
 		}
 		return blockpos.down();
 	}
-
-	/*public class WorldGenSmallOreReef extends WorldGenerator {
-		private final IBlockState block;
-		private final int startRadius;
-
-		public WorldGenSmallOreReef() {
-			super(false);
-			this.block = CoralReef.reef.getDefaultState().withProperty(BlockReef.VARIANTS, 1);
-			this.startRadius = 2;
-		}
-
-		public boolean generate(World worldIn, Random rand, BlockPos position) {
-			if (rand.nextInt(4) != 0)
-				return true;
-			while (true) {
-				label0: {
-					if (position.getY() > 3) {
-						if (worldIn.isAirBlock(position.down())) {
-							break label0;
-						}
-
-						Block block = worldIn.getBlockState(position.down()).getBlock();
-
-						if (block != Blocks.GRASS && block != Blocks.DIRT && block != Blocks.STONE) {
-							break label0;
-						}
-					}
-
-					if (position.getY() <= 3) {
-						return false;
-					}
-
-					int i1 = this.startRadius;
-
-					for (int i = 0; i1 >= 0 && i < 3; ++i) {
-						int j = i1 + rand.nextInt(2);
-						int k = i1 + rand.nextInt(2);
-						int l = i1 + rand.nextInt(2);
-						float f = (float) (j + k + l) * 0.333F + 0.5F;
-
-						for (BlockPos blockpos : BlockPos.getAllInBox(position.add(-j, -k, -l),
-								position.add(j, k, l))) {
-							if (blockpos.distanceSq(position) <= (double) (f * f)) {
-								worldIn.setBlockState(blockpos, this.block, 4);
-							}
-						}
-
-						position = position.add(-(i1 + 1) + rand.nextInt(2 + i1 * 2), 0 - rand.nextInt(2),
-								-(i1 + 1) + rand.nextInt(2 + i1 * 2));
-					}
-
-					return true;
-				}
-				position = position.down();
-			}
-		}
-	}*/
 }
