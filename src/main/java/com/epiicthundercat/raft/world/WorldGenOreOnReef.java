@@ -51,7 +51,7 @@ public class WorldGenOreOnReef implements IWorldGenerator {
 			int z = chunk_Z * 16 + rand.nextInt(16);
 			int y = MathHelper.clamp(getTopSolidOrLiquidBlock(world, new BlockPos(x, 64, z)).getY(), minHeight,
 					maxHeight);
-			BlockPos position = new BlockPos(x, y, z);
+			BlockPos position = new BlockPos(x + 8, y, z + 8);
 			Biome biome = world.getBiome(position);
 			if ((BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN)) || BiomeDictionary.hasType(biome, WATER)
 					|| BiomeDictionary.hasType(biome, WET)) {
@@ -65,7 +65,7 @@ public class WorldGenOreOnReef implements IWorldGenerator {
 	public class WorldGenOreReef extends WorldGenerator {
 		@Override
 		public boolean generate(World worldIn, Random rand, BlockPos position) {
-			int r = MathHelper.clamp(rand.nextInt(16), 8, 16);
+			int r = MathHelper.clamp(rand.nextInt(8), 8, 8);
 			for (int x = -r; x <= r; x++)
 				for (int z = -r; z <= r; z++) {
 					BlockPos pos = getTopSolidOrLiquidBlock(worldIn,
