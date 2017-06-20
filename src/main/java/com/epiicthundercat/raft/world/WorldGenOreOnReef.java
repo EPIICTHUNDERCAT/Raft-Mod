@@ -27,7 +27,7 @@ public class WorldGenOreOnReef implements IWorldGenerator {
 	private WorldGenerator genOreCoralReef;
 	
 
-	public static int oreClusterRarity = 9;
+	public static int oreClusterRarity = 12;
 
 	public WorldGenOreOnReef() {
 		genOreCoralReef = new WorldGenOreReef();
@@ -39,7 +39,7 @@ public class WorldGenOreOnReef implements IWorldGenerator {
 	public void generate(Random rand, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
 			IChunkProvider chunkProvider) {
 		if (world.provider.getDimension() == 0) {
-			this.runGenerator(world, rand, chunkX, chunkZ, 0, world.getSeaLevel() - 4);
+			this.runGenerator(world, rand, chunkX , chunkZ, 0, world.getSeaLevel() - 4);
 		}
 	}
 
@@ -65,11 +65,11 @@ public class WorldGenOreOnReef implements IWorldGenerator {
 	public class WorldGenOreReef extends WorldGenerator {
 		@Override
 		public boolean generate(World worldIn, Random rand, BlockPos position) {
-			int r = MathHelper.clamp(rand.nextInt(8), 8, 8);
+			int r = MathHelper.clamp(rand.nextInt(7), 4, 7);
 			for (int x = -r; x <= r; x++)
 				for (int z = -r; z <= r; z++) {
 					BlockPos pos = getTopSolidOrLiquidBlock(worldIn,
-							new BlockPos(position.getX() + x, position.getY(), position.getZ() + z));
+							new BlockPos(position.getX() + x, position.getY(), position.getZ() + z ));
 					if ((x * x) + (z * z) > r * r || rand.nextInt(r) < r / 2 || pos.getY() > worldIn.getSeaLevel() - 5)
 						continue;
 

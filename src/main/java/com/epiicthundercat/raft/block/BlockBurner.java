@@ -39,8 +39,8 @@ public class BlockBurner extends RBlock {
 	public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 7);
 	public static final PropertyBool BURNING = PropertyBool.create("burning");
 
-	public BlockBurner(String name, Material material) {
-		super(name, material);
+	public BlockBurner(String name, Material material, float hardness) {
+		super(name, material,hardness);
 		setTickRandomly(true);
 		setUnlocalizedName(name);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)).withProperty(BURNING,

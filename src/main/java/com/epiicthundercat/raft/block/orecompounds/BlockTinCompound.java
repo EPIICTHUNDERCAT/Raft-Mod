@@ -37,10 +37,10 @@ public class BlockTinCompound extends RBlock implements IPlantable {
     public static final EnumPlantType TIN = EnumPlantType.getPlantType("Tin");
    protected static final AxisAlignedBB TIN_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
 
-    public BlockTinCompound(String name, Material material) {
-        super(name, material);
-        setTickRandomly(false);
-        setHardness(0.5F);
+    public BlockTinCompound(String name, Material material, float hardness) {
+        super(name, material,hardness);
+     //   setTickRandomly(false);
+        setHardness(hardness);
         setSoundType(SoundType.METAL);
          }
 
@@ -83,19 +83,7 @@ public class BlockTinCompound extends RBlock implements IPlantable {
     }
    
 
-    @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-        IBlockState state = worldIn.getBlockState(pos.down());
-        Block block = state.getBlock();
-
-        if (worldIn.getBlockState(pos.up(2)).getMaterial() != Material.WATER) return false;
-        if (block.canSustainPlant(state, worldIn, pos.down(), EnumFacing.UP, this)) return true;
-        if (block == this) {
-           
-        }
-        return false;
-    }
-
+/*
     @SideOnly(Side.CLIENT)
     @Override
     public void randomDisplayTick(IBlockState stateIn, World world, BlockPos pos, Random rand) {
@@ -136,11 +124,8 @@ public class BlockTinCompound extends RBlock implements IPlantable {
         }
     }
 
-
-    public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-        return canPlaceBlockAt(world, pos);
-    }
-
+*/
+   
     @Override
     public boolean isOpaqueCube(IBlockState state) {
         return false;

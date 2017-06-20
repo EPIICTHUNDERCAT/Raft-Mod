@@ -6,6 +6,7 @@ import java.util.List;
 import com.epiicthundercat.raft.entity.FloatBarrel;
 import com.epiicthundercat.raft.item.ItemBarrel;
 import com.epiicthundercat.raft.item.ItemCoconut;
+import com.epiicthundercat.raft.item.ItemFishWaste;
 import com.epiicthundercat.raft.item.ItemHook;
 import com.epiicthundercat.raft.item.ItemPlank;
 import com.epiicthundercat.raft.item.ItemScrap;
@@ -127,7 +128,7 @@ public class RItems {
 	public static Item shark_tooth_sword = new RItemSword("shark_tooth_sword", ToolMaterial.DIAMOND);
 	public static Item clay_chunk = new RItem("clay_chunk");
 	public static Item pebble = new RItem("pebble");
-	//public static Item clay_chunk = new RItem("clay_chunk");
+	public static Item fish_waste = new ItemFishWaste("fish_waste");
 	
 	
 	private static List<Item> getItems() {

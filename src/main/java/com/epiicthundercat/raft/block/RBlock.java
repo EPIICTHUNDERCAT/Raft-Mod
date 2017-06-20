@@ -7,8 +7,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
 public class RBlock extends Block{
-	public RBlock(String name, Material material){
+	public RBlock(String name, Material material, float hardness){
 		super(material);
+		this.setHardness(hardness);
 		this.setRegistryName(name.toLowerCase());
 		this.setUnlocalizedName(name.toLowerCase());
 		this.setCreativeTab(RCreativeTab.RTabs);

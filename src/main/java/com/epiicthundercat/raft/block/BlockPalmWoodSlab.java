@@ -52,36 +52,6 @@ public class BlockPalmWoodSlab extends BlockSlab{
 	        return new ItemStack(RBlocks.palm_slab, 1);
 	    }
 
-	    /**
-	     * Returns the slab block name with the type associated with it
-	     */
-	    public String getUnlocalizedName(int meta)
-	    {
-	        return super.getUnlocalizedName() + "." + BlockPlanks.EnumType.byMetadata(meta).getUnlocalizedName();
-	    }
-
-	   
-	    public Comparable<?> getTypeForItem(ItemStack stack)
-	    {
-	        return BlockPlanks.EnumType.byMetadata(stack.getMetadata() & 7);
-	    }
-
-	    /**
-	     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-	     */
-	    @SideOnly(Side.CLIENT)
-	    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
-	    {
-	        if (itemIn != Item.getItemFromBlock(Blocks.DOUBLE_WOODEN_SLAB))
-	        {
-	            for (BlockPlanks.EnumType blockplanks$enumtype : BlockPlanks.EnumType.values())
-	            {
-	                list.add(new ItemStack(itemIn, 1, blockplanks$enumtype.getMetadata()));
-	            }
-	        }
-	    }
-
-
 
 		@Override
 		public boolean isDouble() {
@@ -93,6 +63,22 @@ public class BlockPalmWoodSlab extends BlockSlab{
 
 		@Override
 		public IProperty<?> getVariantProperty() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
+
+		@Override
+		public String getUnlocalizedName(int meta) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
+
+		@Override
+		public Comparable<?> getTypeForItem(ItemStack stack) {
 			// TODO Auto-generated method stub
 			return null;
 		}

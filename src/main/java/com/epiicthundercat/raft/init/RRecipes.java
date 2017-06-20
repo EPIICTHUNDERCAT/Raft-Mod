@@ -17,14 +17,22 @@ public class RRecipes {
 		/**
 		 * RECIPES
 		 */
-		
-
 
 		// Plank > Planks
-		
-				GameRegistry.addShapedRecipe(new ItemStack(Blocks.PLANKS), "DD", "DD", 'D',
-						new ItemStack(RItems.plank));
 
+		GameRegistry.addShapedRecipe(new ItemStack(Blocks.PLANKS), "DD", "RD", 'D', new ItemStack(RItems.plank), 'R',
+				new ItemStack(RItems.rope));
+		// Clay
+		GameRegistry.addShapedRecipe(new ItemStack(Items.CLAY_BALL), "DD", "DD", 'D', new ItemStack(RItems.clay_chunk));
+		// Stones
+		GameRegistry.addShapedRecipe(new ItemStack(RItems.stones), "DD", "DD", 'D', new ItemStack(RItems.pebble));
+		// WetCobble
+		GameRegistry.addShapedRecipe(new ItemStack(RBlocks.wet_cobble), "DSD", "SDS", "DSD", 'D',
+				new ItemStack(RItems.clay_chunk), 'S', new ItemStack(RItems.stones));
+		//Cobblestone
+		GameRegistry.addSmelting(new ItemStack(RBlocks.wet_cobble), new ItemStack(Blocks.COBBLESTONE), 20);
+
+		
 		
 		// Rope
 		GameRegistry.addShapelessRecipe(new ItemStack(RItems.rope), new ItemStack(RItems.thatch),
@@ -50,11 +58,13 @@ public class RRecipes {
 		GameRegistry.addShapedRecipe(new ItemStack(Blocks.SAND), "DD", "DD", 'D', new ItemStack(RItems.sand_piece));
 		// Gravel
 		GameRegistry.addShapedRecipe(new ItemStack(Blocks.GRAVEL), "DD", "DD", 'D', new ItemStack(RItems.gravel_piece));
-	/*	// Separator
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(RBlocks.separator),
-				new Object[] { "CTC", "CRC", "CLC", 'L', "logWood", 'C', new ItemStack(RItems.double_compressed_scraps),
-						'R', new ItemStack(RItems.rope), 'T', new ItemStack(RItems.tin_can_potion) }));
-		*/ // Wood>planks
+		/*
+		 * // Separator GameRegistry.addRecipe(new ShapedOreRecipe(new
+		 * ItemStack(RBlocks.separator), new Object[] { "CTC", "CRC", "CLC",
+		 * 'L', "logWood", 'C', new ItemStack(RItems.double_compressed_scraps),
+		 * 'R', new ItemStack(RItems.rope), 'T', new
+		 * ItemStack(RItems.tin_can_potion) }));
+		 */ // Wood>planks
 		GameRegistry.addShapelessRecipe(new ItemStack(RBlocks.palm_planks, 4), new ItemStack(RBlocks.palm_log));
 
 		// Dirty Filled Tin > Filled Tin Can
@@ -72,7 +82,6 @@ public class RRecipes {
 		GameRegistry.addShapedRecipe(new ItemStack(RItems.aluminum_ore_material), "DS", "SD", 'D',
 				new ItemStack(RItems.aluminum_compound), 'S', new ItemStack(RItems.stones));
 
-		
 		// tin
 		GameRegistry.addSmelting(new ItemStack(RItems.tin_ore_material), new ItemStack(RItems.tin_ingot), 50);
 		// tin ore material
@@ -139,13 +148,11 @@ public class RRecipes {
 		GameRegistry.addShapedRecipe(new ItemStack(RItems.gold_ore_material), "DS", "SD", 'D',
 				new ItemStack(RItems.gold_compound), 'S', new ItemStack(RItems.stones));
 
-		//Burner
+		// Burner
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(RBlocks.burner),
-				new Object[] {"SSS", "DLD", "PLP", 'D', new ItemStack(Items.STICK), 'S', new ItemStack(RItems.compressed_scraps), 'P', "plankWood", 'L', "logWood" }));
-		
+				new Object[] { "SSS", "DLD", "PLP", 'D', new ItemStack(Items.STICK), 'S',
+						new ItemStack(RItems.compressed_scraps), 'P', "plankWood", 'L', "logWood" }));
 
-		
-		
 		OreDictionary.registerOre("ingotLead", new ItemStack(RItems.lead_ingot));
 		OreDictionary.registerOre("ingotCopper", new ItemStack(RItems.copper_ingot));
 		OreDictionary.registerOre("ingotSilver", new ItemStack(RItems.silver_ingot));

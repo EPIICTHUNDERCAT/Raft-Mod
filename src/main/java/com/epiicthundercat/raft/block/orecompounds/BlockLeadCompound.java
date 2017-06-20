@@ -34,142 +34,111 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockLeadCompound extends RBlock implements IPlantable {
-    public static final EnumPlantType LEAD = EnumPlantType.getPlantType("Lead");
-   protected static final AxisAlignedBB LEAD_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
+	public static final EnumPlantType LEAD = EnumPlantType.getPlantType("Lead");
+	protected static final AxisAlignedBB LEAD_AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
 
-    public BlockLeadCompound(String name, Material material) {
-        super(name, material);
-        setTickRandomly(false);
-        setHardness(0.5F);
-        setSoundType(SoundType.METAL);
-         }
+	public BlockLeadCompound(String name, Material material, float hardness) {
+		super(name, material, hardness);
+		// setTickRandomly(false);
+		setHardness(hardness);
+		setSoundType(SoundType.METAL);
+	}
 
-    @Override
-    public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos) {
-        return false;
-    }
+	@Override
+	public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos) {
+		return false;
+	}
 
-   
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos,
+			EntityPlayer player) {
+		return new ItemStack(this);
+	}
 
-    @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return new ItemStack(this);
-    }
+	@Nullable
+	@Override
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+		return NULL_AABB;
+	}
 
-    
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return LEAD_AABB;
+	}
 
-    
-
-    
-
-    @Nullable
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-        return NULL_AABB;
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return LEAD_AABB;
-    }
-
-    
-  
-
-    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
-    {
-    	this.spawnAsEntity(worldIn, pos, new ItemStack(RItems.lead_compound));
-    	  worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
-    }
-   
-
-    @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-        IBlockState state = worldIn.getBlockState(pos.down());
-        Block block = state.getBlock();
-
-        if (worldIn.getBlockState(pos.up(2)).getMaterial() != Material.WATER) return false;
-        if (block.canSustainPlant(state, worldIn, pos.down(), EnumFacing.UP, this)) return true;
-        if (block == this) {
-           
-        }
-        return false;
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void randomDisplayTick(IBlockState stateIn, World world, BlockPos pos, Random rand) {
-        if (world.getBlockState(pos.up()).getMaterial() == Material.WATER) {
-            double offset = 0.0625D;
-            for (int i = 0; i < 6; i++) {
-                double x1 = (pos.getX() + rand.nextDouble());
-                double y1 = (pos.getY() + rand.nextDouble());
-                double z1 = (pos.getZ() + rand.nextDouble());
-                if (i == 0 && !world.getBlockState(pos.up()).isOpaqueCube()) {
-                    y1 = (double) (pos.getY() + 1) + offset;
-                }
-
-                if (i == 1 && !world.getBlockState(pos.down()).isOpaqueCube()) {
-                    y1 = (double) (pos.getY() + 0) - offset;
-                }
-
-                if (i == 2 && !world.getBlockState(pos.offset(EnumFacing.SOUTH)).isOpaqueCube()) {
-                    z1 = (double) (pos.getZ() + 1) + offset;
-                }
-
-                if (i == 3 && !world.getBlockState(pos.offset(EnumFacing.NORTH)).isOpaqueCube()) {
-                    z1 = (double) (pos.getZ() + 0) - offset;
-                }
-
-                if (i == 4 && !world.getBlockState(pos.offset(EnumFacing.EAST)).isOpaqueCube()) {
-                    x1 = (double) (pos.getX() + 1) + offset;
-                }
-
-                if (i == 5 && !world.getBlockState(pos.offset(WEST)).isOpaqueCube()) {
-                    x1 = (double) (pos.getX() + 0) - offset;
-                }
-
-                if (x1 < (double) pos.getX() || x1 > (double) (pos.getX() + 1) || y1 < 0.0D || y1 > (double) (pos.getY() + 1) || z1 < (double) pos.getZ() || z1 > (double) (pos.getZ() + 1)) {
-                    world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, x1, y1, z1, 0, 0, 0);
-                }
-            }
-        }
-    }
+	public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
+		this.spawnAsEntity(worldIn, pos, new ItemStack(RItems.lead_compound));
+		worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+	}
 
 
-    public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-        return canPlaceBlockAt(world, pos);
-    }
+	/*
+	 * @SideOnly(Side.CLIENT)
+	 * 
+	 * @Override public void randomDisplayTick(IBlockState stateIn, World world,
+	 * BlockPos pos, Random rand) { if
+	 * (world.getBlockState(pos.up()).getMaterial() == Material.WATER) { double
+	 * offset = 0.0625D; for (int i = 0; i < 6; i++) { double x1 = (pos.getX() +
+	 * rand.nextDouble()); double y1 = (pos.getY() + rand.nextDouble()); double
+	 * z1 = (pos.getZ() + rand.nextDouble()); if (i == 0 &&
+	 * !world.getBlockState(pos.up()).isOpaqueCube()) { y1 = (double)
+	 * (pos.getY() + 1) + offset; }
+	 * 
+	 * if (i == 1 && !world.getBlockState(pos.down()).isOpaqueCube()) { y1 =
+	 * (double) (pos.getY() + 0) - offset; }
+	 * 
+	 * if (i == 2 &&
+	 * !world.getBlockState(pos.offset(EnumFacing.SOUTH)).isOpaqueCube()) { z1 =
+	 * (double) (pos.getZ() + 1) + offset; }
+	 * 
+	 * if (i == 3 &&
+	 * !world.getBlockState(pos.offset(EnumFacing.NORTH)).isOpaqueCube()) { z1 =
+	 * (double) (pos.getZ() + 0) - offset; }
+	 * 
+	 * if (i == 4 &&
+	 * !world.getBlockState(pos.offset(EnumFacing.EAST)).isOpaqueCube()) { x1 =
+	 * (double) (pos.getX() + 1) + offset; }
+	 * 
+	 * if (i == 5 && !world.getBlockState(pos.offset(WEST)).isOpaqueCube()) { x1
+	 * = (double) (pos.getX() + 0) - offset; }
+	 * 
+	 * if (x1 < (double) pos.getX() || x1 > (double) (pos.getX() + 1) || y1 <
+	 * 0.0D || y1 > (double) (pos.getY() + 1) || z1 < (double) pos.getZ() || z1
+	 * > (double) (pos.getZ() + 1)) {
+	 * world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, x1, y1, z1, 0, 0, 0);
+	 * } } } }
+	 * 
+	 */
+	
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
+	@SideOnly(Side.CLIENT)
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
+	@Override
+	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return 16;
+	}
 
-    @Override
-    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return 16;
-    }
+	@Override
+	public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
+		return LEAD;
+	}
 
-    @Override
-    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
-        return LEAD;
-    }
-
-    @Override
-    public IBlockState getPlant(IBlockAccess world, BlockPos pos) {
-        return world.getBlockState(pos);
-    }
+	@Override
+	public IBlockState getPlant(IBlockAccess world, BlockPos pos) {
+		return world.getBlockState(pos);
+	}
 
 }
