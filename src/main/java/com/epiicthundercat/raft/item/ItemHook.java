@@ -22,16 +22,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemHook extends RItem {
+public class ItemHook extends RItemSword {
 
-	
 	private int uses;
 
-	public ItemHook(String name) {
-		super(name);
+	public ItemHook(String name, ToolMaterial material) {
+		super(name, material);
 		this.setMaxStackSize(1);
-		this.setMaxDamage(10);
-		
+		this.setMaxDamage(1000);
+
 	}
 
 	public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {
@@ -82,12 +81,12 @@ public class ItemHook extends RItem {
 							if ((i % 6) == 0) {
 								if (!world.isRemote) {
 									world.playSound((EntityPlayer) null, entity.posX, entity.posY, entity.posZ,
-											SoundEvents.EVOCATION_ILLAGER_CAST_SPELL, SoundCategory.NEUTRAL, 1.5F, 10.0F);
-									EntityHook lightning = new EntityHook(world,
-											(EntityLivingBase) entity);
+											SoundEvents.EVOCATION_ILLAGER_CAST_SPELL, SoundCategory.NEUTRAL, 1.5F,
+											10.0F);
+									EntityHook lightning = new EntityHook(world, (EntityLivingBase) entity);
 									lightning.setHeadingFromThrower(entity, entity.rotationPitch, entity.rotationYaw,
 											0.0F, 1.0F, 0.0F);
-									System.out.println("spawner");
+									//System.out.println("spawner");
 									entity.getEntityWorld().spawnEntity(lightning);
 									stack.damageItem(1, (EntityPlayer) entity);
 									if (stack.getItemDamage() == stack.getMaxDamage()) {
@@ -105,12 +104,17 @@ public class ItemHook extends RItem {
 		}
 	}
 
-	
-
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
 	}
+	public float getStrVsBlock(ItemStack stack, IBlockState state) {
+		return !state.getBlock().equals(Blocks.TALLGRASS) || !state.equals(Blocks.GRASS)? 0.0F : 1.0F;
+	}
 
+	public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos,
+			EntityLivingBase entityLiving) {
+		return !world.getBlockState(pos).getBlock().equals(Blocks.TALLGRASS) || !world.getBlockState(pos).equals(Blocks.GRASS);
+	}
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {

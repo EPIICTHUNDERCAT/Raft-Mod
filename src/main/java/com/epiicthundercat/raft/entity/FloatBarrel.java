@@ -260,7 +260,7 @@ public class FloatBarrel extends Entity {
 	}
 	@Override
 	public boolean canBeCollidedWith() {
-		return false;
+		return true;
 	}
 
 
@@ -609,6 +609,7 @@ public class FloatBarrel extends Entity {
 	/**
 	 * Update the Barrel's speed, based on momentum.
 	 */
+	
 	private void updateMotion() {
 		double d0 = -0.03999999910593033D;
 		double d1 = this.hasNoGravity() ? 0.0D : -0.03999999910593033D;
@@ -666,7 +667,12 @@ public class FloatBarrel extends Entity {
 		compound.setString("Type", this.getBarrelType().getName());
 		compound.setBoolean("CanDespawn", getCanDespawn());
 	}
-
+	@SideOnly(Side.CLIENT)
+	public void performHurtAnimation() {
+		this.setForwardDirection(-this.getForwardDirection());
+		this.setTimeSinceHit(10);
+		this.setDamageTaken(this.getDamageTaken() * 11.0F);
+	}
 	/**
 	 * (abstract) Protected helper method to read subclass entity data from NBT.
 	 */
@@ -707,7 +713,7 @@ public class FloatBarrel extends Entity {
 			world.spawnEntity(entityItem);
 		}
 	}
-
+	
 	public void extractItems(World world, BlockPos pos, EntityPlayer player) {
 		for (int i = 0; i < MathHelper.getInt(world.rand, 3, 6); i++) {
 			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.barrel_loot);

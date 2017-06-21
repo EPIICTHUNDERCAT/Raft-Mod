@@ -247,9 +247,14 @@ public class PlankEntity extends Entity {
 	 */
 	@Override
 	public boolean canBeCollidedWith() {
-		return false;
+		return true;
 	}
-
+	@SideOnly(Side.CLIENT)
+	public void performHurtAnimation() {
+		this.setForwardDirection(-this.getForwardDirection());
+		this.setTimeSinceHit(10);
+		this.setDamageTaken(this.getDamageTaken() * 11.0F);
+	}
 	/**
 	 * Set the position and rotation values directly without any clamping.
 	 */

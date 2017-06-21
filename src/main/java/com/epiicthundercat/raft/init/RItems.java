@@ -30,7 +30,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class RItems {
 	public static List<Item> items = new ArrayList();
 
-	public static Item hook = new ItemHook("hook");
+	public static Item hook = new ItemHook("hook", ToolMaterial.WOOD);
 	public static Item thatch = new ItemThatch("thatch");
 	public static Item rope = new RItem("rope");
 	public static Item plank = new ItemPlank("plank");

@@ -198,7 +198,7 @@ public class ThatchEntity extends Entity {
 			} else {
 				this.setForwardDirection(-this.getForwardDirection());
 				this.setTimeSinceHit(10);
-				this.setDamageTaken(this.getDamageTaken() + amount * 10.0F);
+				this.setDamageTaken(this.getDamageTaken() + amount * 100.0F);
 				this.setBeenAttacked();
 				
 				boolean flag = source.getEntity() instanceof EntityPlayer
@@ -244,7 +244,7 @@ public class ThatchEntity extends Entity {
 	 */
 	@Override
 	public boolean canBeCollidedWith() {
-		return false;
+		return true;
 	}
 
 	/**
@@ -376,7 +376,12 @@ public class ThatchEntity extends Entity {
 			}
 		}
 	}
-
+	@SideOnly(Side.CLIENT)
+	public void performHurtAnimation() {
+		this.setForwardDirection(-this.getForwardDirection());
+		this.setTimeSinceHit(10);
+		this.setDamageTaken(this.getDamageTaken() * 11.0F);
+	}
 	public float getWaterLevelAbove() {
 		AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
 		int i = MathHelper.floor(axisalignedbb.minX);

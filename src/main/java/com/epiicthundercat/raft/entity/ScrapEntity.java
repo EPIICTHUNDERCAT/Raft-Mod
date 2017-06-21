@@ -242,7 +242,7 @@ public class ScrapEntity extends Entity {
 	 */
 	@Override
 	public boolean canBeCollidedWith() {
-		return false;
+		return true;
 	}
 
 	/**
@@ -366,7 +366,12 @@ public class ScrapEntity extends Entity {
 			this.setRotation(this.rotationYaw, this.rotationPitch);
 		}
 	}
-
+	@SideOnly(Side.CLIENT)
+	public void performHurtAnimation() {
+		this.setForwardDirection(-this.getForwardDirection());
+		this.setTimeSinceHit(10);
+		this.setDamageTaken(this.getDamageTaken() * 11.0F);
+	}
 	/**
 	 * Determines whether the Scrap is in water, gliding on land, or in air
 	 */
