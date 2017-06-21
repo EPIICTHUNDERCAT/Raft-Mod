@@ -38,6 +38,7 @@ public class CommonProxy {
 		RItems.register(preEvent);
 		RBlocks.register(preEvent);
 		RRecipes.register(preEvent);
+		registerEntities(preEvent);
 		 //GameRegistry.registerWorldGenerator(new WorldGenOreOnReef(),1);
 		MinecraftForge.EVENT_BUS.register(new REventHandler());
 		if (Loader.isModLoaded("toughasnails")) {

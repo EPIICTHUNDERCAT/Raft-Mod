@@ -4,9 +4,11 @@ import com.epiicthundercat.raft.client.renderer.RenderEel;
 import com.epiicthundercat.raft.client.renderer.RenderEntitySharkFemale;
 import com.epiicthundercat.raft.client.renderer.RenderFish;
 import com.epiicthundercat.raft.client.renderer.RenderFloatingBarrel;
+import com.epiicthundercat.raft.client.renderer.RenderHook;
 import com.epiicthundercat.raft.client.renderer.RenderPlank;
 import com.epiicthundercat.raft.client.renderer.RenderScrap;
 import com.epiicthundercat.raft.client.renderer.RenderThatch;
+import com.epiicthundercat.raft.entity.EntityHook;
 import com.epiicthundercat.raft.entity.FloatBarrel;
 import com.epiicthundercat.raft.entity.PlankEntity;
 import com.epiicthundercat.raft.entity.ScrapEntity;
@@ -21,6 +23,8 @@ import com.epiicthundercat.raft.init.RItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
@@ -57,6 +61,15 @@ public class ClientProxy extends CommonProxy {
 	public void registerRenders(FMLInitializationEvent event) {
 		RItems.registerRender(event);
 		RBlocks.registerRender(event);
+	}
+	@Override
+	public void registerEntities(FMLPreInitializationEvent preEvent) {
+		super.registerEntities(preEvent);
+		RenderingRegistry.registerEntityRenderingHandler(EntityHook.class, new IRenderFactory<EntityHook>() {
+            @Override public RenderHook createRenderFor (RenderManager manager) {
+                return new RenderHook(manager, RItems.hook_part);
+            }
+        });
 	}
 
 }

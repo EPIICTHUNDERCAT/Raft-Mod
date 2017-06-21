@@ -181,7 +181,7 @@ public class ThatchEntity extends Entity {
 	 */
 	@Override
 	public boolean canBePushed() {
-		return true;
+		return false;
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class ThatchEntity extends Entity {
 		if (this.isEntityInvulnerable(source)) {
 			return false;
 		} else if (!this.world.isRemote && !this.isDead) {
-			if (source instanceof EntityDamageSourceIndirect && source.getEntity() != null) {
+			if (source instanceof EntityDamageSourceIndirect && source.getEntity() != null && source.isExplosion()) {
 				return false;
 			} else {
 				this.setForwardDirection(-this.getForwardDirection());
@@ -203,12 +203,12 @@ public class ThatchEntity extends Entity {
 				
 				boolean flag = source.getEntity() instanceof EntityPlayer
 						&& ((EntityPlayer) source.getEntity()).capabilities.isCreativeMode;
-				boolean flag1 = source.getEntity() instanceof EntityCreeper;
+				//boolean flag1 = source.getEntity() instanceof EntityCreeper;
 				EntityPlayer player = (EntityPlayer) source.getEntity();
 
-				if (flag || this.getDamageTaken() > 5.0F) {
+				if (flag ) {
 
-					if (!flag && this.world.getGameRules().getBoolean("doEntityDrops") && !flag1) {
+					if (!flag && this.world.getGameRules().getBoolean("doEntityDrops")) {
 						BlockPos pos = getPosition();
 
 						this.dropItems(world, pos);
@@ -628,11 +628,11 @@ public class ThatchEntity extends Entity {
 			world.spawnEntity(entityItem);
 		}
 	}
-	private void extractItems(World world, BlockPos pos, EntityPlayer player) {
+	public void extractItems(World world, BlockPos pos, EntityPlayer player) {
 		for (int i = 0; i < MathHelper.getInt(world.rand, 1, 1); i++) {
 			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.thatch_loot);
 			ItemStack itemStack = returns.returnItem.copy();
-			if (itemStack != null)
+			if (!itemStack.isEmpty())
 				player.inventory.addItemStackToInventory(itemStack);
 		}
 

@@ -713,7 +713,7 @@ public class FloatBarrel extends Entity {
 			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.barrel_loot);
 			ItemStack itemStack = returns.returnItem.copy();
 
-			if (itemStack != null)
+			if (!itemStack.isEmpty())
 				player.inventory.addItemStackToInventory(itemStack);
 
 		}

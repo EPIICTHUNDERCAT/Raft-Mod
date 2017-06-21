@@ -650,12 +650,12 @@ public class PlankEntity extends Entity {
 		}
 	}
 
-	private void extractItems(World world, BlockPos pos, EntityPlayer player) {
+	public void extractItems(World world, BlockPos pos, EntityPlayer player) {
 		for (int i = 0; i < MathHelper.getInt(world.rand, 1, 1); i++) {
 			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.plank_loot);
 			ItemStack itemStack = returns.returnItem.copy();
 
-			if (itemStack != null)
+			if (!itemStack.isEmpty())
 				player.inventory.addItemStackToInventory(itemStack);
 		}
 

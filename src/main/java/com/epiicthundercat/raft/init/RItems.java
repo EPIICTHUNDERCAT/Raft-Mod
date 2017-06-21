@@ -17,6 +17,7 @@ import com.epiicthundercat.raft.item.RItem;
 import com.epiicthundercat.raft.item.RItemFood;
 import com.epiicthundercat.raft.item.RItemSword;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -129,7 +130,7 @@ public class RItems {
 	public static Item clay_chunk = new RItem("clay_chunk");
 	public static Item pebble = new RItem("pebble");
 	public static Item fish_waste = new ItemFishWaste("fish_waste");
-	
+	public static Item hook_part = new RItem("hook_part");
 	
 	private static List<Item> getItems() {
 		return items;

@@ -2,95 +2,113 @@ package com.epiicthundercat.raft.item;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
-import com.epiicthundercat.raft.creativetab.RCreativeTab;
 import com.epiicthundercat.raft.entity.EntityHook;
-import com.epiicthundercat.raft.entity.FloatBarrel;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
-import net.minecraft.util.ActionResult;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemHook extends RItem {
 
+	
+	private int uses;
+
 	public ItemHook(String name) {
 		super(name);
-		this.setCreativeTab(RCreativeTab.RTabs);
-		this.addPropertyOverride(new ResourceLocation("cast"), new IItemPropertyGetter() {
-			@SideOnly(Side.CLIENT)
-			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
-				return entityIn == null ? 0.0F
-						: (entityIn.getHeldItemMainhand() == stack && entityIn instanceof EntityPlayer
-								&& ((EntityPlayer) entityIn).fishEntity != null ? 1.0F : 0.0F);
+		this.setMaxStackSize(1);
+		this.setMaxDamage(10);
+		
+	}
+
+	public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {
+		if (stack.hasTagCompound()) {
+			if (stack.getTagCompound().hasKey("wandCooldown")) {
+				if (stack.getTagCompound().getInteger("wandCooldown") == 0) {
+					if (stack.getTagCompound().hasKey("firing")) {
+						stack.getTagCompound().setInteger("firing", stack.getTagCompound().getInteger("firing") + 1);
+					} else {
+						stack.getTagCompound().setInteger("firing", 1);
+					}
+					stack.getTagCompound().setInteger("wandCooldown", 10);
+					return false;
+				}
+			} else {
+				if (stack.getTagCompound().hasKey("firing")) {
+					stack.getTagCompound().setInteger("firing", stack.getTagCompound().getInteger("firing") + 1);
+				} else {
+					stack.getTagCompound().setInteger("firing", 1);
+				}
+				stack.getTagCompound().setInteger("wandCooldown", 10);
+				return false;
 			}
-		});
-	}
-
-	@SideOnly(Side.CLIENT)
-	public boolean isFull3D() {
+		}
 		return true;
 	}
 
-	/**
-	 * Returns true if this item should be rotated by 180 degrees around the Y
-	 * axis when being held in an entities hands.
-	 */
-	@SideOnly(Side.CLIENT)
-	public boolean shouldRotateAroundWhenRendering() {
-		return true;
+	@Override
+	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand,
+			EnumFacing facing, float hitX, float hitY, float hitZ) {
+		return EnumActionResult.PASS;
+
 	}
 
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-		ItemStack itemStackIn = playerIn.getHeldItem(handIn);
-		FloatBarrel barrel = new FloatBarrel(worldIn);
-		BlockPos pos = playerIn.getPosition();
-		if (playerIn.fishEntity != null) {
-			int i = playerIn.fishEntity.handleHookRetraction();
-			itemStackIn.damageItem(i, playerIn);
-			playerIn.swingArm(handIn);
+	@Override
+	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
+		if (stack.hasTagCompound()) {
+			if (stack.getTagCompound().hasKey("wandCooldown")) {
+				if (stack.getTagCompound().getInteger("wandCooldown") > 0) {
+					stack.getTagCompound().setInteger("wandCooldown",
+							stack.getTagCompound().getInteger("wandCooldown") - 1);
+				}
+
+				if (stack.getTagCompound().hasKey("firing")) {
+					if (stack.getTagCompound().getInteger("firing") > 0) {
+						stack.getTagCompound().setInteger("firing", stack.getTagCompound().getInteger("firing") - 1);
+						for (int i = 0; i < 6; ++i) {
+							if ((i % 6) == 0) {
+								if (!world.isRemote) {
+									world.playSound((EntityPlayer) null, entity.posX, entity.posY, entity.posZ,
+											SoundEvents.EVOCATION_ILLAGER_CAST_SPELL, SoundCategory.NEUTRAL, 1.5F, 10.0F);
+									EntityHook lightning = new EntityHook(world,
+											(EntityLivingBase) entity);
+									lightning.setHeadingFromThrower(entity, entity.rotationPitch, entity.rotationYaw,
+											0.0F, 1.0F, 0.0F);
+									System.out.println("spawner");
+									entity.getEntityWorld().spawnEntity(lightning);
+									stack.damageItem(1, (EntityPlayer) entity);
+									if (stack.getItemDamage() == stack.getMaxDamage()) {
+										entity.replaceItemInInventory(itemSlot, stack.EMPTY);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
 		} else {
-			worldIn.playSound((EntityPlayer) null, playerIn.posX, playerIn.posY, playerIn.posZ,
-					SoundEvents.ENTITY_BOBBER_THROW, SoundCategory.NEUTRAL, 0.5F,
-					0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
-
-			if (!worldIn.isRemote) {
-				worldIn.spawnEntity(new EntityHook(worldIn, playerIn));
-			}
-
-			playerIn.swingArm(handIn);
-			playerIn.addStat(StatList.getObjectUseStats(this));
+			stack.setTagCompound(new NBTTagCompound());
 		}
-		if (worldIn.isRemote) {
-			RayTraceResult result = getBlockPlayerLookingAt(playerIn, Minecraft.getMinecraft().getRenderPartialTicks());
-			if (result != null) {
-				barrel.extractItems(worldIn, pos, playerIn);
-				
-			}
-		}
-		return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
 	}
 
-	/**
-	 * Return the enchantability factor of the item, most of the time is based
-	 * on material.
-	 */
-	public int getItemEnchantability() {
-		return 1;
+	
+
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return slotChanged;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -102,12 +120,4 @@ public class ItemHook extends RItem {
 		super.addInformation(stack, playerIn, tooltip, advanced);
 	}
 
-	@Nullable
-	private RayTraceResult getBlockPlayerLookingAt(EntityPlayer player, float partialTicks) {
-		RayTraceResult result = player.rayTrace(35, partialTicks);
-
-		if (result == null || result.typeOfHit != RayTraceResult.Type.ENTITY)
-			return null;
-		return result;
-	}
 }
