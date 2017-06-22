@@ -50,23 +50,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ThatchEntity extends Entity {
-	private static final DataParameter<Integer> TIME_SINCE_HIT = EntityDataManager
-			.<Integer>createKey(ThatchEntity.class, DataSerializers.VARINT);
-	private static final DataParameter<Integer> FORWARD_DIRECTION = EntityDataManager
-			.<Integer>createKey(ThatchEntity.class, DataSerializers.VARINT);
-	private static final DataParameter<Float> DAMAGE_TAKEN = EntityDataManager.<Float>createKey(ThatchEntity.class,
-			DataSerializers.FLOAT);
-	private static final DataParameter<Boolean> CAN_DESPAWN = EntityDataManager.createKey(ThatchEntity.class,
-			DataSerializers.BOOLEAN);
-	private static final DataParameter<Integer> SIZE = EntityDataManager.createKey(ThatchEntity.class,
-			DataSerializers.VARINT);
-	private static final DataParameter<Boolean> CUSTOM_WIND_ENABLED = EntityDataManager.createKey(ThatchEntity.class,
-			DataSerializers.BOOLEAN);
-	private static final DataParameter<Float> CUSTOM_WIND_X = EntityDataManager.createKey(ThatchEntity.class,
-			DataSerializers.FLOAT);
-	private static final DataParameter<Float> CUSTOM_WIND_Z = EntityDataManager.createKey(ThatchEntity.class,
-			DataSerializers.FLOAT);
+public class ThatchEntity extends EntityFishable {
+
 	private static final float BASE_SIZE = 0.75f;
 
 	/** How much of current speed to retain. Value zero to one. */
@@ -145,17 +130,7 @@ public class ThatchEntity extends Entity {
 		return false;
 	}
 
-	protected void entityInit() {
-		this.dataManager.register(TIME_SINCE_HIT, Integer.valueOf(0));
-		this.dataManager.register(FORWARD_DIRECTION, Integer.valueOf(1));
-		this.dataManager.register(DAMAGE_TAKEN, Float.valueOf(0.0F));
-		this.dataManager.register(CAN_DESPAWN, true);
-		this.dataManager.register(SIZE, -2 + world.rand.nextInt(5));
-		this.dataManager.register(CUSTOM_WIND_ENABLED, false);
-		this.dataManager.register(CUSTOM_WIND_X, 0f);
-		this.dataManager.register(CUSTOM_WIND_Z, 0f);
 
-	}
 
 	/**
 	 * Returns a boundingBox used to collide the entity with other entities and
@@ -204,7 +179,6 @@ public class ThatchEntity extends Entity {
 				boolean flag = source.getEntity() instanceof EntityPlayer
 						&& ((EntityPlayer) source.getEntity()).capabilities.isCreativeMode;
 				//boolean flag1 = source.getEntity() instanceof EntityCreeper;
-				EntityPlayer player = (EntityPlayer) source.getEntity();
 
 				if (flag ) {
 
@@ -618,30 +592,11 @@ public class ThatchEntity extends Entity {
 		}
 	}
 
-	private void dropItems(World world, BlockPos pos) {
-		for (int i = 0; i < MathHelper.getInt(world.rand, 1, 1); i++) {
-			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.thatch_loot);
-			ItemStack itemStack = returns.returnItem.copy();
-			float dX = world.rand.nextFloat() * 0.8F + 0.1F;
-			float dY = world.rand.nextFloat() * 0.8F + 0.1F;
-			float dZ = world.rand.nextFloat() * 0.8F + 0.1F;
-			EntityItem entityItem = new EntityItem(world, pos.getX() + dX, pos.getY() + dY, pos.getZ() + dZ, itemStack);
-			float factor = 0.05F;
-			entityItem.motionX = world.rand.nextGaussian() * factor;
-			entityItem.motionY = world.rand.nextGaussian() * factor + 0.2F;
-			entityItem.motionZ = world.rand.nextGaussian() * factor;
-			world.spawnEntity(entityItem);
-		}
-	}
 	public void extractItems(World world, BlockPos pos, EntityPlayer player) {
-		for (int i = 0; i < MathHelper.getInt(world.rand, 1, 1); i++) {
-			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.thatch_loot);
-			ItemStack itemStack = returns.returnItem.copy();
-			if (!itemStack.isEmpty())
-				player.inventory.addItemStackToInventory(itemStack);
-		}
-
+		this.randomItemDrop(player, rand, REventHandler.thatch_loot);
 	}
+
+
 	@Override
 	public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
 		if (!this.world.isRemote && !player.isSneaking() && this.outOfControlTicks < 60.0F) {
@@ -653,83 +608,8 @@ public class ThatchEntity extends Entity {
 	}
 
 
-	/**
-	 * Sets the damage taken from the last hit.
-	 */
-	public void setDamageTaken(float damageTaken) {
-		this.dataManager.set(DAMAGE_TAKEN, Float.valueOf(damageTaken));
-	}
-
-	/**
-	 * Gets the damage taken from the last hit.
-	 */
-	public float getDamageTaken() {
-		return ((Float) this.dataManager.get(DAMAGE_TAKEN)).floatValue();
-	}
-
-	/**
-	 * Sets the time to count down from since the last time entity was hit.
-	 */
-	public void setTimeSinceHit(int timeSinceHit) {
-		this.dataManager.set(TIME_SINCE_HIT, Integer.valueOf(timeSinceHit));
-	}
-
-	/**
-	 * Gets the time since the last hit.
-	 */
-	public int getTimeSinceHit() {
-		return ((Integer) this.dataManager.get(TIME_SINCE_HIT)).intValue();
-	}
-
-	/**
-	 * Sets the forward direction of the entity.
-	 */
-	public void setForwardDirection(int forwardDirection) {
-		this.dataManager.set(FORWARD_DIRECTION, Integer.valueOf(forwardDirection));
-	}
-
-	/**
-	 * Gets the forward direction of the entity.
-	 */
-	public int getForwardDirection() {
-		return ((Integer) this.dataManager.get(FORWARD_DIRECTION)).intValue();
-	}
-
 	public static enum Status {
 		IN_WATER, UNDER_WATER, UNDER_FLOWING_WATER, ON_LAND, IN_AIR;
-	}
-
-	@Override
-	protected void readEntityFromNBT(NBTTagCompound compound) {
-		if (compound.hasKey("Size"))
-			this.dataManager.set(SIZE, compound.getInteger("Size"));
-
-		if (compound.hasKey("CustomWindEnabled"))
-			this.dataManager.set(CUSTOM_WIND_ENABLED, compound.getBoolean("CustomWindEnabled"));
-
-		if (compound.hasKey("CustomWindX"))
-			this.dataManager.set(CUSTOM_WIND_X, compound.getFloat("CustomWindX"));
-
-		if (compound.hasKey("CustomWindZ"))
-			this.dataManager.set(CUSTOM_WIND_Z, compound.getFloat("CustomWindZ"));
-		if (compound.hasKey("CanDespawn"))
-			this.dataManager.set(CAN_DESPAWN, compound.getBoolean("CanDespawn"));
-
-	}
-
-	@Override
-	protected void writeEntityToNBT(NBTTagCompound compound) {
-		compound.setInteger("Size", getSize());
-		compound.setBoolean("CustomWindEnabled", getCustomWindEnabled());
-		compound.setFloat("CustomWindX", getCustomWindX());
-		compound.setFloat("CustomWindZ", getCustomWindZ());
-
-		compound.setBoolean("CanDespawn", getCanDespawn());
-
-	}
-
-	public boolean getCanDespawn() {
-		return this.dataManager.get(CAN_DESPAWN);
 	}
 
 	
@@ -927,38 +807,7 @@ public class ThatchEntity extends Entity {
 	}
 
 	private void despawnEntity() {
-		if (!getCanDespawn()) {
-			this.age = 0;
-		} else {
-			Entity entity = this.world.getClosestPlayerToEntity(this, -0.1D);
-
-			if (entity != null) {
-				double d0 = entity.posX - this.posX;
-				double d1 = entity.posY - this.posY;
-				double d2 = entity.posZ - this.posZ;
-				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-
-				if (d3 > 32 * 32)
-					this.setDead();
-			}
-
-		}
-	}
-
-	public int getSize() {
-		return this.dataManager.get(SIZE);
-	}
-
-	public float getCustomWindX() {
-		return this.dataManager.get(CUSTOM_WIND_X);
-	}
-
-	public float getCustomWindZ() {
-		return this.dataManager.get(CUSTOM_WIND_Z);
-	}
-
-	public boolean getCustomWindEnabled() {
-		return this.dataManager.get(CUSTOM_WIND_ENABLED);
+		this.shouldDespawn(32);
 	}
 	
 }
