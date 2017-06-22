@@ -50,25 +50,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class FloatBarrel extends Entity {
-	private static final DataParameter<Integer> TIME_SINCE_HIT = EntityDataManager.<Integer>createKey(FloatBarrel.class,
+public class FloatBarrel extends EntityFishable {
+	private static final DataParameter<Integer> BARREL_TYPE = EntityDataManager.<Integer>createKey(EntityFishable.class,
 			DataSerializers.VARINT);
-	private static final DataParameter<Integer> FORWARD_DIRECTION = EntityDataManager
-			.<Integer>createKey(FloatBarrel.class, DataSerializers.VARINT);
-	private static final DataParameter<Float> DAMAGE_TAKEN = EntityDataManager.<Float>createKey(FloatBarrel.class,
-			DataSerializers.FLOAT);
-	private static final DataParameter<Integer> BARREL_TYPE = EntityDataManager.<Integer>createKey(FloatBarrel.class,
-			DataSerializers.VARINT);
-	private static final DataParameter<Boolean> CAN_DESPAWN = EntityDataManager.createKey(FloatBarrel.class,
-			DataSerializers.BOOLEAN);
-	private static final DataParameter<Integer> SIZE = EntityDataManager.createKey(FloatBarrel.class,
-			DataSerializers.VARINT);
-	private static final DataParameter<Boolean> CUSTOM_WIND_ENABLED = EntityDataManager.createKey(FloatBarrel.class,
-			DataSerializers.BOOLEAN);
-	private static final DataParameter<Float> CUSTOM_WIND_X = EntityDataManager.createKey(FloatBarrel.class,
-			DataSerializers.FLOAT);
-	private static final DataParameter<Float> CUSTOM_WIND_Z = EntityDataManager.createKey(FloatBarrel.class,
-			DataSerializers.FLOAT);
+
 	private static final float BASE_SIZE = 0.75f;
 	/** How much of current speed to retain. Value zero to one. */
 	private float momentum;
@@ -147,16 +132,10 @@ public class FloatBarrel extends Entity {
 		return false;
 	}
 
+	@Override
 	protected void entityInit() {
-		this.dataManager.register(TIME_SINCE_HIT, Integer.valueOf(0));
-		this.dataManager.register(FORWARD_DIRECTION, Integer.valueOf(1));
-		this.dataManager.register(DAMAGE_TAKEN, Float.valueOf(0.0F));
+		super.entityInit();
 		this.dataManager.register(BARREL_TYPE, Integer.valueOf(FloatBarrel.Type.OAK.ordinal()));
-		this.dataManager.register(CAN_DESPAWN, true);
-		this.dataManager.register(SIZE, -2 + world.rand.nextInt(5));
-		this.dataManager.register(CUSTOM_WIND_ENABLED, false);
-		this.dataManager.register(CUSTOM_WIND_X, 0f);
-		this.dataManager.register(CUSTOM_WIND_Z, 0f);
 
 	}
 
@@ -187,46 +166,7 @@ public class FloatBarrel extends Entity {
 		return true;
 	}
 
-	/**
-	 * Called when the entity is attacked.
-	 * 
-	 */
-	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
-		if (this.isEntityInvulnerable(source)) {
-			return false;
-		} else if (!this.world.isRemote && !this.isDead) {
-			if (source instanceof EntityDamageSourceIndirect && source.getEntity() != null) {
-				return false;
-			} else {
-				this.setForwardDirection(-this.getForwardDirection());
-				this.setTimeSinceHit(10);
-				this.setDamageTaken(this.getDamageTaken() + amount * 10.0F);
-				this.setBeenAttacked();
 
-				boolean flag = source.getEntity() instanceof EntityPlayer
-						&& ((EntityPlayer) source.getEntity()).capabilities.isCreativeMode;
-
-				boolean flag1 = source.getEntity() instanceof EntityCreeper;
-				EntityPlayer player = (EntityPlayer) source.getEntity();
-
-				if (flag || this.getDamageTaken() > 5.0F) {
-
-					if (!flag && this.world.getGameRules().getBoolean("doEntityDrops") && !flag1) {
-						BlockPos pos = getPosition();
-
-						this.dropItems(world, pos);
-					}
-
-					this.setDead();
-				}
-
-				return true;
-			}
-		} else {
-			return true;
-		}
-	}
 
 	/**
 	 * Applies a velocity to the entities, to push them away from eachother.
@@ -243,19 +183,19 @@ public class FloatBarrel extends Entity {
 
 	public Item getItemBarrel() {
 		switch (this.getBarrelType()) {
-		case OAK:
-		default:
-			return RItems.barrel;
-		case SPRUCE:
-			return RItems.spruce_barrel;
-		case BIRCH:
-			return RItems.birch_barrel;
-		case JUNGLE:
-			return RItems.jungle_barrel;
-		case ACACIA:
-			return RItems.acacia_barrel;
-		case DARK_OAK:
-			return RItems.dark_oak_barrel;
+			case OAK:
+			default:
+				return RItems.barrel;
+			case SPRUCE:
+				return RItems.spruce_barrel;
+			case BIRCH:
+				return RItems.birch_barrel;
+			case JUNGLE:
+				return RItems.jungle_barrel;
+			case ACACIA:
+				return RItems.acacia_barrel;
+			case DARK_OAK:
+				return RItems.dark_oak_barrel;
 		}
 	}
 	@Override
@@ -267,17 +207,17 @@ public class FloatBarrel extends Entity {
 	/**
 	 * Returns true if other Entities should be prevented from moving through
 	 * this Entity.
-	 
-	public boolean canBeCollidedWith() {
-		return !this.isDead;
-	}*/
+
+	 public boolean canBeCollidedWith() {
+	 return !this.isDead;
+	 }*/
 
 	/**
 	 * Set the position and rotation values directly without any clamping.
 	 */
 	@SideOnly(Side.CLIENT)
 	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch,
-			int posRotationIncrements, boolean teleport) {
+											 int posRotationIncrements, boolean teleport) {
 		this.BarrelPitch = x;
 		this.lerpY = y;
 		this.lerpZ = z;
@@ -609,7 +549,7 @@ public class FloatBarrel extends Entity {
 	/**
 	 * Update the Barrel's speed, based on momentum.
 	 */
-	
+
 	private void updateMotion() {
 		double d0 = -0.03999999910593033D;
 		double d1 = this.hasNoGravity() ? 0.0D : -0.03999999910593033D;
@@ -660,13 +600,10 @@ public class FloatBarrel extends Entity {
 	 */
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
-		compound.setInteger("Size", getSize());
-		compound.setBoolean("CustomWindEnabled", getCustomWindEnabled());
-		compound.setFloat("CustomWindX", getCustomWindX());
-		compound.setFloat("CustomWindZ", getCustomWindZ());
+		super.writeEntityToNBT(compound);
 		compound.setString("Type", this.getBarrelType().getName());
-		compound.setBoolean("CanDespawn", getCanDespawn());
 	}
+
 	@SideOnly(Side.CLIENT)
 	public void performHurtAnimation() {
 		this.setForwardDirection(-this.getForwardDirection());
@@ -678,51 +615,15 @@ public class FloatBarrel extends Entity {
 	 */
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
-
-		if (compound.hasKey("Size"))
-			this.dataManager.set(SIZE, compound.getInteger("Size"));
-
-		if (compound.hasKey("CustomWindEnabled"))
-			this.dataManager.set(CUSTOM_WIND_ENABLED, compound.getBoolean("CustomWindEnabled"));
-
-		if (compound.hasKey("CustomWindX"))
-			this.dataManager.set(CUSTOM_WIND_X, compound.getFloat("CustomWindX"));
-
-		if (compound.hasKey("CustomWindZ"))
-			this.dataManager.set(CUSTOM_WIND_Z, compound.getFloat("CustomWindZ"));
-		if (compound.hasKey("CanDespawn"))
-			this.dataManager.set(CAN_DESPAWN, compound.getBoolean("CanDespawn"));
+		super.readEntityFromNBT(compound);
 		if (compound.hasKey("Type", 8)) {
 			this.setBarrelType(FloatBarrel.Type.getTypeFromString(compound.getString("Type")));
 		}
 
 	}
 
-	private void dropItems(World world, BlockPos pos) {
-		for (int i = 0; i < MathHelper.getInt(world.rand, 3, 10); i++) {
-			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.barrel_loot);
-			ItemStack itemStack = returns.returnItem.copy();
-			float dX = world.rand.nextFloat() * 0.8F + 0.1F;
-			float dY = world.rand.nextFloat() * 0.8F + 0.1F;
-			float dZ = world.rand.nextFloat() * 0.8F + 0.1F;
-			EntityItem entityItem = new EntityItem(world, pos.getX() + dX, pos.getY() + dY, pos.getZ() + dZ, itemStack);
-			float factor = 0.05F;
-			entityItem.motionX = world.rand.nextGaussian() * factor;
-			entityItem.motionY = world.rand.nextGaussian() * factor + 0.2F;
-			entityItem.motionZ = world.rand.nextGaussian() * factor;
-			world.spawnEntity(entityItem);
-		}
-	}
-	
 	public void extractItems(World world, BlockPos pos, EntityPlayer player) {
-		for (int i = 0; i < MathHelper.getInt(world.rand, 3, 6); i++) {
-			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.barrel_loot);
-			ItemStack itemStack = returns.returnItem.copy();
-
-			if (!itemStack.isEmpty())
-				player.inventory.addItemStackToInventory(itemStack);
-
-		}
+		this.randomItemDrop(player, rand, REventHandler.barrel_loot);
 	}
 
 	@Override
@@ -733,48 +634,6 @@ public class FloatBarrel extends Entity {
 		}
 		this.setDead();
 		return true;
-	}
-
-	/**
-	 * Sets the damage taken from the last hit.
-	 */
-	public void setDamageTaken(float damageTaken) {
-		this.dataManager.set(DAMAGE_TAKEN, Float.valueOf(damageTaken));
-	}
-
-	/**
-	 * Gets the damage taken from the last hit.
-	 */
-	public float getDamageTaken() {
-		return ((Float) this.dataManager.get(DAMAGE_TAKEN)).floatValue();
-	}
-
-	/**
-	 * Sets the time to count down from since the last time entity was hit.
-	 */
-	public void setTimeSinceHit(int timeSinceHit) {
-		this.dataManager.set(TIME_SINCE_HIT, Integer.valueOf(timeSinceHit));
-	}
-
-	/**
-	 * Gets the time since the last hit.
-	 */
-	public int getTimeSinceHit() {
-		return ((Integer) this.dataManager.get(TIME_SINCE_HIT)).intValue();
-	}
-
-	/**
-	 * Sets the forward direction of the entity.
-	 */
-	public void setForwardDirection(int forwardDirection) {
-		this.dataManager.set(FORWARD_DIRECTION, Integer.valueOf(forwardDirection));
-	}
-
-	/**
-	 * Gets the forward direction of the entity.
-	 */
-	public int getForwardDirection() {
-		return ((Integer) this.dataManager.get(FORWARD_DIRECTION)).intValue();
 	}
 
 	public void setBarrelType(FloatBarrel.Type BarrelType) {
@@ -792,9 +651,9 @@ public class FloatBarrel extends Entity {
 	public static enum Type {
 		OAK(BlockPlanks.EnumType.OAK.getMetadata(), "oak"), SPRUCE(BlockPlanks.EnumType.SPRUCE.getMetadata(),
 				"spruce"), BIRCH(BlockPlanks.EnumType.BIRCH.getMetadata(), "birch"), JUNGLE(
-						BlockPlanks.EnumType.JUNGLE.getMetadata(),
-						"jungle"), ACACIA(BlockPlanks.EnumType.ACACIA.getMetadata(),
-								"acacia"), DARK_OAK(BlockPlanks.EnumType.DARK_OAK.getMetadata(), "dark_oak");
+				BlockPlanks.EnumType.JUNGLE.getMetadata(),
+				"jungle"), ACACIA(BlockPlanks.EnumType.ACACIA.getMetadata(),
+				"acacia"), DARK_OAK(BlockPlanks.EnumType.DARK_OAK.getMetadata(), "dark_oak");
 
 		private final String name;
 		private final int metadata;
@@ -836,10 +695,6 @@ public class FloatBarrel extends Entity {
 
 			return values()[0];
 		}
-	}
-
-	public boolean getCanDespawn() {
-		return this.dataManager.get(CAN_DESPAWN);
 	}
 
 	public void moveEntity(double x, double y, double z) {
@@ -1036,38 +891,7 @@ public class FloatBarrel extends Entity {
 	}
 
 	private void despawnEntity() {
-		if (!getCanDespawn()) {
-			this.age = 0;
-		} else {
-			Entity entity = this.world.getClosestPlayerToEntity(this, -0.3D);
-
-			if (entity != null) {
-				double d0 = entity.posX - this.posX;
-				double d1 = entity.posY - this.posY;
-				double d2 = entity.posZ - this.posZ;
-				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-
-				if (d3 > 32 * 32)
-					this.setDead();
-			}
-
-		}
-	}
-
-	public int getSize() {
-		return this.dataManager.get(SIZE);
-	}
-
-	public float getCustomWindX() {
-		return this.dataManager.get(CUSTOM_WIND_X);
-	}
-
-	public float getCustomWindZ() {
-		return this.dataManager.get(CUSTOM_WIND_Z);
-	}
-
-	public boolean getCustomWindEnabled() {
-		return this.dataManager.get(CUSTOM_WIND_ENABLED);
+		this.shouldDespawn(32);
 	}
 
 	/*
