@@ -1,5 +1,7 @@
 package com.epiicthundercat.raft.proxy;
 
+import com.epiicthundercat.raft.Raft;
+import com.epiicthundercat.raft.entity.EntityHook;
 import com.epiicthundercat.raft.entity.ModEntities;
 import com.epiicthundercat.raft.init.RBlocks;
 import com.epiicthundercat.raft.init.REventHandler;
@@ -8,13 +10,13 @@ import com.epiicthundercat.raft.init.RRecipes;
 import com.epiicthundercat.raft.init.barrel.BarrelLootAdd;
 import com.epiicthundercat.raft.integration.TANIntegration;
 import com.epiicthundercat.raft.rafttileentitity.TileEntityRegistry;
-import com.epiicthundercat.raft.world.WorldGenOreOnReef;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 public class CommonProxy {
 	
@@ -58,5 +60,5 @@ public class CommonProxy {
 	public void registerRender(FMLInitializationEvent event) {
 	}
 	public void registerEntities(FMLPreInitializationEvent preEvent) {
-		}
+	}
 }

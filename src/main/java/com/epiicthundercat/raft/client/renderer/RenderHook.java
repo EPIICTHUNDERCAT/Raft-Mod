@@ -1,7 +1,7 @@
 package com.epiicthundercat.raft.client.renderer;
 
+import com.epiicthundercat.raft.Reference;
 import com.epiicthundercat.raft.entity.EntityHook;
-import com.epiicthundercat.raft.init.RItems;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -14,21 +14,19 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderHook extends Render<EntityHook>{
-	
-	private static final ResourceLocation HOOK = new ResourceLocation(
-			"raft:textures/entity/hook_part.png");
-	
+public class RenderHook extends Render<EntityHook> {
+
+	private static final ResourceLocation HOOK = new ResourceLocation(Reference.ID, "textures/entity/hook_part.png");
+
 	private Item item;
 	private RenderItem itemRenderer;
-	
+
 	public RenderHook(RenderManager renderManager, Item item) {
 		super(renderManager);
 		this.item = item;
 		this.itemRenderer = Minecraft.getMinecraft().getRenderItem();
-	
 	}
-	
+
 	@Override
 	public void doRender(EntityHook entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		GlStateManager.pushMatrix();
@@ -59,13 +57,11 @@ public class RenderHook extends Render<EntityHook>{
 	}
 
 	private ItemStack getStackToRender(EntityHook entity) {
-		return new ItemStack(RItems.hook_part);
+		return new ItemStack(this.item);
 	}
+
 	@Override
 	protected ResourceLocation getEntityTexture(EntityHook entity) {
-		
 		return HOOK;
 	}
-	
-
 }
