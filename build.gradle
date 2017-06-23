@@ -45,6 +45,7 @@ dependencies {
     
     
 provided files('libs/ToughAsNails-1.11-2.0.5.jar')
+provided files('libs/CoralReef-1.4.jar')
 
 
 

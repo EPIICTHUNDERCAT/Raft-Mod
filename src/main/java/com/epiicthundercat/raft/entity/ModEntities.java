@@ -43,8 +43,7 @@ public class ModEntities {
 		// Eel
 		EntityRegistry.registerModEntity(getEntityResource("Eel"), EntityEel.class, "Eel", 6, Raft.instance, 80, 3,
 				false, 547853, femalesharkegg);
-		EntityRegistry.registerModEntity(new ResourceLocation(
-				"raft/entity/hook_part.png"), EntityHook.class, "hook_part", 7, Raft.instance, 64, 2, true, 0, 0);
+		EntityRegistry.registerModEntity(getEntityResource("hook_part"), EntityHook.class, "hook_part", 7, Raft.instance, 64, 2, true, 0, 0);
 	
 		/*
 		 * We want our mob to spawn in Plains and ice plains biomes. If you

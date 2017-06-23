@@ -75,20 +75,17 @@ public class EntityHook extends EntityThrowable {
 		}
 
 	}
-
+	
+@Override
 	protected float getGravityVelocity() {
-		return 0.0F;
+		return 0.01F;
 
 	}
 
-	// protected EntityLightningBolt Bolt = new EntityLightningBolt(World,
-	// lastTickPosX, lastTickPosX, lastTickPosX, inGround);
-
+	
 	@Override
 	protected void onImpact(RayTraceResult result) {
-		// getEntityWorld().addWeatherEffect(new
-		// EntityLightningBolt(getEntityWorld(),posX,posY,posZ,false));
-
+		
 
 		if(result.typeOfHit == BLOCK){
 			IBlockState state = this.world.getBlockState(result.getBlockPos());
@@ -121,27 +118,7 @@ public class EntityHook extends EntityThrowable {
 			}
 
 
-			/*if(sourceDamage != null && sourceDamage.getEntity() instanceof EntityPlayer &&
-					((EntityPlayer) sourceDamage.getEntity()).capabilities.isCreativeMode){
-				barrel.extractItems(world, posB, playerIn);
-				thatch.extractItems(world, posB, playerIn);
-				scrap.extractItems(world, posB, playerIn);
-				plank.extractItems(world, posB, playerIn);
-
-			}*/
-			 
-			/*if (result.entityHit != null && result.entityHit != this.shootingEntity) {
-				if (result.entityHit instanceof FloatBarrel) {
-					barrel.extractItems(world, posB, playerIn);
-				} else if (result.entityHit instanceof ThatchEntity) {
-					thatch.extractItems(world, posB, playerIn);
-				} else if (result.entityHit instanceof ScrapEntity) {
-					scrap.extractItems(world, posB, playerIn);
-				} else if (result.entityHit instanceof PlankEntity) {
-					plank.extractItems(world, posB, playerIn);
-				}*/
-//			}
-
+		
 			if (!this.world.isRemote) {
 				this.setDead();
 			}

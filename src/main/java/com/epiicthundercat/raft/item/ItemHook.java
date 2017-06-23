@@ -81,7 +81,7 @@ public EntityPlayer player;
 											SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.NEUTRAL, 1.5F, 10.0F);
 									EntityHook leaf = new EntityHook(world, (EntityLivingBase) entity);
 									leaf.setHeadingFromThrower(entity, entity.rotationPitch, entity.rotationYaw, -2.0F,
-											0.5F, -2.0F);
+											1.0F, -2.0F);
 									entity.getEntityWorld().spawnEntity(leaf);
 									
 									stack.damageItem(1, (EntityPlayer) entity);
