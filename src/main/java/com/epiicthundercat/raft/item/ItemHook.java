@@ -35,7 +35,7 @@ public EntityPlayer player;
 	public ItemHook(String name, ToolMaterial material) {
 		super(name, material);
 		this.setMaxStackSize(1);
-		this.setMaxDamage(1000);
+		this.setMaxDamage(150);
 
 	}
 @Override
@@ -78,7 +78,7 @@ public EntityPlayer player;
 							if ((i % 6) == 0) {
 								if (!world.isRemote) {
 									world.playSound((EntityPlayer) null, entity.posX, entity.posY, entity.posZ,
-											SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.NEUTRAL, 1.5F, 10.0F);
+											SoundEvents.ENTITY_BOBBER_THROW, SoundCategory.NEUTRAL, 1.5F, 10.0F);
 									EntityHook leaf = new EntityHook(world, (EntityLivingBase) entity);
 									leaf.setHeadingFromThrower(entity, entity.rotationPitch, entity.rotationYaw, -2.0F,
 											1.0F, -2.0F);

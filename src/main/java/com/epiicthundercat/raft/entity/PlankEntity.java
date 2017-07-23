@@ -153,7 +153,7 @@ public class PlankEntity extends EntityFishable {
 	 */
 	@Override
 	public boolean canBePushed() {
-		return true;
+		return false;
 	}
 
 	/**
@@ -614,7 +614,9 @@ public class PlankEntity extends EntityFishable {
 	public void extractItems(World world, BlockPos pos, EntityPlayer player) {
 		this.randomItemDrop(player, rand, REventHandler.plank_loot);
 	}
-
+	public void dropItems(World world, BlockPos pos) {
+		this.dropRandomItems(world, pos, REventHandler.plank_loot);
+	}
 	@Override
 	public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
 	

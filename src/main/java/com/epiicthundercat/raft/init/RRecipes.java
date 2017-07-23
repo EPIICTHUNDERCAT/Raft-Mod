@@ -2,6 +2,7 @@ package com.epiicthundercat.raft.init;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -18,6 +19,15 @@ public class RRecipes {
 		 * RECIPES
 		 */
 
+		//pebbles
+		GameRegistry.addShapelessRecipe(new ItemStack(RItems.pebble, 20), new ItemStack(Blocks.COBBLESTONE));
+		//sharktooth sword
+		GameRegistry.addShapedRecipe(new ItemStack(RItems.shark_tooth_sword), "D  ", "D  ","S  ", 'D', new ItemStack(RItems.shark_tooth), 'S',
+				new ItemStack(Items.STICK));
+		//bonemeal
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage()), new ItemStack(RItems.shark_tooth));
+		
+		
 		// Plank > Planks
 
 		GameRegistry.addShapedRecipe(new ItemStack(Blocks.PLANKS), "DD", "RD", 'D', new ItemStack(RItems.plank), 'R',
@@ -28,10 +38,11 @@ public class RRecipes {
 		GameRegistry.addShapedRecipe(new ItemStack(RItems.stones), "DD", "DD", 'D', new ItemStack(RItems.pebble));
 		// WetCobble
 		GameRegistry.addShapedRecipe(new ItemStack(RBlocks.wet_cobble), "DSD", "SDS", "DSD", 'D',
-				new ItemStack(RItems.clay_chunk), 'S', new ItemStack(RItems.stones));
+				new ItemStack(RItems.stones), 'S', new ItemStack(RItems.clay_chunk));
 		//Cobblestone
 		GameRegistry.addSmelting(new ItemStack(RBlocks.wet_cobble), new ItemStack(Blocks.COBBLESTONE), 20);
-
+		//Clay Chunk
+		GameRegistry.addShapelessRecipe(new ItemStack(RItems.clay_chunk, 4), new ItemStack(Items.CLAY_BALL));
 		
 		
 		// Rope
@@ -50,8 +61,12 @@ public class RRecipes {
 		GameRegistry.addShapedRecipe(new ItemStack(RItems.double_compressed_scraps), "SSS", "SSS", "SSS", 'S',
 				new ItemStack(RItems.compressed_scraps));
 		// Hook
-		GameRegistry.addShapedRecipe(new ItemStack(RItems.hook), " S", "R ", 'S', new ItemStack(RItems.scrap), 'R',
+		GameRegistry.addShapedRecipe(new ItemStack(RItems.hook), " S", "R ", 'S', new ItemStack(RItems.hook_part), 'R',
 				new ItemStack(RItems.rope));
+		
+		//Hook Part
+		GameRegistry.addShapedRecipe(new ItemStack(RItems.hook_part), "SS", "S ", 'S', new ItemStack(RItems.scrap));
+		
 		// Dirt
 		GameRegistry.addShapedRecipe(new ItemStack(Blocks.DIRT), "DD", "DD", 'D', new ItemStack(RItems.dirt_piece));
 		// Sand

@@ -163,7 +163,7 @@ public class FloatBarrel extends EntityFishable {
 	 */
 	@Override
 	public boolean canBePushed() {
-		return true;
+		return false;
 	}
 
 
@@ -621,7 +621,9 @@ public class FloatBarrel extends EntityFishable {
 		}
 
 	}
-
+	public void dropItems(World world, BlockPos pos) {
+		this.dropRandomItems(world, pos, REventHandler.barrel_loot);
+	}
 	public void extractItems(World world, BlockPos pos, EntityPlayer player) {
 		this.randomItemDrop(player, rand, REventHandler.barrel_loot);
 	}

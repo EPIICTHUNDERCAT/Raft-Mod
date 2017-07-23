@@ -25,7 +25,7 @@ import java.util.Random;
 
 public class EntityFishable extends Entity {
 
-    private static final DataParameter<Integer> TIME_SINCE_HIT = EntityDataManager
+	private static final DataParameter<Integer> TIME_SINCE_HIT = EntityDataManager
 			.<Integer>createKey(EntityFishable.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> FORWARD_DIRECTION = EntityDataManager
 			.<Integer>createKey(EntityFishable.class, DataSerializers.VARINT);
@@ -44,13 +44,12 @@ public class EntityFishable extends Entity {
 
 	protected int age;
 
-    public EntityFishable(World worldIn) {
-        super(worldIn);
-    }
+	public EntityFishable(World worldIn) {
+		super(worldIn);
+	}
 
-
-    @Override
-    protected void entityInit() {
+	@Override
+	protected void entityInit() {
 		this.dataManager.register(TIME_SINCE_HIT, Integer.valueOf(0));
 		this.dataManager.register(FORWARD_DIRECTION, Integer.valueOf(1));
 		this.dataManager.register(DAMAGE_TAKEN, Float.valueOf(0.0F));
@@ -62,7 +61,7 @@ public class EntityFishable extends Entity {
 
 	}
 
-    @Override
+	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
 		if (compound.hasKey("Size"))
 			this.dataManager.set(SIZE, compound.getInteger("Size"));
@@ -114,7 +113,7 @@ public class EntityFishable extends Entity {
 		return (this.dataManager.get(DAMAGE_TAKEN)).floatValue();
 	}
 
-    @Override
+	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
 		compound.setInteger("Size", getSize());
 		compound.setBoolean("CustomWindEnabled", getCustomWindEnabled());
@@ -132,8 +131,6 @@ public class EntityFishable extends Entity {
 		return ((Integer) this.dataManager.get(TIME_SINCE_HIT)).intValue();
 	}
 
-
-
 	/**
 	 * Gets the forward direction of the entity.
 	 */
@@ -141,7 +138,7 @@ public class EntityFishable extends Entity {
 		return ((Integer) this.dataManager.get(FORWARD_DIRECTION)).intValue();
 	}
 
-    /**
+	/**
 	 * Called when the entity is attacked.
 	 *
 	 */
@@ -202,25 +199,27 @@ public class EntityFishable extends Entity {
 		this.dataManager.set(FORWARD_DIRECTION, Integer.valueOf(forwardDirection));
 	}
 
+	public void extractItems(World world, BlockPos pos, EntityPlayer player) {
 
-    public void extractItems(World world, BlockPos pos, EntityPlayer player) {
+	}
 
-    }
+	public void dropItems(World world, BlockPos pos) {
 
-    public void randomItemDrop(EntityPlayer player, Random rand, List<BarrelLoot> lootList) {
-        for (int i = 0; i < MathHelper.getInt(world.rand, 3, 6); i++) {
-            BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, lootList);
-            ItemStack itemStack = returns.returnItem.copy();
-            if (!itemStack.isEmpty())
-                player.inventory.addItemStackToInventory(itemStack);
+	}
 
-        }
-    }
+	public void randomItemDrop(EntityPlayer player, Random rand, List<BarrelLoot> lootList) {
+		for (int i = 0; i < MathHelper.getInt(world.rand, 3, 6); i++) {
+			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, lootList);
+			ItemStack itemStack = returns.returnItem.copy();
+			if (!itemStack.isEmpty())
+				player.inventory.addItemStackToInventory(itemStack);
 
+		}
+	}
 
-	protected void dropItems(World world, BlockPos pos) {
-		for (int i = 0; i < MathHelper.getInt(world.rand, 1, 1); i++) {
-			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, REventHandler.thatch_loot);
+	public void dropRandomItems(World world, BlockPos pos, List<BarrelLoot> lootList) {
+		for (int i = 0; i < MathHelper.getInt(world.rand, 3, 6); i++) {
+			BarrelLoot returns = WeightedRandom.getRandomItem(world.rand, lootList);
 			ItemStack itemStack = returns.returnItem.copy();
 			float dX = world.rand.nextFloat() * 0.8F + 0.1F;
 			float dY = world.rand.nextFloat() * 0.8F + 0.1F;
@@ -234,8 +233,8 @@ public class EntityFishable extends Entity {
 		}
 	}
 
-    public void shouldDespawn(int radius) {
-	    if (!getCanDespawn()) {
+	public void shouldDespawn(int radius) {
+		if (!getCanDespawn()) {
 			this.age = 0;
 		} else {
 			Entity entity = this.world.getClosestPlayerToEntity(this, -0.1D);
@@ -251,5 +250,5 @@ public class EntityFishable extends Entity {
 			}
 
 		}
-    }
+	}
 }

@@ -1,8 +1,30 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "raft:items/ores/aluminum_compound_ore"
+   "parent": "raft:block/aluminum_compound_ore",
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ -0.5, 4.0, 1.5 ],
+            "scale": [ 0.5, 0.5,0.5 ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0.5, 4.0, 1.5 ],
+            "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, 30, 45 ],
+            "translation": [ -4, 5, 4 ],
+            "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        "firstperson_lefthand": {
+            "rotation":  [ 0, 30, 45 ],
+            "translation":[ -4, 5, 4 ],
+            "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        "gui": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 8.0, 4 ],
+            "scale": [ 1.0, 1.0, 1.0 ]
+        }
     }
 }
-        
-   

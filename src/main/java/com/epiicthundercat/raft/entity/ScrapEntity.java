@@ -151,7 +151,7 @@ public class ScrapEntity extends EntityFishable {
 	 * when colliding.
 	 */
 	public boolean canBePushed() {
-		return true;
+		return false;
 	}
 
 	/**
@@ -600,6 +600,9 @@ public class ScrapEntity extends EntityFishable {
 				this.motionY *= 0.75D;
 			}
 		}
+	}
+	public void dropItems(World world, BlockPos pos) {
+		this.dropRandomItems(world, pos, REventHandler.scrap_loot);
 	}
 	public void extractItems(World world, BlockPos pos, EntityPlayer player) {
 		this.randomItemDrop(player, rand, REventHandler.scrap_loot);

@@ -52,14 +52,14 @@ public class ModEntities {
 		 */
 
 		// Female Shark
-		EntityRegistry.addSpawn(EntitySharkFemale.class, 1, 1, 3, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
+		EntityRegistry.addSpawn(EntitySharkFemale.class, 100, 1, 3, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
 				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER);
 		// Fish
-		EntityRegistry.addSpawn(EntityFish.class, 2, 3, 8, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
+		EntityRegistry.addSpawn(EntityFish.class, 10, 3, 8, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
 				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER);
 
 		// Eel
-		EntityRegistry.addSpawn(EntityEel.class, 2, 3, 8, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
+		EntityRegistry.addSpawn(EntityEel.class, 5, 2, 4, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
 				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER);
 
 		/*

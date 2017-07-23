@@ -168,21 +168,24 @@ public class ThatchEntity extends EntityFishable {
 		if (this.isEntityInvulnerable(source)) {
 			return false;
 		} else if (!this.world.isRemote && !this.isDead) {
-			if (source instanceof EntityDamageSourceIndirect && source.getEntity() != null && source.isExplosion()) {
+			if (source instanceof EntityDamageSourceIndirect && source.getEntity() != null) {
 				return false;
 			} else {
 				this.setForwardDirection(-this.getForwardDirection());
 				this.setTimeSinceHit(10);
-				this.setDamageTaken(this.getDamageTaken() + amount * 100.0F);
+				this.setDamageTaken(this.getDamageTaken() + amount * 10.0F);
 				this.setBeenAttacked();
-				
+
 				boolean flag = source.getEntity() instanceof EntityPlayer
 						&& ((EntityPlayer) source.getEntity()).capabilities.isCreativeMode;
-				//boolean flag1 = source.getEntity() instanceof EntityCreeper;
 
-				if (flag ) {
+				
 
-					if (!flag && this.world.getGameRules().getBoolean("doEntityDrops")) {
+				boolean flag1 = source.getEntity() instanceof EntityCreeper;
+
+				if (flag || this.getDamageTaken() > 5.0F) {
+
+					if (!flag && this.world.getGameRules().getBoolean("doEntityDrops") && !flag1) {
 						BlockPos pos = getPosition();
 
 						this.dropItems(world, pos);
@@ -190,6 +193,8 @@ public class ThatchEntity extends EntityFishable {
 
 					this.setDead();
 				}
+				
+
 				return true;
 			}
 		} else {
@@ -591,7 +596,9 @@ public class ThatchEntity extends EntityFishable {
 			}
 		}
 	}
-
+	public void dropItems(World world, BlockPos pos) {
+		this.dropRandomItems(world, pos, REventHandler.thatch_loot);
+	}
 	public void extractItems(World world, BlockPos pos, EntityPlayer player) {
 		this.randomItemDrop(player, rand, REventHandler.thatch_loot);
 	}

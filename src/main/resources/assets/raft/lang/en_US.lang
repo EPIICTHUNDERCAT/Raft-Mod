@@ -34,17 +34,35 @@ item.shark_tooth.name=Shark Tooth
 item.raw_eel_meat.name=Raw Eel
 item.cooked_eel_meat.name=Charred Eel
 item.shark_tooth_sword.name=Shark Tooth Sword
-
+item.fish_waste.name=Fish Waste
+item.pebble.name=Pebble
+item.clay_chunk.name=Clay Chunk
+item.hook_part.name=Hook Part
 
 tile.burner.name=Burner
+tile.wet_cobble.name=Wet Cobblestone
+tile.uranium_compound_ore.name=Uranium Compound Pocket
+tile.aluminum_compound_ore.name=Aluminum Compound Pocket
+tile.copper_compound_ore.name=Copper Compound Pocket
+tile.lead_compound_ore.name=Lead Compound Pocket
+tile.silver_compound_ore.name=Silver Compound Pocket
+tile.tungsten_compound_ore.name=Tungsten Compound Pocket
+tile.iron_compound_ore.name=Iron Compound Pocket
+tile.gold_compound_ore.name=Gold Compound Pocket
+tile.nickel_compound_ore.name=Nickel Compound Pocket
+tile.tin_compound_ore.name=Tin Compound Pocket
 
-entity.raft.Fish.name=Fish
-entity.raft.FemaleShark.name=Shark
-entity.raft.Eel.name=Electric Eel
+
+
+
+
+entity.Fish.name=Fish
+entity.FemaleShark.name=Shark
+entity.Eel.name=Electric Eel
 entity.Barrel.name=Barrel
-entity.raft.Plank.name=Plank
-entity.raft.Thatch.name=Thatch
-entity.raft.Scrap.name=Scrap
+entity.Plank.name=Plank
+entity.Thatch.name=Thatch
+entity.Scrap.name=Scrap
 
 
 
