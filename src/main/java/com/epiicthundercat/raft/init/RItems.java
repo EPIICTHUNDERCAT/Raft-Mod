@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.epiicthundercat.raft.entity.FloatBarrel;
 import com.epiicthundercat.raft.item.ItemBarrel;
+import com.epiicthundercat.raft.item.ItemCheapScuba;
 import com.epiicthundercat.raft.item.ItemCoconut;
 import com.epiicthundercat.raft.item.ItemFishWaste;
 import com.epiicthundercat.raft.item.ItemHook;
@@ -14,13 +15,15 @@ import com.epiicthundercat.raft.item.ItemThatch;
 import com.epiicthundercat.raft.item.ItemTinCan;
 import com.epiicthundercat.raft.item.ItemTinPotion;
 import com.epiicthundercat.raft.item.RItem;
+import com.epiicthundercat.raft.item.RItemArmor;
 import com.epiicthundercat.raft.item.RItemFood;
 import com.epiicthundercat.raft.item.RItemSword;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -30,25 +33,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class RItems {
 	public static List<Item> items = new ArrayList();
 
-	public static Item hook = new ItemHook("hook", ToolMaterial.WOOD);
-	public static Item thatch = new ItemThatch("thatch");
-	public static Item rope = new RItem("rope");
-	public static Item plank = new ItemPlank("plank");
-	public static Item barrel = new ItemBarrel("barrel", FloatBarrel.Type.OAK);
-	public static Item spruce_barrel = new ItemBarrel("spruce_barrel", FloatBarrel.Type.SPRUCE);
-	public static Item birch_barrel = new ItemBarrel("birch_barrel", FloatBarrel.Type.BIRCH);
-	public static Item dark_oak_barrel = new ItemBarrel("dark_oak_barrel", FloatBarrel.Type.DARK_OAK);
-	public static Item acacia_barrel = new ItemBarrel("acacia_barrel", FloatBarrel.Type.ACACIA);
-	public static Item jungle_barrel = new ItemBarrel("jungle_barrel", FloatBarrel.Type.JUNGLE);
-	public static Item spear = new RItemSword("spear", ToolMaterial.STONE);
-	public static Item tin_can = new ItemTinCan("tin_can");
-	public static Item scrap = new ItemScrap("scrap");
-	public static Item dirt_piece = new RItem("dirt_piece");
-	public static Item sand_piece = new RItem("sand_piece");
-	public static Item gravel_piece = new RItem("gravel_piece");
-	public static Item compressed_scraps = new RItem("compressed_scraps");
-	public static Item double_compressed_scraps = new RItem("double_compressed_scraps");
-
+	
 	// IRON
 	public static Item iron_compound = new RItem("iron_compound");
 	public static Item iron_ore_material = new RItem("iron_ore_material");
@@ -112,6 +97,24 @@ public class RItems {
 	public static Item uranium_compound = new RItem("uranium_compound");
 	public static Item uranium_ore_material = new RItem("uranium_ore_material");
 
+	public static Item hook = new ItemHook("hook", ToolMaterial.WOOD);
+	public static Item thatch = new ItemThatch("thatch");
+	public static Item rope = new RItem("rope");
+	public static Item plank = new ItemPlank("plank");
+	public static Item barrel = new ItemBarrel("barrel", FloatBarrel.Type.OAK);
+	public static Item spruce_barrel = new ItemBarrel("spruce_barrel", FloatBarrel.Type.SPRUCE);
+	public static Item birch_barrel = new ItemBarrel("birch_barrel", FloatBarrel.Type.BIRCH);
+	public static Item dark_oak_barrel = new ItemBarrel("dark_oak_barrel", FloatBarrel.Type.DARK_OAK);
+	public static Item acacia_barrel = new ItemBarrel("acacia_barrel", FloatBarrel.Type.ACACIA);
+	public static Item jungle_barrel = new ItemBarrel("jungle_barrel", FloatBarrel.Type.JUNGLE);
+	public static Item spear = new RItemSword("spear", ToolMaterial.WOOD);
+	public static Item tin_can = new ItemTinCan("tin_can");
+	public static Item scrap = new ItemScrap("scrap");
+	public static Item dirt_piece = new RItem("dirt_piece");
+	public static Item sand_piece = new RItem("sand_piece");
+	public static Item gravel_piece = new RItem("gravel_piece");
+	public static Item compressed_scraps = new RItem("compressed_scraps");
+	public static Item double_compressed_scraps = new RItem("double_compressed_scraps");
 	public static Item plastic = new RItem("plastic");
 	public static Item coconut = new ItemCoconut("coconut");
 	public static Item coconut_shell = new RItemFood("coconut_shell", 5, 5, false);
@@ -131,9 +134,12 @@ public class RItems {
 	public static Item pebble = new RItem("pebble");
 	public static Item fish_waste = new ItemFishWaste("fish_waste");
 	public static Item hook_part = new RItem("hook_part");
+	public static Item plastic_scuba = new ItemCheapScuba("plastic_scuba", RItemArmor.PLASTIC_SCUBA, 7, EntityEquipmentSlot.HEAD);
+	
 	
 	private static List<Item> getItems() {
 		return items;
+		
 	}
 
 	public static void register(FMLPreInitializationEvent preEvent) {

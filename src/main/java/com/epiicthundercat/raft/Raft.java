@@ -34,6 +34,7 @@ public class Raft {
 		network.registerMessage(SendMovePack.class, SendMovePack.class, 0, Side.SERVER);
 		proxy.preInit(preEvent);
 		 GameRegistry.registerWorldGenerator(new WorldGenOreOnReef(),1);
+		 
 	}
 
 	@EventHandler

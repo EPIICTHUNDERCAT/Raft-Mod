@@ -1,9 +1,11 @@
 {
     "__comment": "By EPIIC",
+    "parent":"block/block",
     "textures": {
         "0": "raft:blocks/oak_part",
         "1": "raft:blocks/scrap",
-        "2": "raft:blocks/burn_wood"
+        "2": "raft:blocks/burn_wood",
+         "particle": "raft:blocks/scrap"
     },
     "elements": [
         {

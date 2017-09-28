@@ -3,11 +3,11 @@ package com.epiicthundercat.raft.entity.monster;
 import javax.annotation.Nullable;
 
 import com.epiicthundercat.raft.Reference;
+import com.epiicthundercat.raft.entity.PathNavigation;
 import com.epiicthundercat.raft.entity.passive.EntityFish;
 import com.epiicthundercat.raft.init.RItems;
 import com.google.common.base.Predicate;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
@@ -22,11 +22,9 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityLookHelper;
 import net.minecraft.entity.ai.EntityMoveHelper;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -64,33 +62,32 @@ public class EntitySharkFemale extends EntityMob {
 
 	@Override
 	protected void initEntityAI() {
-		EntityAIMoveTowardsRestriction entityaimovetowardsrestriction = new EntityAIMoveTowardsRestriction(this, 1.0D);
 		this.wander = new EntityAIWander(this, 1.0D, 80);
 		this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
-		this.tasks.addTask(5, entityaimovetowardsrestriction);
+		this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
 		this.tasks.addTask(7, this.wander);
 		this.tasks.addTask(9, new EntityAILookIdle(this));
 		this.wander.setMutexBits(3);
-		entityaimovetowardsrestriction.setMutexBits(3);
+
 		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntitySharkFemale.class, 12.0F, 0.01F));
-		this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false, new Class[0]));
-
+		this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, true, new Class[0]));
+		this.applyEntityAI();
 	}
 
 	protected void applyEntityAI() {
 
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
 		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityEel.class, true));
-		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityFish.class, true));
+		this.targetTasks.addTask(6, new EntityAINearestAttackableTarget(this, EntityFish.class, true));
 	}
 
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(12.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
-		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(80.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
 	}
 
@@ -197,7 +194,6 @@ public class EntitySharkFemale extends EntityMob {
 
 		if (this.inWater) {
 			this.setAir(300);
-			
 
 		} else if (this.onGround) {
 			this.motionY += 0.5D;
@@ -253,7 +249,8 @@ public class EntitySharkFemale extends EntityMob {
 			EntityLivingBase entitylivingbase = (EntityLivingBase) source.getSourceOfDamage();
 
 			if (!source.isExplosion()) {
-			//	entitylivingbase.attackEntityFrom(DamageSource.causeThornsDamage(this), 2.0F);
+				// entitylivingbase.attackEntityFrom(DamageSource.causeThornsDamage(this),
+				// 2.0F);
 			}
 		}
 
@@ -279,12 +276,12 @@ public class EntitySharkFemale extends EntityMob {
 		if (this.isServerWorld()) {
 			if (this.isInWater()) {
 				this.moveRelative(strafe, forward, 0.1F);
-				 this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+				this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 				this.motionX *= 0.8999999761581421D;
 				this.motionY *= 0.8999999761581421D;
 				this.motionZ *= 0.8999999761581421D;
 
-				if (!this.isMoving() ) {
+				if (!this.isMoving()) {
 					this.motionY -= 0.005D;
 				}
 			} else {
@@ -433,7 +430,10 @@ public class EntitySharkFemale extends EntityMob {
 			}
 		}
 	}
-
+	protected PathNavigate createNavigator(World worldIn)
+	  {
+	    return new PathNavigation(this, worldIn);
+	  }
 	public void onDeath(DamageSource cause) {
 		super.onDeath(cause);
 

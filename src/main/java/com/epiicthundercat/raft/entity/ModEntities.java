@@ -26,7 +26,7 @@ public class ModEntities {
 		EntityRegistry.registerModEntity(getEntityResource("FemaleShark"), EntitySharkFemale.class, "FemaleShark", 0,
 				Raft.instance, 80, 3, false, 0, femalesharkegg);
 		// barrel
-		EntityRegistry.registerModEntity(getEntityResource("Barrel"), FloatBarrel.class, "Barrel", 1, Raft.instance, 80,
+		EntityRegistry.registerModEntity(getEntityResource("Barrel"), FloatBarrel.class, "Barrel", 1, Raft.instance, 10,
 				3, false);
 		// thatch
 		EntityRegistry.registerModEntity(getEntityResource("Thatch"), ThatchEntity.class, "Thatch", 2, Raft.instance,
@@ -41,10 +41,11 @@ public class ModEntities {
 		EntityRegistry.registerModEntity(getEntityResource("Fish"), EntityFish.class, "Fish", 5, Raft.instance, 80, 3,
 				false, 547853, femalesharkegg);
 		// Eel
-		EntityRegistry.registerModEntity(getEntityResource("Eel"), EntityEel.class, "Eel", 6, Raft.instance, 80, 3,
+		EntityRegistry.registerModEntity(getEntityResource("Eel"), EntityEel.class, "Eel", 6, Raft.instance, 10, 3,
 				false, 547853, femalesharkegg);
-		EntityRegistry.registerModEntity(getEntityResource("hook_part"), EntityHook.class, "hook_part", 7, Raft.instance, 64, 2, true, 0, 0);
-	
+		EntityRegistry.registerModEntity(getEntityResource("hook_part"), EntityHook.class, "hook_part", 7,
+				Raft.instance, 64, 2, true, 0, 0);
+
 		/*
 		 * We want our mob to spawn in Plains and ice plains biomes. If you
 		 * don't add this then it will not spawn automatically but you can of
@@ -52,14 +53,14 @@ public class ModEntities {
 		 */
 
 		// Female Shark
-		EntityRegistry.addSpawn(EntitySharkFemale.class, 100, 1, 3, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
+		EntityRegistry.addSpawn(EntitySharkFemale.class, 70, 1, 2, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
 				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER);
 		// Fish
-		EntityRegistry.addSpawn(EntityFish.class, 10, 3, 8, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
+		EntityRegistry.addSpawn(EntityFish.class, 100, 3, 8, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
 				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER);
 
 		// Eel
-		EntityRegistry.addSpawn(EntityEel.class, 5, 2, 4, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
+		EntityRegistry.addSpawn(EntityEel.class, 70, 2, 4, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
 				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER);
 
 		/*

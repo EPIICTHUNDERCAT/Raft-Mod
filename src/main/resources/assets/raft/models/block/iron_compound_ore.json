@@ -1,7 +1,9 @@
 {
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
+    "parent":"block/block",
     "textures": {
-        "0": "raft:blocks/ores/iron_compound_ore"
+        "0": "raft:blocks/ores/iron_compound_ore",
+         "particle": "raft:blocks/ores/iron_compound_ore"
     },
     "elements": [
         {

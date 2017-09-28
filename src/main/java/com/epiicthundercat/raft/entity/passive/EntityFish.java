@@ -3,6 +3,7 @@ package com.epiicthundercat.raft.entity.passive;
 import javax.annotation.Nullable;
 
 import com.epiicthundercat.raft.Reference;
+import com.epiicthundercat.raft.entity.PathNavigation;
 
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
@@ -95,7 +96,10 @@ public class EntityFish extends EntityAnimal {
 
 		return null;
 	}
-
+	protected PathNavigate createNavigator(World worldIn)
+	  {
+	    return new PathNavigation(this, worldIn);
+	  }
 	@Override
 	public void onLivingUpdate() {
 		if (this.world.isRemote) {

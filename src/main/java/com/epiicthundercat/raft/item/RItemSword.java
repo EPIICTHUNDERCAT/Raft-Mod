@@ -29,7 +29,7 @@ public class RItemSword extends ItemSword {
 			if (stack.getItem() == RItems.shark_tooth_sword) {
 				((EntityLivingBase) target).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 200, 2, false, false));
 			} else if (stack.getItem() == RItems.spear) {
-				((EntityLivingBase) target).addPotionEffect(new PotionEffect(MobEffects.INSTANT_DAMAGE, 10, 2, false, false));
+				((EntityLivingBase) target).addPotionEffect(new PotionEffect(MobEffects.INSTANT_DAMAGE, 8, 2, false, false));
 			}
 		}
 		return true;

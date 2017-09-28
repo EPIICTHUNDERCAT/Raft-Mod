@@ -3,6 +3,7 @@ package com.epiicthundercat.raft.entity.monster;
 import javax.annotation.Nullable;
 
 import com.epiicthundercat.raft.Reference;
+import com.epiicthundercat.raft.entity.PathNavigation;
 import com.epiicthundercat.raft.entity.passive.EntityFish;
 
 import net.minecraft.entity.Entity;
@@ -53,17 +54,20 @@ public class EntityEel extends EntityMob {
 	}
 	@Override
 	protected void initEntityAI() {
-		EntityAIMoveTowardsRestriction entityaimovetowardsrestriction = new EntityAIMoveTowardsRestriction(this, 1.0D);
+		
+
+		
 		this.wander = new EntityAIWander(this, 1.0D, 80);
 		this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
-		this.tasks.addTask(5, entityaimovetowardsrestriction);
+		this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
 		this.tasks.addTask(7, this.wander);
 		this.tasks.addTask(9, new EntityAILookIdle(this));
 		this.wander.setMutexBits(3);
-		entityaimovetowardsrestriction.setMutexBits(3);
+
 		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityEel.class, 12.0F, 0.01F));
-		this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false, new Class[0]));
+		this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, true, new Class[0]));
+		this.applyEntityAI();
 
 	}
 	
@@ -85,9 +89,6 @@ public class EntityEel extends EntityMob {
 		return false;
 	}
 
-	protected PathNavigate createNavigator(World worldIn) {
-		return new PathNavigateSwimmer(this, worldIn);
-	}
 
 	@Override
 	protected void entityInit() {
@@ -111,9 +112,9 @@ public class EntityEel extends EntityMob {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		 this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
-		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
+		 this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
+		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(80.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(3.0D);
 	}
@@ -148,7 +149,7 @@ public class EntityEel extends EntityMob {
 	        {
 	            if (entityIn instanceof EntityLivingBase)
 	            {
-	                ((EntityLivingBase)entityIn).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 200, 10));
+	                ((EntityLivingBase)entityIn).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 200, 40));
 	            }
 
 	            return true;
@@ -187,7 +188,10 @@ public class EntityEel extends EntityMob {
 	protected ResourceLocation getLootTable() {
 		return LOOT_EEL;
 	}
-
+	protected PathNavigate createNavigator(World worldIn)
+	  {
+	    return new PathNavigation(this, worldIn);
+	  }
 	static class EelMoveHelper extends EntityMoveHelper {
 		private final EntityEel entityEel;
 

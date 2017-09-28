@@ -49,13 +49,13 @@ public class RBlocks {
 
 	public static List<Block> blocks = new ArrayList();
 
-	public static Block burner = new BlockBurner("burner", Material.ANVIL, 0);
+	public static Block burner = new BlockBurner("burner", Material.ANVIL, 0.5f);
 	public static Block palm_sapling = new BlockPalmSapling("palm_sapling");
 	public static Block palm_leaves = new BlockPalmLeaves("palm_leaves");
 	public static Block palm_log = new BlockPalmLog("palm_log");
 	public static Block palm_planks = new BlockPalmWood("palm_planks");
 	public static Block palm_slab = new BlockPalmWoodSlab("palm_slab", Material.WOOD);
-	public static Block wet_cobble = new RBlock("wet_cobble", Material.ROCK, 3.0f);
+	public static Block wet_cobble = new RBlock("wet_cobble", Material.ROCK, 1.0f);
 	
 	
 	//Ore BLocks

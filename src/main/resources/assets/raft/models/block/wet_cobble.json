@@ -1,6 +1,7 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "raft:blocks/wet_cobblestone"
+        "all": "raft:blocks/wet_cobblestone",
+         "particle": "raft:blocks/wet_cobblestone"
     }
 }
