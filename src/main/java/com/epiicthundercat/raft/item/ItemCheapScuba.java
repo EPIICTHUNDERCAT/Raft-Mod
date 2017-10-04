@@ -2,7 +2,13 @@ package com.epiicthundercat.raft.item;
 
 import java.util.Random;
 
+import com.epiicthundercat.raft.Reference;
+import com.epiicthundercat.raft.client.model.ModelScuba;
+
 import net.minecraft.block.material.Material;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -21,7 +27,7 @@ public class ItemCheapScuba extends RItemArmor {
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
 		if (!player.isInsideOfMaterial(Material.WATER)) {
-			player.setAir(900);
+			player.setAir(Reference.Air_On_Scuba);
 		} else {
 			if (!player.canBreatheUnderwater()) {
 				player.setAir((player.getAir()));
@@ -38,11 +44,24 @@ public class ItemCheapScuba extends RItemArmor {
 								player.motionZ, new int[0]);
 					}
 
-					player.attackEntityFrom(DamageSource.DROWN, 2.0F);
+					player.attackEntityFrom(DamageSource.DROWN, Reference.Damage_If_Scuba_Air_Runs_Out);
 				}
 			}
 
 		}
 
+	}
+	public static final String SCUBA = "raft:textures/models/armor/plastic_scuba.png";
+
+
+	@Override
+	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot,
+			ModelBiped _default) {
+		return new ModelScuba();
+	}
+	
+	@Override
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+		return SCUBA;		
 	}
 }

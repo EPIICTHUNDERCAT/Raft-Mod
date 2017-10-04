@@ -2,6 +2,7 @@ package com.epiicthundercat.raft.item;
 
 import java.util.List;
 
+import com.epiicthundercat.raft.Reference;
 import com.epiicthundercat.raft.creativetab.RCreativeTab;
 import com.epiicthundercat.raft.entity.PlankEntity;
 
@@ -19,6 +20,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemPlank extends RItem {
 
@@ -86,18 +89,28 @@ public class ItemPlank extends RItem {
 						.isEmpty()) {
 					return new ActionResult(EnumActionResult.FAIL, itemStackIn);
 				} else {
-					if (!worldIn.isRemote) {
-						worldIn.spawnEntity(PlankEntity);
-					}
+					if (Reference.Is_Scrap_Placeable == true) {
+						if (!worldIn.isRemote) {
+							worldIn.spawnEntity(PlankEntity);
+						}
 
-					if (!playerIn.capabilities.isCreativeMode) {
-						itemStackIn.shrink(1);
+						if (!playerIn.capabilities.isCreativeMode) {
+							itemStackIn.shrink(1);
+						}
 					}
-
 					playerIn.addStat(StatList.getObjectUseStats(this));
 					return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+
 				}
 			}
 		}
+	}
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+
+		tooltip.add(String.format(Reference.FLOATING_MESSAGE));
+
+		super.addInformation(stack, playerIn, tooltip, advanced);
 	}
 }

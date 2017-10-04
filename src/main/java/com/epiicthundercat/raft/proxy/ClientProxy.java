@@ -7,6 +7,7 @@ import com.epiicthundercat.raft.client.renderer.RenderFloatingBarrel;
 import com.epiicthundercat.raft.client.renderer.RenderHook;
 import com.epiicthundercat.raft.client.renderer.RenderPlank;
 import com.epiicthundercat.raft.client.renderer.RenderScrap;
+import com.epiicthundercat.raft.client.renderer.RenderSeagull;
 import com.epiicthundercat.raft.client.renderer.RenderThatch;
 import com.epiicthundercat.raft.entity.EntityHook;
 import com.epiicthundercat.raft.entity.FloatBarrel;
@@ -16,6 +17,7 @@ import com.epiicthundercat.raft.entity.ThatchEntity;
 import com.epiicthundercat.raft.entity.monster.EntityEel;
 import com.epiicthundercat.raft.entity.monster.EntitySharkFemale;
 import com.epiicthundercat.raft.entity.passive.EntityFish;
+import com.epiicthundercat.raft.entity.passive.EntitySeagull;
 import com.epiicthundercat.raft.init.RBlocks;
 import com.epiicthundercat.raft.init.REventHandler;
 import com.epiicthundercat.raft.init.RItems;
@@ -50,6 +52,7 @@ public class ClientProxy extends CommonProxy {
 		rm.entityRenderMap.put(ScrapEntity.class, new RenderScrap(rm));
 		rm.entityRenderMap.put(ThatchEntity.class, new RenderThatch(rm));
 		rm.entityRenderMap.put(EntityEel.class, new RenderEel(rm));
+		rm.entityRenderMap.put(EntitySeagull.class, new RenderSeagull(rm));
 
 		if (event.getSide().isClient()) {
 			RBlocks.registerBlockColors();

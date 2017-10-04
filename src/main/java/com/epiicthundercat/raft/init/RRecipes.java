@@ -19,15 +19,20 @@ public class RRecipes {
 		 * RECIPES
 		 */
 
-		//pebbles
+		// pebbles
 		GameRegistry.addShapelessRecipe(new ItemStack(RItems.pebble, 20), new ItemStack(Blocks.COBBLESTONE));
-		//sharktooth sword
-		GameRegistry.addShapedRecipe(new ItemStack(RItems.shark_tooth_sword), "D  ", "D  ","S  ", 'D', new ItemStack(RItems.shark_tooth), 'S',
-				new ItemStack(Items.STICK));
-		//bonemeal
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage()), new ItemStack(RItems.shark_tooth));
-		
-		
+		// sharktooth sword
+		GameRegistry.addShapedRecipe(new ItemStack(RItems.shark_tooth_sword), "D  ", "D  ", "S  ", 'D',
+				new ItemStack(RItems.shark_tooth), 'S', new ItemStack(Items.STICK));
+		// bonemeal
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage()),
+				new ItemStack(RItems.shark_tooth));
+		// bottle
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(RItems.plastic_bottle),
+				new Object[] { " C ", "C C", "CCC", 'C', "plastic", }));
+		// plastic scuba
+		GameRegistry.addShapedRecipe(new ItemStack(RItems.plastic_scuba), "RRR", "R R", "RBR", 'B',
+				new ItemStack(RItems.plastic_bottle), 'R', new ItemStack(RItems.rope));
 		// Plank > Planks
 
 		GameRegistry.addShapedRecipe(new ItemStack(Blocks.PLANKS), "DD", "RD", 'D', new ItemStack(RItems.plank), 'R',
@@ -39,12 +44,11 @@ public class RRecipes {
 		// WetCobble
 		GameRegistry.addShapedRecipe(new ItemStack(RBlocks.wet_cobble), "DSD", "SDS", "DSD", 'D',
 				new ItemStack(RItems.stones), 'S', new ItemStack(RItems.clay_chunk));
-		//Cobblestone
+		// Cobblestone
 		GameRegistry.addSmelting(new ItemStack(RBlocks.wet_cobble), new ItemStack(Blocks.COBBLESTONE), 20);
-		//Clay Chunk
+		// Clay Chunk
 		GameRegistry.addShapelessRecipe(new ItemStack(RItems.clay_chunk, 4), new ItemStack(Items.CLAY_BALL));
-		
-		
+
 		// Rope
 		GameRegistry.addShapelessRecipe(new ItemStack(RItems.rope), new ItemStack(RItems.thatch),
 				new ItemStack(RItems.thatch), new ItemStack(RItems.thatch));
@@ -63,10 +67,10 @@ public class RRecipes {
 		// Hook
 		GameRegistry.addShapedRecipe(new ItemStack(RItems.hook), " S", "R ", 'S', new ItemStack(RItems.hook_part), 'R',
 				new ItemStack(RItems.rope));
-		
-		//Hook Part
+
+		// Hook Part
 		GameRegistry.addShapedRecipe(new ItemStack(RItems.hook_part), "SS", "S ", 'S', new ItemStack(RItems.scrap));
-		
+
 		// Dirt
 		GameRegistry.addShapedRecipe(new ItemStack(Blocks.DIRT), "DD", "DD", 'D', new ItemStack(RItems.dirt_piece));
 		// Sand
@@ -89,7 +93,8 @@ public class RRecipes {
 		GameRegistry.addSmelting(new ItemStack(Items.BEETROOT), new ItemStack(RItems.cooked_beet), 10);
 		GameRegistry.addSmelting(new ItemStack(RItems.raw_shark_meat), new ItemStack(RItems.cooked_shark_meat), 20);
 		GameRegistry.addSmelting(new ItemStack(RItems.raw_eel_meat), new ItemStack(RItems.cooked_eel_meat), 20);
-
+		GameRegistry.addSmelting(new ItemStack(RItems.raw_gull_meat), new ItemStack(RItems.cooked_gull_meat), 20);
+		
 		// INGOTS
 		// aluminum
 		GameRegistry.addSmelting(new ItemStack(RItems.aluminum_ore_material), new ItemStack(RItems.aluminum_ingot), 50);

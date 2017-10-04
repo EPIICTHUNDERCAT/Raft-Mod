@@ -2,6 +2,7 @@ package com.epiicthundercat.raft.item;
 
 import java.util.List;
 
+import com.epiicthundercat.raft.Reference;
 import com.epiicthundercat.raft.creativetab.RCreativeTab;
 import com.epiicthundercat.raft.entity.FloatBarrel;
 import com.epiicthundercat.raft.init.RItems;
@@ -32,10 +33,10 @@ public class ItemBarrel extends RItem {
 		this.type = typeIn;
 		this.maxStackSize = 1;
 		this.setCreativeTab(RCreativeTab.RTabs);
-	//	this.setUnlocalizedName("barrel." + typeIn.getName());
-	
+		// this.setUnlocalizedName("barrel." + typeIn.getName());
+
 	}
-	
+
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		float f = 1.0F;
 		float f1 = playerIn.prevRotationPitch + (playerIn.rotationPitch - playerIn.prevRotationPitch) * 1.0F;
@@ -92,27 +93,29 @@ public class ItemBarrel extends RItem {
 						.isEmpty()) {
 					return new ActionResult(EnumActionResult.FAIL, itemStackIn);
 				} else {
-					if (!worldIn.isRemote) {
-						worldIn.spawnEntity(floatBarrel);
-					}
+					if (Reference.Is_Barrel_Placeable == true) {
+						if (!worldIn.isRemote) {
+							worldIn.spawnEntity(floatBarrel);
+						}
 
-					if (!playerIn.capabilities.isCreativeMode) {
-						itemStackIn.shrink(1);
-						;
-					}
+						if (!playerIn.capabilities.isCreativeMode) {
+							itemStackIn.shrink(1);
 
+						}
+					}
 					playerIn.addStat(StatList.getObjectUseStats(this));
 					return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
 				}
 			}
 		}
 	}
-	 @SideOnly(Side.CLIENT)
-	    @Override
-	    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-	      
-	        tooltip.add(String.format("Creative Use ONLY, Cannot be picked up"));
 
-	        super.addInformation(stack, playerIn, tooltip, advanced);
-	    }
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+
+		tooltip.add(String.format("Creative Use ONLY, Cannot be picked up"));
+
+		super.addInformation(stack, playerIn, tooltip, advanced);
+	}
 }

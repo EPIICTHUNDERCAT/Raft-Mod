@@ -1,5 +1,6 @@
 package com.epiicthundercat.raft.proxy;
 
+import com.epiicthundercat.raft.ConfigHandler;
 import com.epiicthundercat.raft.entity.ModEntities;
 import com.epiicthundercat.raft.init.RBlocks;
 import com.epiicthundercat.raft.init.REventHandler;
@@ -20,7 +21,7 @@ public class CommonProxy {
 	public void preInit(FMLPreInitializationEvent preEvent) {
 		register(preEvent);
 		TileEntityRegistry.registerTile();
-		
+		 ConfigHandler.init();
 		//NGConfig.config(preEvent);
 
 	}

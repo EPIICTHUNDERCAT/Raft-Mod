@@ -134,8 +134,10 @@ public class RItems {
 	public static Item pebble = new RItem("pebble");
 	public static Item fish_waste = new ItemFishWaste("fish_waste");
 	public static Item hook_part = new RItem("hook_part");
+	public static Item plastic_bottle = new RItem("plastic_bottle");
 	public static Item plastic_scuba = new ItemCheapScuba("plastic_scuba", RItemArmor.PLASTIC_SCUBA, 7, EntityEquipmentSlot.HEAD);
-	
+	public static Item raw_gull_meat = new RItemFood("raw_gull_meat", 3, 1, true);
+	public static Item cooked_gull_meat = new RItemFood("cooked_gull_meat", 8, 10, true);
 	
 	private static List<Item> getItems() {
 		return items;

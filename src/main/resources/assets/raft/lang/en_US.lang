@@ -38,6 +38,12 @@ item.fish_waste.name=Fish Waste
 item.pebble.name=Pebble
 item.clay_chunk.name=Clay Chunk
 item.hook_part.name=Hook Part
+item.plastic_bottle.name=Plastic Bottle
+item.plastic_scuba.name=Cheap Scuba Gear
+item.raw_gull_meat.name=Raw Seagull Meat
+item.cooked_gull_meat.name=Cooked Seagull Meat
+
+
 
 tile.burner.name=Burner
 tile.wet_cobble.name=Wet Cobblestone
@@ -56,8 +62,9 @@ tile.tin_compound_ore.name=Tin Compound Pocket
 
 
 
+entity.Seagull.name=Seagull
 entity.Fish.name=Fish
-entity.FemaleShark.name=Shark
+entity.FemaleShark.name=Female Shark
 entity.Eel.name=Electric Eel
 entity.Barrel.name=Barrel
 entity.Plank.name=Plank

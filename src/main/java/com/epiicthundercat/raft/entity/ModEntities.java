@@ -7,6 +7,7 @@ import com.epiicthundercat.raft.Reference;
 import com.epiicthundercat.raft.entity.monster.EntityEel;
 import com.epiicthundercat.raft.entity.monster.EntitySharkFemale;
 import com.epiicthundercat.raft.entity.passive.EntityFish;
+import com.epiicthundercat.raft.entity.passive.EntitySeagull;
 
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
@@ -24,7 +25,7 @@ public class ModEntities {
 
 		// FemaleShark
 		EntityRegistry.registerModEntity(getEntityResource("FemaleShark"), EntitySharkFemale.class, "FemaleShark", 0,
-				Raft.instance, 80, 3, false, 0, femalesharkegg);
+				Raft.instance, 80, 3, false, 956291, femalesharkegg);
 		// barrel
 		EntityRegistry.registerModEntity(getEntityResource("Barrel"), FloatBarrel.class, "Barrel", 1, Raft.instance, 10,
 				3, false);
@@ -39,12 +40,15 @@ public class ModEntities {
 				3, false);
 		// Fish
 		EntityRegistry.registerModEntity(getEntityResource("Fish"), EntityFish.class, "Fish", 5, Raft.instance, 80, 3,
-				false, 547853, femalesharkegg);
+				false, 558853, femalesharkegg);
 		// Eel
 		EntityRegistry.registerModEntity(getEntityResource("Eel"), EntityEel.class, "Eel", 6, Raft.instance, 10, 3,
-				false, 547853, femalesharkegg);
+				false, 541053, femalesharkegg);
 		EntityRegistry.registerModEntity(getEntityResource("hook_part"), EntityHook.class, "hook_part", 7,
-				Raft.instance, 64, 2, true, 0, 0);
+				Raft.instance, 64, 2, false);
+		// seagull
+		EntityRegistry.registerModEntity(getEntityResource("Seagull"), EntitySeagull.class, "Seagull", 8, Raft.instance,
+				10, 3, false, 584853, femalesharkegg);
 
 		/*
 		 * We want our mob to spawn in Plains and ice plains biomes. If you
@@ -53,15 +57,19 @@ public class ModEntities {
 		 */
 
 		// Female Shark
-		EntityRegistry.addSpawn(EntitySharkFemale.class, 70, 1, 2, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
+		EntityRegistry.addSpawn(EntitySharkFemale.class, Reference.Shark_Spawn_Rate, Reference.Shark_Spawn_MIN_Amount, Reference.Shark_Spawn_MAX_Amount, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
 				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER);
 		// Fish
-		EntityRegistry.addSpawn(EntityFish.class, 100, 3, 8, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
+		EntityRegistry.addSpawn(EntityFish.class, Reference.Fish_Spawn_Rate, Reference.Fish_Spawn_MIN_Amount, Reference.Fish_Spawn_MAX_Amount, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
 				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER);
 
 		// Eel
-		EntityRegistry.addSpawn(EntityEel.class, 70, 2, 4, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
+		EntityRegistry.addSpawn(EntityEel.class, Reference.Eel_Spawn_Rate, Reference.Eel_Spawn_MIN_Amount, Reference.Eel_Spawn_MAX_Amount, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
 				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER);
+		// Eel
+		EntityRegistry.addSpawn(EntitySeagull.class, Reference.Seagull_Spawn_Rate, Reference.Seagull_Spawn_MIN_Amount, Reference.Seagull_Spawn_MAX_Amount, EnumCreatureType.AMBIENT, Biomes.DEEP_OCEAN,
+				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER, Biomes.BEACH, Biomes.COLD_BEACH,
+				Biomes.STONE_BEACH);
 
 		/*
 		 * Mob Placement
@@ -73,6 +81,8 @@ public class ModEntities {
 		EntitySpawnPlacementRegistry.setPlacementType(EntityFish.class, SpawnPlacementType.IN_WATER);
 		// Eel
 		EntitySpawnPlacementRegistry.setPlacementType(EntityEel.class, SpawnPlacementType.IN_WATER);
+		// Seagull
+		EntitySpawnPlacementRegistry.setPlacementType(EntitySeagull.class, SpawnPlacementType.IN_AIR);
 
 		/*
 		 * This is the loot table for our mob
@@ -82,8 +92,10 @@ public class ModEntities {
 		LootTableList.register(EntitySharkFemale.LOOT_FEMALESHARK);
 		// FISH
 		LootTableList.register(EntityFish.LOOT_FISH);
-		// FISH
+		// Eel
 		LootTableList.register(EntityEel.LOOT_EEL);
+		// Seagull
+		LootTableList.register(EntitySeagull.LOOT_GULL);
 
 	}
 

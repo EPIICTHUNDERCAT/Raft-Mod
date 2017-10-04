@@ -30,6 +30,6 @@ public class RItemArmor extends ItemArmor{
 	}
 	   @Override
 	    public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
-	         //   Raft.proxy.spawnParticleLeaf(world, player.posX, player.posY, player.posZ, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-	}
+	         
+	   }
 }
