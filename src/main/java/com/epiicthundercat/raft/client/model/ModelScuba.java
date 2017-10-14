@@ -2,10 +2,13 @@ package com.epiicthundercat.raft.client.model;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * ModelPlayer - Either Mojang or a mod author Created using Tabula 6.0.0
  */
+@SideOnly(Side.CLIENT)
 public class ModelScuba extends ModelExtendedArmor {
 	public ModelRenderer plasticBottle;
 	public ModelRenderer cap;
