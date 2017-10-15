@@ -55,7 +55,7 @@ public class EntityHook extends EntityThrowable {
 
 	}
 
-	@SideOnly(Side.CLIENT)
+	
 	public EntityHook(World worldIn, double x, double y, double z) {
 		super(worldIn, x, y, z);
 	}

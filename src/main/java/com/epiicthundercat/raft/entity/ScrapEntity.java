@@ -128,14 +128,16 @@ public class ScrapEntity extends EntityFishable {
 		return false;
 	}
 
+	
 	/**
 	 * Returns a boundingBox used to collide the entity with other entities and
-	 * blocks. This enables the entity to be pushable on contact, like Scraps or
-	 * minecarts.
+	 * blocks. This enables the entity to be pushable on contact, like Thatchs
+	 * or minecarts.
 	 */
 	@Nullable
 	public AxisAlignedBB getCollisionBox(Entity entityIn) {
-		return entityIn.getEntityBoundingBox();
+		return null;
+		//return entityIn.getEntityBoundingBox();
 	}
 
 	/**
@@ -143,7 +145,8 @@ public class ScrapEntity extends EntityFishable {
 	 */
 	@Nullable
 	public AxisAlignedBB getCollisionBoundingBox() {
-		return this.getEntityBoundingBox();
+		return null;
+		//return this.getEntityBoundingBox();
 	}
 
 	/**

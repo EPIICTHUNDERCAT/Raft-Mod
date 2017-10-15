@@ -139,14 +139,16 @@ public class FloatBarrel extends EntityFishable {
 
 	}
 
+
 	/**
 	 * Returns a boundingBox used to collide the entity with other entities and
-	 * blocks. This enables the entity to be pushable on contact, like Barrels
+	 * blocks. This enables the entity to be pushable on contact, like Thatchs
 	 * or minecarts.
 	 */
 	@Nullable
 	public AxisAlignedBB getCollisionBox(Entity entityIn) {
-		return entityIn.getEntityBoundingBox();
+		return null;
+		//return entityIn.getEntityBoundingBox();
 	}
 
 	/**
@@ -154,9 +156,9 @@ public class FloatBarrel extends EntityFishable {
 	 */
 	@Nullable
 	public AxisAlignedBB getCollisionBoundingBox() {
-		return this.getEntityBoundingBox();
+		return null;
+		//return this.getEntityBoundingBox();
 	}
-
 	/**
 	 * Returns true if this entity should push and be pushed by other entities
 	 * when colliding.

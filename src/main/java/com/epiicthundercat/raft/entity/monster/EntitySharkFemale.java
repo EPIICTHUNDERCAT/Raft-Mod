@@ -55,7 +55,7 @@ public class EntitySharkFemale extends EntityMob {
 	public EntitySharkFemale(World worldIn) {
 		super(worldIn);
 		this.experienceValue = 10;
-		this.setSize(0.85F, 0.85F);
+		this.setSize(1F, 0.35F);
 		this.moveHelper = new EntitySharkFemale.SharkMoveHelper(this);
 
 	}
@@ -85,10 +85,10 @@ public class EntitySharkFemale extends EntityMob {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(12.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
 		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(80.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25.0D);
 	}
 
 	public static void registerFixesShark(DataFixer fixer) {
@@ -121,18 +121,7 @@ public class EntitySharkFemale extends EntityMob {
 		return new PathNavigateSwimmer(this, worldIn);
 	}
 
-	private boolean shouldAttackPlayer(EntityPlayer player) {
-		ItemStack itemstack = (ItemStack) player.inventory.armorInventory.get(3);
-
-		Vec3d vec3d = player.getLook(1.0F).normalize();
-		Vec3d vec3d1 = new Vec3d(this.posX - player.posX, this.getEntityBoundingBox().minY
-				+ (double) this.getEyeHeight() - (player.posY + (double) player.getEyeHeight()),
-				this.posZ - player.posZ);
-		double d0 = vec3d1.lengthVector();
-		vec3d1 = vec3d1.normalize();
-		double d1 = vec3d.dotProduct(vec3d1);
-		return d1 > 1.0D - 0.025D / d0 ? player.canEntityBeSeen(this) : false;
-	}
+	
 
 	@Override
 	protected void entityInit() {
@@ -156,7 +145,8 @@ public class EntitySharkFemale extends EntityMob {
 
 	@Override
 	public float getEyeHeight() {
-		return this.height * 0.5F;
+		return this.height - 0.5f;
+		
 	}
 
 	/**
@@ -248,10 +238,7 @@ public class EntitySharkFemale extends EntityMob {
 		if (!this.isMoving() && !source.isMagicDamage() && source.getSourceOfDamage() instanceof EntityLivingBase) {
 			EntityLivingBase entitylivingbase = (EntityLivingBase) source.getSourceOfDamage();
 
-			if (!source.isExplosion()) {
-				// entitylivingbase.attackEntityFrom(DamageSource.causeThornsDamage(this),
-				// 2.0F);
-			}
+			
 		}
 
 		if (this.wander != null) {
@@ -364,7 +351,7 @@ public class EntitySharkFemale extends EntityMob {
 					&& p_apply_1_.getDistanceSqToEntity(this.parentEntity) > 9.0D;
 		}
 	}
-
+/*
 	static class AISharkBreakBlock extends EntityAIBase {
 		private final EntitySharkFemale theEntity;
 		private int tickCounter;
@@ -376,7 +363,7 @@ public class EntitySharkFemale extends EntityMob {
 
 		/**
 		 * Returns whether the EntityAIBase should begin execution.
-		 */
+		 
 		public boolean shouldExecute() {
 			EntityLivingBase entitylivingbase = this.theEntity.getAttackTarget();
 			return entitylivingbase != null && entitylivingbase.isEntityAlive();
@@ -384,7 +371,7 @@ public class EntitySharkFemale extends EntityMob {
 
 		/**
 		 * Returns whether an in-progress EntityAIBase should continue executing
-		 */
+		 *
 		public boolean continueExecuting() {
 			return super.continueExecuting()
 					&& (this.theEntity.getDistanceSqToEntity(this.theEntity.getAttackTarget()) > 9.0D);
@@ -392,7 +379,7 @@ public class EntitySharkFemale extends EntityMob {
 
 		/**
 		 * Execute a one shot task or start executing a continuous task
-		 */
+		 *
 		public void startExecuting() {
 			this.tickCounter = -10;
 			this.theEntity.getNavigator().clearPathEntity();
@@ -402,7 +389,7 @@ public class EntitySharkFemale extends EntityMob {
 
 		/**
 		 * Resets the task
-		 */
+		 *
 		public void resetTask() {
 
 			this.theEntity.setAttackTarget((EntityLivingBase) null);
@@ -411,7 +398,7 @@ public class EntitySharkFemale extends EntityMob {
 
 		/**
 		 * Updates the task
-		 */
+		 *
 		public void updateTask() {
 			EntityLivingBase entitylivingbase = this.theEntity.getAttackTarget();
 			this.theEntity.getNavigator().clearPathEntity();
@@ -429,7 +416,7 @@ public class EntitySharkFemale extends EntityMob {
 				super.updateTask();
 			}
 		}
-	}
+	}*/
 	protected PathNavigate createNavigator(World worldIn)
 	  {
 	    return new PathNavigation(this, worldIn);

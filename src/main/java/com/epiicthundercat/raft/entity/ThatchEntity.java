@@ -139,7 +139,8 @@ public class ThatchEntity extends EntityFishable {
 	 */
 	@Nullable
 	public AxisAlignedBB getCollisionBox(Entity entityIn) {
-		return entityIn.getEntityBoundingBox();
+		return null;
+		//return entityIn.getEntityBoundingBox();
 	}
 
 	/**
@@ -147,7 +148,8 @@ public class ThatchEntity extends EntityFishable {
 	 */
 	@Nullable
 	public AxisAlignedBB getCollisionBoundingBox() {
-		return this.getEntityBoundingBox();
+		return null;
+		//return this.getEntityBoundingBox();
 	}
 
 	/**

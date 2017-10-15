@@ -2,7 +2,7 @@ package com.epiicthundercat.raft;
 
 public class Reference {
 	public static final String ID = "raft";
-	public static final String VER = "0.0.6";
+	public static final String VER = "0.0.7";
 	public static final String NAME = "RaftMod";
 	public static final String DEPENDENCIES = "after:toughasnails";
 	
@@ -41,8 +41,7 @@ public class Reference {
     public static int Damage_If_Scuba_Air_Runs_Out = 2;
     
     
-    public static String FLOATING_MESSAGE = "Can Be Picked up while floating on water!";
-    
+  
     public static boolean Is_Scrap_Placeable = true;
     public static boolean Is_Plank_Placeable = true;
     public static boolean Is_Thatch_Placeable = true;

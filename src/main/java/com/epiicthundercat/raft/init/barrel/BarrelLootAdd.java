@@ -17,8 +17,8 @@ public class BarrelLootAdd {
 		REventHandler.addBarrelLoot(new ItemStack(RItems.plank), 2, 0, 5);
 
 		REventHandler.addBarrelLoot(new ItemStack(RItems.thatch), 2, 0, 5);
-		
-		
+		REventHandler.addBarrelLoot(new ItemStack(Items.FISH), 2, 0, 1);
+		REventHandler.addBarrelLoot(new ItemStack(RItems.fish_waste), 2, 0, 5);
 		REventHandler.addBarrelLoot(new ItemStack(Items.POTATO), 1, 0, 1);
 		REventHandler.addBarrelLoot(new ItemStack(RBlocks.palm_sapling), 1, 0, 1);
 		//REventHandler.addBarrelLoot(new ItemStack(RItems.coconut), 1, 0, 1);

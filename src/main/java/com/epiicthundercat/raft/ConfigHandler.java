@@ -69,7 +69,7 @@ public class ConfigHandler {
 		Reference.Is_Plank_Placeable = CONFIG.getBoolean("Is Plank Placeable", DEF_CAT, true, "True for yes, false for no");
 		Reference.Is_Barrel_Placeable = CONFIG.getBoolean("Is Barrel Placeable", DEF_CAT, true, "True for yes, false for no");
 		
-		Reference.FLOATING_MESSAGE = CONFIG.getString("Floating Items Info Message", DEF_CAT, "Can Be Picked up while floating on water!", "Change to change items: thatch, scrap, plank");
+
 		
 		
 		if (CONFIG.hasChanged()) {

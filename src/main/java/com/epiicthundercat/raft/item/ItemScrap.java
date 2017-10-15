@@ -110,7 +110,7 @@ public class ItemScrap extends RItem {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
 
-		tooltip.add(String.format(Reference.FLOATING_MESSAGE));
+		tooltip.add(String.format("Can Be Picked up while floating on water!", "Change to change items: thatch, scrap, plank"));
 
 		super.addInformation(stack, playerIn, tooltip, advanced);
 	}

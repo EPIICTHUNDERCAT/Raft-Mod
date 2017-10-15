@@ -100,7 +100,7 @@ public class BlockPalmLeaves extends BlockLeaves {
 		spawnAsEntity(worldIn, pos, new ItemStack(RItems.thatch));
 
 	}
-	int chance = 0;
+	
 	@Override
 	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity tile,
 			ItemStack stack) {
@@ -108,7 +108,7 @@ public class BlockPalmLeaves extends BlockLeaves {
 		if (!world.isRemote && stack.getItem() == Items.SHEARS) {
 			player.addStat(StatList.getBlockStats(this));
 			spawnAsEntity(world, pos, new ItemStack(Item.getItemFromBlock(this)));
-		} else if (!world.isRemote && stack.getItem() == RItems.hook_part && world.rand.nextInt(chance) == 1) {
+		} else if (!world.isRemote && stack.getItem() == RItems.hook_part && world.rand.nextBoolean()) {
 			spawnAsEntity(world, pos, new ItemStack(RItems.coconut));
 		} else
 			super.harvestBlock(world, player, pos, state, tile, stack);
