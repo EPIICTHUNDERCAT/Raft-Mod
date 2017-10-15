@@ -27,12 +27,12 @@ public class ItemCoconut extends ItemBucketMilk {
 		addToItems(this);
 		this.setCreativeTab(RCreativeTab.RTabs);
 	}
+
 	private void addToItems(Item item) {
 
 		RItems.items.add(item);
 
 	}
-
 
 	/**
 	 * Called when the player finishes using this Item (E.g. finishes eating.).
@@ -85,11 +85,10 @@ public class ItemCoconut extends ItemBucketMilk {
 		return EnumAction.DRINK;
 	}
 
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn,
-			EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack itemStackIn = playerIn.getHeldItem(handIn);
 		playerIn.setActiveHand(handIn);
 		return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
 	}
-	
+
 }

@@ -21,8 +21,7 @@ public class CommonProxy {
 	public void preInit(FMLPreInitializationEvent preEvent) {
 		register(preEvent);
 		TileEntityRegistry.registerTile();
-		 ConfigHandler.init();
-		//NGConfig.config(preEvent);
+		
 
 	}
 

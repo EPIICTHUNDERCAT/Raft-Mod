@@ -2,6 +2,7 @@ package com.epiicthundercat.raft.entity;
 
 import java.awt.Color;
 
+import com.epiicthundercat.raft.ConfigHandler;
 import com.epiicthundercat.raft.Raft;
 import com.epiicthundercat.raft.Reference;
 import com.epiicthundercat.raft.entity.monster.EntityEel;
@@ -57,17 +58,17 @@ public class ModEntities {
 		 */
 
 		// Female Shark
-		EntityRegistry.addSpawn(EntitySharkFemale.class, Reference.Shark_Spawn_Rate, Reference.Shark_Spawn_MIN_Amount, Reference.Shark_Spawn_MAX_Amount, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
+		EntityRegistry.addSpawn(EntitySharkFemale.class, ConfigHandler.raft.Shark_Spawn_Rate, ConfigHandler.raft.Shark_Spawn_MIN_Amount, ConfigHandler.raft.Shark_Spawn_MAX_Amount, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
 				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER);
 		// Fish
-		EntityRegistry.addSpawn(EntityFish.class, Reference.Fish_Spawn_Rate, Reference.Fish_Spawn_MIN_Amount, Reference.Fish_Spawn_MAX_Amount, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
+		EntityRegistry.addSpawn(EntityFish.class, ConfigHandler.raft.Fish_Spawn_Rate, ConfigHandler.raft.Fish_Spawn_MIN_Amount, ConfigHandler.raft.Fish_Spawn_MAX_Amount, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
 				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER);
 
 		// Eel
-		EntityRegistry.addSpawn(EntityEel.class, Reference.Eel_Spawn_Rate, Reference.Eel_Spawn_MIN_Amount, Reference.Eel_Spawn_MAX_Amount, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
+		EntityRegistry.addSpawn(EntityEel.class, ConfigHandler.raft.Eel_Spawn_Rate, ConfigHandler.raft.Eel_Spawn_MIN_Amount, ConfigHandler.raft.Eel_Spawn_MAX_Amount, EnumCreatureType.WATER_CREATURE, Biomes.DEEP_OCEAN,
 				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER);
 		// Eel
-		EntityRegistry.addSpawn(EntitySeagull.class, Reference.Seagull_Spawn_Rate, Reference.Seagull_Spawn_MIN_Amount, Reference.Seagull_Spawn_MAX_Amount, EnumCreatureType.AMBIENT, Biomes.DEEP_OCEAN,
+		EntityRegistry.addSpawn(EntitySeagull.class, ConfigHandler.raft.Seagull_Spawn_Rate, ConfigHandler.raft.Seagull_Spawn_MIN_Amount, ConfigHandler.raft.Seagull_Spawn_MAX_Amount, EnumCreatureType.AMBIENT, Biomes.DEEP_OCEAN,
 				Biomes.OCEAN, Biomes.FROZEN_OCEAN, Biomes.RIVER, Biomes.FROZEN_RIVER, Biomes.BEACH, Biomes.COLD_BEACH,
 				Biomes.STONE_BEACH);
 

@@ -2,6 +2,7 @@ package com.epiicthundercat.raft.item;
 
 import java.util.Random;
 
+import com.epiicthundercat.raft.ConfigHandler;
 import com.epiicthundercat.raft.Reference;
 import com.epiicthundercat.raft.client.model.ModelScuba;
 
@@ -29,7 +30,7 @@ public class ItemCheapScuba extends RItemArmor {
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
 		if (!player.isInsideOfMaterial(Material.WATER)) {
-			player.setAir(Reference.Air_On_Scuba);
+			player.setAir(ConfigHandler.raft.Air_On_Scuba);
 		} else {
 			if (!player.canBreatheUnderwater()) {
 				player.setAir((player.getAir()));
@@ -46,7 +47,7 @@ public class ItemCheapScuba extends RItemArmor {
 								player.motionZ, new int[0]);
 					}
 
-					player.attackEntityFrom(DamageSource.DROWN, Reference.Damage_If_Scuba_Air_Runs_Out);
+					player.attackEntityFrom(DamageSource.DROWN, ConfigHandler.raft.Damage_If_Scuba_Air_Runs_Out);
 				}
 			}
 

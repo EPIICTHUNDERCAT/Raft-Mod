@@ -63,7 +63,7 @@ public class EntitySharkFemale extends EntityMob {
 	@Override
 	protected void initEntityAI() {
 		this.wander = new EntityAIWander(this, 1.0D, 80);
-		this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
+		this.tasks.addTask(4, new EntityAIAttackMelee(this, 0.50D, false));
 		this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
 		this.tasks.addTask(7, this.wander);
 		this.tasks.addTask(9, new EntityAILookIdle(this));
@@ -87,7 +87,7 @@ public class EntitySharkFemale extends EntityMob {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(80.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25.0D);
 	}
 
@@ -145,7 +145,7 @@ public class EntitySharkFemale extends EntityMob {
 
 	@Override
 	public float getEyeHeight() {
-		return this.height - 0.5f;
+		return  0.1f;
 		
 	}
 

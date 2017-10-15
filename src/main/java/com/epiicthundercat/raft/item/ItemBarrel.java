@@ -2,16 +2,14 @@ package com.epiicthundercat.raft.item;
 
 import java.util.List;
 
-import com.epiicthundercat.raft.Reference;
+import com.epiicthundercat.raft.ConfigHandler;
 import com.epiicthundercat.raft.creativetab.RCreativeTab;
 import com.epiicthundercat.raft.entity.FloatBarrel;
-import com.epiicthundercat.raft.init.RItems;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
@@ -93,7 +91,7 @@ public class ItemBarrel extends RItem {
 						.isEmpty()) {
 					return new ActionResult(EnumActionResult.FAIL, itemStackIn);
 				} else {
-					if (Reference.Is_Barrel_Placeable == true) {
+					if (ConfigHandler.raft.Is_Barrel_Placeable == true) {
 						if (!worldIn.isRemote) {
 							worldIn.spawnEntity(floatBarrel);
 						}

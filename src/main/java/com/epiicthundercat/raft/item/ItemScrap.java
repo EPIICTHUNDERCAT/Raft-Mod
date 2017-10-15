@@ -2,6 +2,7 @@ package com.epiicthundercat.raft.item;
 
 import java.util.List;
 
+import com.epiicthundercat.raft.ConfigHandler;
 import com.epiicthundercat.raft.Reference;
 import com.epiicthundercat.raft.creativetab.RCreativeTab;
 import com.epiicthundercat.raft.entity.ScrapEntity;
@@ -89,7 +90,7 @@ public class ItemScrap extends RItem {
 						.isEmpty()) {
 					return new ActionResult(EnumActionResult.FAIL, itemStackIn);
 				} else {
-					if (Reference.Is_Scrap_Placeable == true) {
+					if (ConfigHandler.raft.Is_Scrap_Placeable == true) {
 						if (!worldIn.isRemote) {
 							worldIn.spawnEntity(ScrapEntity);
 						}
